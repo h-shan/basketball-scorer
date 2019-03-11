@@ -4,4 +4,9 @@
     <string name="teams">Teams</string>
     <string name="new_game">New Game</string>
     <string name="review_games">Reivew Games</string>
+    <string name="track">Track</string>
+    <string name="back">Back</string>
+    <string name="your_team">Your Team</string>
+    <string name="opposing_team">Opposing Team</string>
+    <string name="date">Date</string>
 </resources>
