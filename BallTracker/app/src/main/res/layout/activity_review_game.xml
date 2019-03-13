@@ -1,45 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".ReviewGameActivity">
 
-    <Button
-        android:id="@+id/reviewGamesBtn"
-        android:layout_width="121dp"
-        android:layout_height="33dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/left_pointed_button"
-        android:text="@string/review_games" />
-
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="62dp"
-        android:layout_height="66dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:fontFamily="serif"
-        android:gravity="center"
-        android:text="Review Game"
-        android:textColor="#E4430A"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/et_search"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Search"
-        android:background="@drawable/bg_search"
-        android:layout_below="@+id/tv1"
-        android:padding="10dp"/>
-
-    <ListView
-        android:id="@+id/lv_teams"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_search"
-        android:dividerHeight="5dp"
-        android:layout_marginTop="5dp"/>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
