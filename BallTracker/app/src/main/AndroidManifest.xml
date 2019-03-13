@@ -9,8 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditTeamActivity"></activity>
+<<<<<<< HEAD
+        <activity android:name=".ReviewSpecificGameActivity"></activity>
+        <activity android:name=".ReviewGameActivity" />
+=======
+>>>>>>> 17029b5b53acefbdb9a6266a1305cdb73bafd6f2
+        <activity android:name=".EditTeamActivity" />
         <activity android:name=".ViewTeamsActivity" />
+        <activity android:name=".TrackGameActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

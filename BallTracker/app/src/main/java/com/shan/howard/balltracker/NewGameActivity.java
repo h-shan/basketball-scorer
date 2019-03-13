@@ -2,9 +2,9 @@ package com.shan.howard.balltracker;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,6 +21,7 @@ public class NewGameActivity extends Activity implements View.OnClickListener, D
     private Spinner mOpposingTeamSpinner;
     private EditText mDateEditText;
     private Button mBackButton;
+    private Button mTrackButton;
 
     private Calendar theCalendar = Calendar.getInstance();
 
@@ -30,29 +31,27 @@ public class NewGameActivity extends Activity implements View.OnClickListener, D
         setContentView(R.layout.activity_new_game);
 
         mYourTeamSpinner = findViewById(R.id.new_game_your_team_spinner);
-        initializeSpinner(mYourTeamSpinner, PLACEHOLDER_TEAMS);
+        Utils.initializeSpinner(this, mYourTeamSpinner, PLACEHOLDER_TEAMS);
         mOpposingTeamSpinner = findViewById(R.id.new_game_opposing_team_spinner);
-        initializeSpinner(mOpposingTeamSpinner, PLACEHOLDER_TEAMS);
+        Utils.initializeSpinner(this, mOpposingTeamSpinner, PLACEHOLDER_TEAMS);
 
         mDateEditText = findViewById(R.id.new_game_date_edit_text);
         mDateEditText.setOnClickListener(this);
 
-        mBackButton = findViewById(R.id.new_game_back_btn);
+        mBackButton = findViewById(R.id.track_game_back_btn);
         mBackButton.setOnClickListener(this);
+        mTrackButton = findViewById(R.id.new_game_track_btn);
+        mTrackButton.setOnClickListener(this);
     }
-
-    private void initializeSpinner(Spinner aSpinner, String[] anItems) {
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, anItems);
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        aSpinner.setAdapter(myAdapter);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.new_game_back_btn:
+            case R.id.track_game_back_btn:
                 finish();
+                break;
+            case R.id.new_game_track_btn:
+                Intent myIntent = new Intent(this, TrackGameActivity.class);
+                startActivity(myIntent);
                 break;
             case R.id.new_game_date_edit_text:
                 new DatePickerDialog(this, this, theCalendar.get(Calendar.YEAR),

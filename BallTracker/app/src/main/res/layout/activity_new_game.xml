@@ -16,7 +16,7 @@
         android:weightSum="3">
 
         <Button
-            android:id="@+id/new_game_back_btn"
+            android:id="@+id/track_game_back_btn"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_margin="0dp"
