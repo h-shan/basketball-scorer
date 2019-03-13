@@ -10,7 +10,7 @@
         android:gravity="center"
         android:background="@drawable/bg_bt1">
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/view_teams_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello"
