@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity implements Button.OnClickListener {
     private static final String TAG = MainActivity.class.getName();
     Button myNewGameButton;
     Button mTeamsButton;
+    Button mReviewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,8 @@ public class MainActivity extends Activity implements Button.OnClickListener {
         myNewGameButton.setOnClickListener(this);
         mTeamsButton = findViewById(R.id.main_teams_btn);
         mTeamsButton.setOnClickListener(this);
+        mReviewButton = findViewById(R.id.main_review_games_btn);
+        mReviewButton.setOnClickListener(this);
     }
 
     @Override
@@ -36,6 +40,10 @@ public class MainActivity extends Activity implements Button.OnClickListener {
                 Intent myIntent1 = new Intent(this, ViewTeamsActivity.class);
                 startActivity(myIntent1);
                 break;
+            case R.id.main_review_games_btn:
+                Log.d(TAG, "Moving to Review Games Activity");
+                Intent intentReviewGame = new Intent(this, ReviewGameActivity.class);
+                startActivity(intentReviewGame);
             default:
                 break;
         }
