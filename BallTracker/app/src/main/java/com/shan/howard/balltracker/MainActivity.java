@@ -9,18 +9,18 @@ import android.widget.Button;
 
 public class MainActivity extends Activity implements Button.OnClickListener {
     private static final String TAG = MainActivity.class.getName();
-    Button theNewGameButton;
-    Button theTeamsButton;
+    Button myNewGameButton;
+    Button mTeamsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        theNewGameButton = findViewById(R.id.main_new_game_btn);
-        theNewGameButton.setOnClickListener(this);
-        theTeamsButton = findViewById(R.id.main_teams_btn);
-        theTeamsButton.setOnClickListener(this);
+        myNewGameButton = findViewById(R.id.main_new_game_btn);
+        myNewGameButton.setOnClickListener(this);
+        mTeamsButton = findViewById(R.id.main_teams_btn);
+        mTeamsButton.setOnClickListener(this);
     }
 
     @Override
