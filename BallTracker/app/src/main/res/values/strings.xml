@@ -9,6 +9,22 @@
     <string name="your_team">Your Team</string>
     <string name="opposing_team">Opposing Team</string>
     <string name="date">Date</string>
+<<<<<<< HEAD
+
+    <string name="mainMenu">Main Menu</string>
+    <string name="editGame">Edit Game</string>
+    <string name="team1">Team 1</string>
+    <string name="team2">Team 2</string>
+    <string name="teamScore">99 - 99</string>
+    <string name="qtr1">Qtr 1</string>
+    <string name="qtr2">Qtr 2</string>
+    <string name="qtr3">Qtr 3</string>
+    <string name="qtr4">Qtr 4</string>
+    <string name="ot1">OT 1</string>
+    <string name="ot2">OT 2</string>
+    <string name="totalScore">Total</string>
+=======
     <string name="track_game">Track Game</string>
     <string name="finish">Finish</string>
+>>>>>>> 17029b5b53acefbdb9a6266a1305cdb73bafd6f2
 </resources>
