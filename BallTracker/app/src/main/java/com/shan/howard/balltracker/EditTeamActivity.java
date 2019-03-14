@@ -52,7 +52,6 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 mTeam.setName(mNameET.getText().toString());
-                mTeamViewModel.update(mTeam);
                 return true;
             }
         });
@@ -60,7 +59,6 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 mTeam.setCoach(mCoachET.getText().toString());
-                mTeamViewModel.update(mTeam);
                 return true;
             }
         });
@@ -71,8 +69,7 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_team_back_btn:
-                GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
-                bg.setColor(getResources().getColor(R.color.colorSelector));
+                mTeamViewModel.update(mTeam);
                 finish();
                 break;
             case R.id.edit_team_player_list_btn:
