@@ -74,6 +74,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             public void onChanged(@Nullable final List<Team> aTeams) {
                 Log.d(TAG, "New teams size: " + aTeams.size());
                 mAdapter.setTeams(aTeams);
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

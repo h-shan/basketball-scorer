@@ -4,16 +4,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-enum EventType {
-    TWO_POINTERS, THREE_POINTERS, FREE_THROWS, FOULS
-}
-
 @Entity(tableName = "events")
 public class Event {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_")
-    private String id;
+    private long id;
 
     @ColumnInfo(name = "game_id_")
     private String gameId;
@@ -25,13 +21,17 @@ public class Event {
     private String teamId;
 
     @ColumnInfo(name = "event_type_")
-    private EventType eventType;
+    private String eventType;
 
     @ColumnInfo(name = "quarter_")
-    int quarter;
+    private int quarter;
 
-    public String getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getGameId() {
@@ -58,11 +58,11 @@ public class Event {
         this.teamId = teamId;
     }
 
-    public EventType getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 

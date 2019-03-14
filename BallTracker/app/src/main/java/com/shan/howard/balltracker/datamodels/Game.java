@@ -1,31 +1,49 @@
 package com.shan.howard.balltracker.datamodels;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
+@Entity(tableName = "games")
 public class Game {
-    private String id;
-    private Date date;
-    private String yourTeamId;
-    private String opponentTeamId;
-    private String location;
-    private int yourTeamScore;
-    private int opposingTeamScore;
-    private List<String> q1EventIds;
-    private List<String> q2EventIds;
-    private List<String> q3EventIds;
-    private List<String> q4EventIds;
-    private List<String> overtimeEventIds;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_")
+    private long id;
 
-    public String getId() {
+    @ColumnInfo(name = "date_")
+    private Calendar date;
+
+    @ColumnInfo(name = "your_team_id_")
+    private String yourTeamId;
+
+    @ColumnInfo(name = "opponent_team_id_")
+    private String opponentTeamId;
+
+    @ColumnInfo(name = "location_")
+    private String location;
+
+    @ColumnInfo(name = "your_team_score_")
+    private int yourTeamScore;
+
+    @ColumnInfo(name = "opposing_team_score_")
+    private int opposingTeamScore;
+
+    public long getId() {
         return id;
     }
 
-    public Date getDate() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
@@ -67,45 +85,5 @@ public class Game {
 
     public void setOpposingTeamScore(int opposingTeamScore) {
         this.opposingTeamScore = opposingTeamScore;
-    }
-
-    public List<String> getQ1EventIds() {
-        return q1EventIds;
-    }
-
-    public void setQ1EventIds(List<String> q1EventIds) {
-        this.q1EventIds = q1EventIds;
-    }
-
-    public List<String> getQ2EventIds() {
-        return q2EventIds;
-    }
-
-    public void setQ2EventIds(List<String> q2EventIds) {
-        this.q2EventIds = q2EventIds;
-    }
-
-    public List<String> getQ3EventIds() {
-        return q3EventIds;
-    }
-
-    public void setQ3EventIds(List<String> q3EventIds) {
-        this.q3EventIds = q3EventIds;
-    }
-
-    public List<String> getQ4EventIds() {
-        return q4EventIds;
-    }
-
-    public void setQ4EventIds(List<String> q4EventIds) {
-        this.q4EventIds = q4EventIds;
-    }
-
-    public List<String> getOvertimeEventIds() {
-        return overtimeEventIds;
-    }
-
-    public void setOvertimeEventIds(List<String> overtimeEventIds) {
-        this.overtimeEventIds = overtimeEventIds;
     }
 }
