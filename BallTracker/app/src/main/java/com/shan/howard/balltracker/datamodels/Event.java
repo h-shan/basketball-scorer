@@ -4,10 +4,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-enum EventType {
-    TWO_POINTERS, THREE_POINTERS, FREE_THROWS, FOULS
-}
-
 @Entity(tableName = "events")
 public class Event {
 
@@ -25,7 +21,7 @@ public class Event {
     private String teamId;
 
     @ColumnInfo(name = "event_type_")
-    private EventType eventType;
+    private String eventType;
 
     @ColumnInfo(name = "quarter_")
     private int quarter;
@@ -62,11 +58,11 @@ public class Event {
         this.teamId = teamId;
     }
 
-    public EventType getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 

@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity(tableName = "games")
@@ -13,7 +14,7 @@ public class Game {
     private long id;
 
     @ColumnInfo(name = "date_")
-    private Date date;
+    private Calendar date;
 
     @ColumnInfo(name = "your_team_id_")
     private String yourTeamId;
@@ -38,11 +39,11 @@ public class Game {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
