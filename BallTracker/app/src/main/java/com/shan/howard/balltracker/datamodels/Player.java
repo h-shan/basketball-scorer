@@ -1,17 +1,27 @@
 package com.shan.howard.balltracker.datamodels;
 
-public class Player {
-    private String id;
-    private String name;
-    private String teamId;
-    private int totalGames;
-    private int threePointers;
-    private int twoPointers;
-    private int freeThrows;
-    private int fouls;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-    public String getId() {
+@Entity(tableName = "players")
+public class Player {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_")
+    private long id;
+
+    @ColumnInfo(name = "name_")
+    private String name;
+
+    @ColumnInfo(name = "team_id_")
+    private String teamId;
+
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -28,45 +38,5 @@ public class Player {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
-    }
-
-    public int getTotalGames() {
-        return totalGames;
-    }
-
-    public void setTotalGames(int totalGames) {
-        this.totalGames = totalGames;
-    }
-
-    public int getThreePointers() {
-        return threePointers;
-    }
-
-    public void setThreePointers(int threePointers) {
-        this.threePointers = threePointers;
-    }
-
-    public int getTwoPointers() {
-        return twoPointers;
-    }
-
-    public void setTwoPointers(int twoPointers) {
-        this.twoPointers = twoPointers;
-    }
-
-    public int getFreeThrows() {
-        return freeThrows;
-    }
-
-    public void setFreeThrows(int freeThrows) {
-        this.freeThrows = freeThrows;
-    }
-
-    public int getFouls() {
-        return fouls;
-    }
-
-    public void setFouls(int fouls) {
-        this.fouls = fouls;
     }
 }

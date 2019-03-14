@@ -47,6 +47,7 @@ public class TeamRepository {
 
         @Override
         protected Void doInBackground(final Team... params) {
+
             mAsyncTaskDao.insert(params);
             return null;
         }
