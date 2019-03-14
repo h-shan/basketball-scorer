@@ -1,16 +1,31 @@
 package com.shan.howard.balltracker.datamodels;
 
-import java.util.List;
-import java.util.UUID;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Team {
-    private String id = UUID.randomUUID().toString();
+@Entity(tableName = "teams")
+public class Team implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_")
+    private long id;
+
+    @ColumnInfo(name = "name_")
     private String name = "New team";
-    private int color = 0xFF0000;
-    private String coachName = "";
-    private List<String> playerIds;
 
-    public String getId() {
+    @ColumnInfo(name = "color_")
+    private int color = 0xFF0000;
+
+    @ColumnInfo(name = "coach_")
+    private String coach = "";
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -30,19 +45,46 @@ public class Team {
         this.color = color;
     }
 
-    public String getCoachName() {
-        return coachName;
+    public String getCoach() {
+        return coach;
     }
 
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
+    public void setCoach(String coach) {
+        this.coach = coach;
     }
 
-    public List<String> getPlayerIds() {
-        return playerIds;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setPlayerIds(List<String> playerIds) {
-        this.playerIds = playerIds;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeInt(this.color);
+        dest.writeString(this.coach);
     }
+
+    public Team() {
+    }
+
+    protected Team(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.color = in.readInt();
+        this.coach = in.readString();
+    }
+
+    public static final Parcelable.Creator<Team> CREATOR = new Parcelable.Creator<Team>() {
+        @Override
+        public Team createFromParcel(Parcel source) {
+            return new Team(source);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+            return new Team[size];
+        }
+    };
 }

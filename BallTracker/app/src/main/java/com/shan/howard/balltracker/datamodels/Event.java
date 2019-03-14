@@ -1,16 +1,34 @@
 package com.shan.howard.balltracker.datamodels;
 
-public class Event {
-    public enum EventType {
-        TWO_POINTERS, THREE_POINTERS, FREE_THROWS, FOULS
-    }
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
+enum EventType {
+    TWO_POINTERS, THREE_POINTERS, FREE_THROWS, FOULS
+}
+
+@Entity(tableName = "events")
+public class Event {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_")
     private String id;
+
+    @ColumnInfo(name = "game_id_")
     private String gameId;
+
+    @ColumnInfo(name = "player_id_")
     private String playerId;
+
+    @ColumnInfo(name = "team_id_")
     private String teamId;
+
+    @ColumnInfo(name = "event_type_")
     private EventType eventType;
-    int quarterNumber;
+
+    @ColumnInfo(name = "quarter_")
+    int quarter;
 
     public String getId() {
         return id;
@@ -48,11 +66,11 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public int getQuarterNumber() {
-        return quarterNumber;
+    public int getQuarter() {
+        return quarter;
     }
 
-    public void setQuarterNumber(int quarterNumber) {
-        this.quarterNumber = quarterNumber;
+    public void setQuarter(int quarter) {
+        this.quarter = quarter;
     }
 }

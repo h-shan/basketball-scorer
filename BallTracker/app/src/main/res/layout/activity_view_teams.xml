@@ -26,13 +26,13 @@
         android:layout_alignParentTop="true"/>
 
     <ImageView
-        android:id="@+id/bt_addTeam"
+        android:id="@+id/view_teams_new_team_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/plus_icon"
         android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp"
+        android:src="@drawable/plus_icon" />
 
     <EditText
         android:id="@+id/et_search"
