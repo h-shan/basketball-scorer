@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements Button.OnClickListener {
                 break;
             case R.id.main_teams_btn:
                 Log.d(TAG, "Moving to View Teams Activity");
-                Intent myIntent1 = new Intent(this, EditTeamActivity.class);
+                Intent myIntent1 = new Intent(this, ViewTeamsActivity.class);
                 startActivity(myIntent1);
                 break;
             case R.id.main_review_games_btn:
