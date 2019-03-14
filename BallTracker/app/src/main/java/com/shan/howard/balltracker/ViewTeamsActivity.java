@@ -1,8 +1,6 @@
 package com.shan.howard.balltracker;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,12 +20,12 @@ public class ViewTeamsActivity extends Activity implements Button.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_teams);
-        mLv = findViewById(R.id.lv_teams);
+        mLv = findViewById(R.id.teamsLV);
         mLv.setAdapter(new MyListAdapter(ViewTeamsActivity.this));
 
         mBackButton = findViewById(R.id.view_teams_back_btn);
         mBackButton.setOnClickListener(this);
-        mEtsearch = findViewById(R.id.et_search);
+        mEtsearch = findViewById(R.id.searchET);
         mEtsearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
