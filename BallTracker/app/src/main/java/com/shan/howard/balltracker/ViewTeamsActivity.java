@@ -42,12 +42,12 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         setContentView(R.layout.activity_view_teams);
 
         mAdapter = new TeamListAdapter(ViewTeamsActivity.this);
-        mLv = findViewById(R.id.lv_teams);
+        mLv = findViewById(R.id.view_teams_teams_lv);
         mLv.setAdapter(mAdapter);
 
         mBackButton = findViewById(R.id.view_teams_back_btn);
         mBackButton.setOnClickListener(this);
-        mEtsearch = findViewById(R.id.et_search);
+        mEtsearch = findViewById(R.id.searchET);
         mEtsearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
