@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.shan.howard.balltracker.R;
+
 @Entity(tableName = "teams")
 public class Team implements Parcelable {
     @PrimaryKey(autoGenerate = true)
@@ -16,7 +18,7 @@ public class Team implements Parcelable {
     private String name = "New team";
 
     @ColumnInfo(name = "color_")
-    private int color = 0xFF0000;
+    private int color = R.color.colorSelector;
 
     @ColumnInfo(name = "coach_")
     private String coach = "";
