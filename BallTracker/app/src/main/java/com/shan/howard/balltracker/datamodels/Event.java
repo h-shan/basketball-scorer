@@ -13,7 +13,7 @@ public class Event {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_")
-    private String id;
+    private long id;
 
     @ColumnInfo(name = "game_id_")
     private String gameId;
@@ -28,10 +28,14 @@ public class Event {
     private EventType eventType;
 
     @ColumnInfo(name = "quarter_")
-    int quarter;
+    private int quarter;
 
-    public String getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getGameId() {
