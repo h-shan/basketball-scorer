@@ -18,7 +18,7 @@ public class Team implements Parcelable {
     private String name = "New team";
 
     @ColumnInfo(name = "color_")
-    private int color = R.color.colorSelector;
+    private int color = 0xFFFF0000;
 
     @ColumnInfo(name = "coach_")
     private String coach = "";

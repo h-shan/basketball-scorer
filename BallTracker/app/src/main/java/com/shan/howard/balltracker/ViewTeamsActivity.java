@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 Log.d("edittext", charSequence.toString());
+                mAdapter.getFilter().filter(charSequence.toString());
             }
 
             @Override
@@ -94,21 +96,24 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         }
     }
 
-    class TeamListAdapter extends BaseAdapter {
+    class TeamListAdapter extends BaseAdapter implements com.shan.howard.balltracker.TeamListAdapter {
         private LayoutInflater mLayoutInflater;
         private List<Team> mTeams = new ArrayList<>();
+        private List<Team> mDisplayedTeams;
 
         TeamListAdapter(Context context){
             mLayoutInflater = LayoutInflater.from(context);
+            mDisplayedTeams=mTeams;
         }
 
         public void setTeams(List<Team> aTeams) {
             this.mTeams = aTeams;
+            mDisplayedTeams = mTeams;
         }
 
         @Override
         public int getCount() {
-            return mTeams.size();
+            return mDisplayedTeams.size();
         }
 
         @Override
@@ -125,19 +130,52 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = mLayoutInflater.inflate(R.layout.view_teams_item, parent, false);
             TextView nameTV = convertView.findViewById(R.id.view_teams_name_tv);
-            Team myTeam = mTeams.get(position);
+            Team myTeam = mDisplayedTeams.get(position);
             nameTV.setText(myTeam.getName());
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+
                     Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class);
-                    myIntent.putExtra("team", mTeams.get(position));
+                    myIntent.putExtra("team", mDisplayedTeams.get(position));
                     startActivity(myIntent);
                 }
             });
             return convertView;
+        }
+
+        @Override
+        public Filter getFilter(){
+            Filter filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    FilterResults results = new FilterResults();
+                    ArrayList<Team> FilteredArrList = new ArrayList<Team>();
+                     if(charSequence == null || charSequence.length() == 0){
+                         results.count = mTeams.size();
+                         results.values = mTeams;
+                     } else {
+                         charSequence = charSequence.toString().toLowerCase();
+                         for(int i=0; i<mTeams.size(); i++){
+                             String data = mTeams.get(i).getName();
+                             if(data.toLowerCase().contains(charSequence)){
+                                 FilteredArrList.add(mTeams.get(i));
+                             }
+                         }
+                         results.count = FilteredArrList.size();
+                         results.values = FilteredArrList;
+                     }
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    mDisplayedTeams = (List<Team>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
+            return  filter;
         }
     }
 }

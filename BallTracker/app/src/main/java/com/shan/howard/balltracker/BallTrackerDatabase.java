@@ -17,7 +17,7 @@ import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Player;
 import com.shan.howard.balltracker.datamodels.Team;
 
-@Database(entities = {Team.class, Event.class, Player.class, Game.class}, version = 1)
+@Database(entities = {Team.class, Event.class, Player.class, Game.class}, version = 2)
 @TypeConverters({Converter.class})
 public abstract class BallTrackerDatabase extends RoomDatabase {
     public abstract TeamDao teamDao();
@@ -33,6 +33,7 @@ public abstract class BallTrackerDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             BallTrackerDatabase.class, "ball_tracker_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

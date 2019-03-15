@@ -3,6 +3,7 @@ package com.shan.howard.balltracker.datamodels;
 import android.arch.persistence.room.TypeConverter;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Converter {
     @TypeConverter
