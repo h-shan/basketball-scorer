@@ -18,10 +18,10 @@ public class TeamViewModel extends AndroidViewModel {
     public TeamViewModel (Application application) {
         super(application);
         mRepository = new TeamRepository(application);
-        mAllTeams = mRepository.getAllTeams();
+        mAllTeams = mRepository.selectAll();
     }
 
-    public LiveData<List<Team>> getAllTeams() { return mAllTeams; }
+    public LiveData<List<Team>> selectAll() { return mAllTeams; }
 
     public void insert(Team... aTeams) { mRepository.insert(aTeams); }
 

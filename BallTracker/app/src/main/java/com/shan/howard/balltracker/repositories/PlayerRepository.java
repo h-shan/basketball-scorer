@@ -21,7 +21,7 @@ public class PlayerRepository {
         mAllPlayers = mPlayerDao.selectAll();
     }
 
-    public LiveData<List<Player>> getAllPlayers() {
+    public LiveData<List<Player>> selectAll() {
         return mAllPlayers;
     }
 

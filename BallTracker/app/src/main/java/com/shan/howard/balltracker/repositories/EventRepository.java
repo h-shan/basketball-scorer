@@ -21,7 +21,7 @@ public class EventRepository {
         mAllEvents = mEventDao.selectAll();
     }
 
-    public LiveData<List<Event>> getAllEvents() {
+    public LiveData<List<Event>> selectAll() {
         return mAllEvents;
     }
 

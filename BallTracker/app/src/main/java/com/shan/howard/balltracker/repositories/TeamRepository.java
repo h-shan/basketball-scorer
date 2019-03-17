@@ -21,7 +21,7 @@ public class TeamRepository {
         mAllTeams = mTeamDao.selectAll();
     }
 
-    public LiveData<List<Team>> getAllTeams() {
+    public LiveData<List<Team>> selectAll() {
         return mAllTeams;
     }
 
