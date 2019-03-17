@@ -71,10 +71,9 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         mNewTeamButton.setOnClickListener(this);
 
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-        mTeamViewModel.getAllTeams().observe(this, new Observer<List<Team>>() {
+        mTeamViewModel.selectAll().observe(this, new Observer<List<Team>>() {
             @Override
             public void onChanged(@Nullable final List<Team> aTeams) {
-                Log.d(TAG, "New teams size: " + aTeams.size());
                 mAdapter.setTeams(aTeams);
                 mAdapter.notifyDataSetChanged();
             }
@@ -101,9 +100,9 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         private List<Team> mTeams = new ArrayList<>();
         private List<Team> mDisplayedTeams;
 
-        TeamListAdapter(Context context){
+        TeamListAdapter(Context context) {
             mLayoutInflater = LayoutInflater.from(context);
-            mDisplayedTeams=mTeams;
+            mDisplayedTeams = mTeams;
         }
 
         public void setTeams(List<Team> aTeams) {
@@ -146,26 +145,26 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         }
 
         @Override
-        public Filter getFilter(){
+        public Filter getFilter() {
             Filter filter = new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence charSequence) {
                     FilterResults results = new FilterResults();
                     ArrayList<Team> FilteredArrList = new ArrayList<Team>();
-                     if(charSequence == null || charSequence.length() == 0){
-                         results.count = mTeams.size();
-                         results.values = mTeams;
-                     } else {
-                         charSequence = charSequence.toString().toLowerCase();
-                         for(int i=0; i<mTeams.size(); i++){
-                             String data = mTeams.get(i).getName();
-                             if(data.toLowerCase().contains(charSequence)){
-                                 FilteredArrList.add(mTeams.get(i));
-                             }
-                         }
-                         results.count = FilteredArrList.size();
-                         results.values = FilteredArrList;
-                     }
+                    if (charSequence == null || charSequence.length() == 0) {
+                        results.count = mTeams.size();
+                        results.values = mTeams;
+                    } else {
+                        charSequence = charSequence.toString().toLowerCase();
+                        for (int i = 0; i < mTeams.size(); i++) {
+                            String data = mTeams.get(i).getName();
+                            if (data.toLowerCase().contains(charSequence)) {
+                                FilteredArrList.add(mTeams.get(i));
+                            }
+                        }
+                        results.count = FilteredArrList.size();
+                        results.values = FilteredArrList;
+                    }
                     return results;
                 }
 
@@ -175,7 +174,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
                     notifyDataSetChanged();
                 }
             };
-            return  filter;
+            return filter;
         }
     }
 }

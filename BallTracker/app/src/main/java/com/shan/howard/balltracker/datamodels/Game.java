@@ -5,7 +5,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Calendar;
-import java.util.Date;
 
 @Entity(tableName = "games")
 public class Game {
@@ -14,7 +13,7 @@ public class Game {
     private long id;
 
     @ColumnInfo(name = "date_")
-    private Calendar date;
+    private Calendar date = Calendar.getInstance();
 
     @ColumnInfo(name = "your_team_id_")
     private String yourTeamId;
@@ -22,8 +21,8 @@ public class Game {
     @ColumnInfo(name = "opponent_team_id_")
     private String opponentTeamId;
 
-    @ColumnInfo(name = "location_")
-    private String location;
+    @ColumnInfo(name = "notes_")
+    private String notes;
 
     @ColumnInfo(name = "your_team_score_")
     private int yourTeamScore;
@@ -63,12 +62,12 @@ public class Game {
         this.opponentTeamId = opponentTeamId;
     }
 
-    public String getLocation() {
-        return location;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public int getYourTeamScore() {

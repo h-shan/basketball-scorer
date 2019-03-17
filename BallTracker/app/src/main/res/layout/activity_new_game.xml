@@ -100,11 +100,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"/>
+            android:text="Notes"/>
+
         <EditText
-            android:id="@+id/new_game_location_edit_text"
+            android:id="@+id/new_game_notes_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:gravity="top|start"
+            android:singleLine="false" />
     </LinearLayout>
 </LinearLayout>
