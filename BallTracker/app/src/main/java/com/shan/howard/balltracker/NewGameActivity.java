@@ -14,11 +14,13 @@ import android.widget.Spinner;
 
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
+import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -27,10 +29,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner mYourTeamSpinner;
     private Spinner mOpposingTeamSpinner;
     private EditText mDateEditText;
+    private EditText mNotesEditText;
     private Button mBackButton;
     private Button mTrackButton;
     private TeamViewModel mTeamViewModel;
+    private GameViewModel mGameViewModel;
     private ArrayAdapter<String> mTeamsAdapter;
+
+    private List<Team> mTeams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +49,22 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         mDateEditText = findViewById(R.id.new_game_date_edit_text);
         mDateEditText.setOnClickListener(this);
+        mNotesEditText = findViewById(R.id.new_game_notes_edit_text);
         updateLabel();
 
-        mBackButton = findViewById(R.id.track_game_back_btn);
+        mBackButton = findViewById(R.id.new_game_back_btn);
         mBackButton.setOnClickListener(this);
         mTrackButton = findViewById(R.id.new_game_track_btn);
         mTrackButton.setOnClickListener(this);
 
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-        mTeamViewModel.selectAll().observe(this, aTeams -> {
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             if (aTeams != null) {
+                mTeams = aTeams;
                 mTeamsAdapter.clear();
                 mTeamsAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                mTeamsAdapter.notifyDataSetChanged();
             }
         });
 
@@ -65,10 +75,11 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.track_game_back_btn:
+            case R.id.new_game_back_btn:
                 finish();
                 break;
             case R.id.new_game_track_btn:
+                saveGame();
                 Intent myIntent = new Intent(this, TrackGameActivity.class);
                 startActivity(myIntent);
                 break;
@@ -92,5 +103,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat mySdf = new SimpleDateFormat(myFormat, Locale.US);
 
         mDateEditText.setText(mySdf.format(mGame.getDate().getTime()));
+    }
+
+    private void saveGame() {
+        Team myYourTeam = mTeams.get(mYourTeamSpinner.getSelectedItemPosition());
+        Team myOpposingTeam = mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
+        mGame.setOpposingTeamId(myOpposingTeam.getId());
+        mGame.setYourTeamId(myYourTeam.getId());
+        mGame.setNotes(mNotesEditText.getText().toString());
+        mGameViewModel.insert(mGame);
     }
 }

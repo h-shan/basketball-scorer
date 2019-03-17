@@ -16,10 +16,10 @@ public class Game {
     private Calendar date = Calendar.getInstance();
 
     @ColumnInfo(name = "your_team_id_")
-    private String yourTeamId;
+    private long yourTeamId;
 
-    @ColumnInfo(name = "opponent_team_id_")
-    private String opponentTeamId;
+    @ColumnInfo(name = "opposing_team_id_")
+    private long opposingTeamId;
 
     @ColumnInfo(name = "notes_")
     private String notes;
@@ -29,6 +29,9 @@ public class Game {
 
     @ColumnInfo(name = "opposing_team_score_")
     private int opposingTeamScore;
+
+    @ColumnInfo(name = "deleted_at_")
+    private Calendar deletedAt = null;
 
     public long getId() {
         return id;
@@ -46,20 +49,20 @@ public class Game {
         this.date = date;
     }
 
-    public String getYourTeamId() {
+    public long getYourTeamId() {
         return yourTeamId;
     }
 
-    public void setYourTeamId(String yourTeamId) {
+    public void setYourTeamId(long yourTeamId) {
         this.yourTeamId = yourTeamId;
     }
 
-    public String getOpponentTeamId() {
-        return opponentTeamId;
+    public long getOpposingTeamId() {
+        return opposingTeamId;
     }
 
-    public void setOpponentTeamId(String opponentTeamId) {
-        this.opponentTeamId = opponentTeamId;
+    public void setOpposingTeamId(long opposingTeamId) {
+        this.opposingTeamId = opposingTeamId;
     }
 
     public String getNotes() {
@@ -84,5 +87,13 @@ public class Game {
 
     public void setOpposingTeamScore(int opposingTeamScore) {
         this.opposingTeamScore = opposingTeamScore;
+    }
+
+    public Calendar getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Calendar deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

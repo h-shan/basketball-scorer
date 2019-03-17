@@ -18,10 +18,16 @@ public class PlayerViewModel extends AndroidViewModel {
     public PlayerViewModel (Application application) {
         super(application);
         mRepository = new PlayerRepository(application);
-        mAllPlayers = mRepository.selectAll();
+        mAllPlayers = mRepository.selectAllLive();
     }
 
-    public LiveData<List<Player>> selectAll() { return mAllPlayers; }
+    public LiveData<List<Player>> selectAllLive() {
+        return mAllPlayers;
+    }
+
+    public void selectById(long anId) {
+        mRepository.selectById(anId);
+    }
 
     public void insert(Player... aPlayers) { mRepository.insert(aPlayers); }
 

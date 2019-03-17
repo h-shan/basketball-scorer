@@ -22,7 +22,10 @@ public interface EventDao {
     public void update(Event... events);
 
     @Query("SELECT * from events")
-    LiveData<List<Event>> selectAll();
+    LiveData<List<Event>> selectAllLive();
+
+    @Query("SELECT * FROM events WHERE id_ == :anId")
+    Event selectById(long anId);
 
     @Delete
     public void delete(Event... events);

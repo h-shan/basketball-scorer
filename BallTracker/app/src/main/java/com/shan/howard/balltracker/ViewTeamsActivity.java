@@ -1,11 +1,9 @@
 package com.shan.howard.balltracker;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -71,12 +69,9 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         mNewTeamButton.setOnClickListener(this);
 
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-        mTeamViewModel.selectAll().observe(this, new Observer<List<Team>>() {
-            @Override
-            public void onChanged(@Nullable final List<Team> aTeams) {
-                mAdapter.setTeams(aTeams);
-                mAdapter.notifyDataSetChanged();
-            }
+        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
+            mAdapter.setTeams(aTeams);
+            mAdapter.notifyDataSetChanged();
         });
     }
 

@@ -18,10 +18,16 @@ public class GameViewModel extends AndroidViewModel {
     public GameViewModel (Application application) {
         super(application);
         mRepository = new GameRepository(application);
-        mAllGames = mRepository.selectAll();
+        mAllGames = mRepository.selectAllLive();
     }
 
-    public LiveData<List<Game>> selectAll() { return mAllGames; }
+    public LiveData<List<Game>> selectAllLive() {
+        return mAllGames;
+    }
+
+    public void selectById(long anId) {
+        mRepository.selectById(anId);
+    }
 
     public void insert(Game... aGames) { mRepository.insert(aGames); }
 

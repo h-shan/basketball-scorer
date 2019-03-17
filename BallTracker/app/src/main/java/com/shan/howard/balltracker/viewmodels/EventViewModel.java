@@ -18,10 +18,16 @@ public class EventViewModel extends AndroidViewModel {
     public EventViewModel (Application application) {
         super(application);
         mRepository = new EventRepository(application);
-        mAllEvents = mRepository.selectAll();
+        mAllEvents = mRepository.selectAllLive();
     }
 
-    public LiveData<List<Event>> selectAll() { return mAllEvents; }
+    public LiveData<List<Event>> selectAllLive() {
+        return mAllEvents;
+    }
+
+    public void selectById(long anId) {
+        mRepository.selectById(anId);
+    }
 
     public void insert(Event... aEvents) { mRepository.insert(aEvents); }
 

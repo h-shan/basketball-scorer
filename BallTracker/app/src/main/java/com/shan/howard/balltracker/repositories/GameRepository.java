@@ -8,7 +8,9 @@ import com.shan.howard.balltracker.BallTrackerDatabase;
 import com.shan.howard.balltracker.dao.GameDao;
 import com.shan.howard.balltracker.datamodels.Game;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameRepository {
 
@@ -18,11 +20,15 @@ public class GameRepository {
     public GameRepository(Application application) {
         BallTrackerDatabase db = BallTrackerDatabase.getDatabase(application);
         mGameDao = db.gameDao();
-        mAllGames = mGameDao.selectAll();
+        mAllGames = mGameDao.selectAllLive();
     }
 
-    public LiveData<List<Game>> selectAll() {
+    public LiveData<List<Game>> selectAllLive() {
         return mAllGames;
+    }
+
+    public Game selectById(long anId) {
+        return mGameDao.selectById(anId);
     }
 
     public void insert(Game... aGames) {
@@ -78,7 +84,7 @@ public class GameRepository {
 
         @Override
         protected Void doInBackground(final Game... params) {
-            mAsyncTaskDao.delete(params);
+            mAsyncTaskDao.delete(Arrays.stream(params).map(Game::getId).collect(Collectors.toList()));
             return null;
         }
     }
