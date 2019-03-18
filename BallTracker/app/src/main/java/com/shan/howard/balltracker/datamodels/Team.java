@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.shan.howard.balltracker.R;
+import java.util.Calendar;
 
 @Entity(tableName = "teams")
 public class Team implements Parcelable {
@@ -18,10 +18,13 @@ public class Team implements Parcelable {
     private String name = "New team";
 
     @ColumnInfo(name = "color_")
-    private int color = R.color.colorSelector;
+    private int color = 0xFFFF0000;
 
     @ColumnInfo(name = "coach_")
     private String coach = "";
+
+    @ColumnInfo(name = "deleted_at_")
+    private Calendar deletedAt = null;
 
     public void setId(long id) {
         this.id = id;
@@ -66,6 +69,14 @@ public class Team implements Parcelable {
         dest.writeString(this.name);
         dest.writeInt(this.color);
         dest.writeString(this.coach);
+    }
+
+    public Calendar getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Calendar deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public Team() {

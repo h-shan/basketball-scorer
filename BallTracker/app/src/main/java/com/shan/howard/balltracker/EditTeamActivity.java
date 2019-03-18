@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -47,18 +50,36 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
         mDeleteButton = findViewById(R.id.edit_team_delete_btn);
         mNameET.setText(mTeam.getName());
         mCoachET.setText(mTeam.getCoach());
-        mNameET.setOnKeyListener(new View.OnKeyListener() {
+        mNameET.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                mTeam.setName(mNameET.getText().toString());
-                return true;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mTeam.setName(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
-        mCoachET.setOnKeyListener(new View.OnKeyListener() {
+        mCoachET.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                mTeam.setCoach(mCoachET.getText().toString());
-                return true;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mTeam.setCoach(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
         mDeleteButton.setOnClickListener(this);
@@ -100,6 +121,7 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
                 currentColor = color;
                 GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
                 bg.setColor(color);
+                Log.d("edit team", String.format("Color: %x", color));
                 mTeam.setColor(color);
             }
         });

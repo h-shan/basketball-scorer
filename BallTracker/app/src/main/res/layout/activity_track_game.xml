@@ -8,7 +8,7 @@
     tools:context="com.shan.howard.balltracker.TrackGameActivity">
 
     <Button
-        android:id="@+id/track_game_back_btn"
+        android:id="@+id/new_game_back_btn"
         android:layout_width="50dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -28,7 +28,7 @@
         android:background="@drawable/right_pointed_button"
         android:text="@string/finish"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/track_game_back_btn" />
+        app:layout_constraintTop_toTopOf="@+id/new_game_back_btn" />
 
     <Spinner
         android:id="@+id/track_game_quarter_spinner"
@@ -38,7 +38,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/track_game_back_btn" />
+        app:layout_constraintTop_toTopOf="@+id/new_game_back_btn" />
 
     <TextView
         android:id="@+id/track_game_your_team_name_tv"
@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:text="Clippers"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/track_game_back_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/new_game_back_btn" />
 
     <TextView
         android:id="@+id/track_game_your_team_score_tv"

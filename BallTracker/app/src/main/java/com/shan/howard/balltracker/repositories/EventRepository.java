@@ -18,11 +18,15 @@ public class EventRepository {
     public EventRepository(Application application) {
         BallTrackerDatabase db = BallTrackerDatabase.getDatabase(application);
         mEventDao = db.eventDao();
-        mAllEvents = mEventDao.selectAll();
+        mAllEvents = mEventDao.selectAllLive();
     }
 
-    public LiveData<List<Event>> getAllEvents() {
+    public LiveData<List<Event>> selectAllLive() {
         return mAllEvents;
+    }
+
+    public Event selectById(long anId) {
+        return mEventDao.selectById(anId);
     }
 
     public void insert(Event... aEvents) {

@@ -2,7 +2,6 @@ package com.shan.howard.balltracker.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -14,16 +13,18 @@ import java.util.List;
 
 @Dao
 public interface GameDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Game... Game);
+    void insert(Game... aGame);
 
     @Update
     public void update(Game... games);
 
-    @Query("SELECT * from games")
-    LiveData<List<Game>> selectAll();
+    @Query("SELECT * FROM games WHERE deleted_at_ == NULL")
+    LiveData<List<Game>> selectAllLive();
 
-    @Delete
-    public void delete(Game... games);
+    @Query("SELECT * FROM games WHERE id_ == :anId")
+    Game selectById(long anId);
+
+    @Query("UPDATE games SET deleted_at_ = strftime('%s', 'now') WHERE id_ IN(:gameIds)")
+    public void delete(List<Long> gameIds);
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +15,7 @@
         android:weightSum="3">
 
         <Button
-            android:id="@+id/track_game_back_btn"
+            android:id="@+id/new_game_back_btn"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_margin="0dp"
@@ -46,7 +45,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:paddingStart="12dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:paddingStart="12dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +79,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:paddingStart="12dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,22 +91,31 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:clickable="true"
-            android:focusable="false"/>
+            android:focusable="false"
+            android:hint="@string/date"
+            tools:ignore="Autofill,KeyboardInaccessibleWidget,TextFields" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:paddingStart="12dp">
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"/>
+            android:text="@string/notes"/>
+
         <EditText
-            android:id="@+id/new_game_location_edit_text"
+            android:id="@+id/new_game_notes_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:gravity="top|start"
+            android:singleLine="false"
+            android:hint="@string/notes"
+            tools:ignore="Autofill" />
     </LinearLayout>
 </LinearLayout>

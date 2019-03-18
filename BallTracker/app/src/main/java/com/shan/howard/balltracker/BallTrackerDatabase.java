@@ -3,7 +3,6 @@ package com.shan.howard.balltracker;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
@@ -17,7 +16,7 @@ import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Player;
 import com.shan.howard.balltracker.datamodels.Team;
 
-@Database(entities = {Team.class, Event.class, Player.class, Game.class}, version = 1)
+@Database(entities = {Team.class, Event.class, Player.class, Game.class}, version = 4, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class BallTrackerDatabase extends RoomDatabase {
     public abstract TeamDao teamDao();
@@ -33,6 +32,7 @@ public abstract class BallTrackerDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             BallTrackerDatabase.class, "ball_tracker_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
+
 @Entity(tableName = "players")
 public class Player {
     @PrimaryKey(autoGenerate = true)
@@ -14,7 +16,10 @@ public class Player {
     private String name;
 
     @ColumnInfo(name = "team_id_")
-    private String teamId;
+    private long teamId;
+
+    @ColumnInfo(name = "deleted_at_")
+    private Calendar deletedAt = null;
 
     public long getId() {
         return id;
@@ -32,11 +37,19 @@ public class Player {
         this.name = name;
     }
 
-    public String getTeamId() {
+    public long getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
+    public void setTeamId(long teamId) {
         this.teamId = teamId;
+    }
+
+    public Calendar getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Calendar deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }
