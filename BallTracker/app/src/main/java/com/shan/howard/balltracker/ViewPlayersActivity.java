@@ -16,7 +16,7 @@ public class ViewPlayersActivity extends Activity implements Button.OnClickListe
     private Button backButton;
     private ImageView newPlayerButton;
     private EditText search;
-//    private ViewTeamsActivity.TeamListAdapter mAdapter;
+    private PlayerListAdapter mAdapter;
 //
 //    private TeamViewModel mTeamViewModel;
     @Override
@@ -24,6 +24,7 @@ public class ViewPlayersActivity extends Activity implements Button.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_players);
         listV = findViewById(R.id.view_players_list_view);
+        listV.setAdapter();
     }
 
     @Override
