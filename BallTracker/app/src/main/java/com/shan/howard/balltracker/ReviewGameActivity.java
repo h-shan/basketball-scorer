@@ -59,7 +59,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                mAdapter.getFilter().filter(charSequence.toString());
             }
 
             @Override
@@ -130,6 +130,41 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             });
 
             return convertView;
+        }
+
+        Filter getFilter(){
+            return new Filter(){
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence){
+                    FilterResults results = new FilterResults();
+                    ArrayList<Game> FilteredGameList = new ArrayList<>();
+
+                    if(charSequence==null || charSequence.length()==0){
+                        results.count = mGames.size();
+                        results.values = mGames;
+                    }
+                    else{
+                        charSequence = charSequence.toString().toLowerCase();
+
+                        for(int i = 0; i < mGames.size(); i++){
+                            String data = Long.toString(mGames.get(i).getId());
+                            if(data.toLowerCase().contains(charSequence)){
+                                FilteredGameList.add(mGames.get(i));
+                            }
+                        }
+
+                        results.count = FilteredGameList.size();
+                        results.values = FilteredGameList;
+                    }
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults){
+                    mDisplayedGames = (List<Game>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
     }
 }
