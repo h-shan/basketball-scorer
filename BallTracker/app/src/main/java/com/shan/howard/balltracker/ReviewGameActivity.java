@@ -1,19 +1,27 @@
 package com.shan.howard.balltracker;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.viewmodels.GameViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -22,26 +30,50 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
     Button mainMenu_btn;
     EditText search_et;
-    ListView teams_lv;
+    ListView games_lv;
+
     GameViewModel mGameViewModel;
+    GameListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_game);
 
+        // Games List View and Adapter
+        mAdapter = new GameListAdapter(ReviewGameActivity.this);
+        games_lv = findViewById(R.id.viewGamesLv);
+        games_lv.setAdapter(mAdapter);
+
+        // Main Menu Button
         mainMenu_btn = findViewById(R.id.mainMenuBtn);
         mainMenu_btn.setOnClickListener(this);
-        search_et = findViewById(R.id.searchET);
-        teams_lv = findViewById(R.id.view_teams_teams_lv);
 
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
-        mGameViewModel.selectAllLive().observe(this, new Observer<List<Game>>() {
+        // Search Game Edit Text
+        search_et = findViewById(R.id.searchET);
+        search_et.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onChanged(@Nullable final List<Game> aGames) {
-                Log.d(TAG, "New games size: " + aGames.size());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        // Game View Model
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        mGameViewModel.selectAllLive().observe(this, aGames -> {
+            mAdapter.setGames(aGames);
+            mAdapter.notifyDataSetChanged();
         });
     }
 
@@ -55,4 +87,49 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    class GameListAdapter extends BaseAdapter {
+        private LayoutInflater mLayoutInflater;
+        private List<Game> mGames = new ArrayList<>();
+        private List<Game> mDisplayedGames;
+
+        GameListAdapter(Context context){
+            mLayoutInflater = LayoutInflater.from(context);
+            mDisplayedGames = mGames;
+        }
+
+        public void setGames(List<Game> aGames){
+            this.mGames = aGames;
+            mDisplayedGames = mGames;
+        }
+
+        @Override
+        public int getCount(){return mDisplayedGames.size();}
+
+        @Override
+        public Object getItem(int i){return mGames.get(i);}
+
+        @Override
+        public long getItemId(int i){return i;}
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent){
+
+            // User inputs game ID
+            convertView = mLayoutInflater.inflate(R.layout.view_games_item, parent, false);
+            TextView idTV = convertView.findViewById(R.id.id_tv);
+            Game myGame = mDisplayedGames.get(position);
+            idTV.setText(Long.toString(myGame.getId()));
+
+            convertView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Intent myIntent = new Intent(ReviewGameActivity.this, ReviewSpecificGameActivity.class);
+                    myIntent.putExtra("gameID", mDisplayedGames.get(position).getId());
+                    startActivity(myIntent);
+                }
+            });
+
+            return convertView;
+        }
+    }
 }
