@@ -90,7 +90,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         }
     }
 
-    class TeamListAdapter extends BaseAdapter implements com.shan.howard.balltracker.TeamListAdapter {
+    class TeamListAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
         private List<Team> mTeams = new ArrayList<>();
         private List<Team> mDisplayedTeams;
@@ -139,9 +139,8 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             return convertView;
         }
 
-        @Override
-        public Filter getFilter() {
-            Filter filter = new Filter() {
+        Filter getFilter() {
+            return new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence charSequence) {
                     FilterResults results = new FilterResults();
@@ -169,7 +168,6 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
                     notifyDataSetChanged();
                 }
             };
-            return filter;
         }
     }
 }
