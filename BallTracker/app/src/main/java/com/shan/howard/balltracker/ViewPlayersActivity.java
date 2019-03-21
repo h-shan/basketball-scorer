@@ -1,6 +1,5 @@
 package com.shan.howard.balltracker;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -129,7 +128,6 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
             nameTV.setText(myPlayer.getName());
 
             view.setOnClickListener(v -> {
-
 //                    Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
 //                    myIntent.putExtra("team", mDisplayedPlayers.get(i));
 //                    startActivity(myIntent);
