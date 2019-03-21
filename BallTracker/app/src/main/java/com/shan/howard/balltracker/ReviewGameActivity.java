@@ -113,6 +113,8 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         @Override
         public View getView(final int position, View convertView, ViewGroup parent){
 
+            // TODO Set text and get game
+
             // User inputs game ID
             convertView = mLayoutInflater.inflate(R.layout.view_games_item, parent, false);
             TextView idTV = convertView.findViewById(R.id.id_tv);

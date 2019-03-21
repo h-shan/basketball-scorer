@@ -24,7 +24,7 @@ public class ViewPlayersActivity extends Activity implements Button.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_players);
         listV = findViewById(R.id.view_players_list_view);
-        listV.setAdapter();
+        //listV.setAdapter();
     }
 
     @Override
