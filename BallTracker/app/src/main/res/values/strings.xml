@@ -24,5 +24,6 @@
     <string name="track_game">Track Game</string>
     <string name="finish">Finish</string>
     <string name="notes">Notes</string>
+    <string name="players">Players</string>
     <string name="id">id</string>
 </resources>
