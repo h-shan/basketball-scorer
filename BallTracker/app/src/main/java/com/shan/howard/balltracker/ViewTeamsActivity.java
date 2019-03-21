@@ -130,7 +130,6 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class);
                     myIntent.putExtra("team", mDisplayedTeams.get(position));
                     startActivity(myIntent);
