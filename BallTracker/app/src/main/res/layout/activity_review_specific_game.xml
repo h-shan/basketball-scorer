@@ -649,7 +649,7 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2_freeThrowt"
+                android:id="@+id/team2_freeThrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"

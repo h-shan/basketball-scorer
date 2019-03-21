@@ -68,7 +68,6 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-
         // Game View Model
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
         mGameViewModel.selectAllLive().observe(this, aGames -> {
@@ -114,11 +113,22 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         @Override
         public View getView(final int position, View convertView, ViewGroup parent){
 
+            // TODO Set text and get game
+
             // User inputs game ID
             convertView = mLayoutInflater.inflate(R.layout.view_games_item, parent, false);
             TextView idTV = convertView.findViewById(R.id.id_tv);
+            TextView dateTV = convertView.findViewById(R.id.date_tv);
+            TextView teamsTV = convertView.findViewById(R.id.teams_tv);
+
             Game myGame = mDisplayedGames.get(position);
             idTV.setText(Long.toString(myGame.getId()));
+            dateTV.setText(myGame.getDate().toString());
+
+            String yourTeam = Long.toString(myGame.getYourTeamId());
+            String opposingTeam = Long.toString(myGame.getOpposingTeamId());
+            String vs = yourTeam + " vs " + opposingTeam;
+            teamsTV.setText(vs);
 
             convertView.setOnClickListener(new View.OnClickListener(){
                 @Override
