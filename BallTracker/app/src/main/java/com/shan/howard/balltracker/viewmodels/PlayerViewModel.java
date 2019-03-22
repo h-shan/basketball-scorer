@@ -25,8 +25,8 @@ public class PlayerViewModel extends AndroidViewModel {
         return mAllPlayers;
     }
 
-    public void selectById(long anId) {
-        mRepository.selectById(anId);
+    public Player selectById(long anId) {
+        return mRepository.selectById(anId);
     }
 
     public void insert(Player... aPlayers) { mRepository.insert(aPlayers); }

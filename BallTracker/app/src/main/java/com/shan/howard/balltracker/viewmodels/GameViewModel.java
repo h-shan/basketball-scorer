@@ -25,8 +25,8 @@ public class GameViewModel extends AndroidViewModel {
         return mAllGames;
     }
 
-    public void selectById(long anId) {
-        mRepository.selectById(anId);
+    public Game selectById(long anId) {
+        return mRepository.selectById(anId);
     }
 
     public void insert(Game... aGames) { mRepository.insert(aGames); }

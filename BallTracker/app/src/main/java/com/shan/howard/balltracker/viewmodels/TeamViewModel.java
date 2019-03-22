@@ -25,8 +25,8 @@ public class TeamViewModel extends AndroidViewModel {
         return mAllTeams;
     }
 
-    public void selectById(long anId) {
-        mRepository.selectById(anId);
+    public Team selectById(long anId) {
+        return mRepository.selectById(anId);
     }
 
     public void insert(Team... aTeams) { mRepository.insert(aTeams); }

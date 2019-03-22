@@ -25,8 +25,8 @@ public class EventViewModel extends AndroidViewModel {
         return mAllEvents;
     }
 
-    public void selectById(long anId) {
-        mRepository.selectById(anId);
+    public Event selectById(long anId) {
+        return mRepository.selectById(anId);
     }
 
     public void insert(Event... aEvents) { mRepository.insert(aEvents); }
