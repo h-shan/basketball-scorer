@@ -23,6 +23,7 @@ import com.shan.howard.balltracker.datamodels.Player;
 import com.shan.howard.balltracker.viewmodels.PlayerViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ViewPlayersActivity extends AppCompatActivity implements Button.OnClickListener{
@@ -68,10 +69,12 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
         mNewPlayerButton = findViewById(R.id.view_players_new_player_btn);
         mNewPlayerButton.setOnClickListener(this);
 
+        mAdapter.setPlayers(Collections.singletonList(new Player()));
+
         mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
         mPlayerViewModel.selectAllLive().observe(this, aPlayers -> {
             Log.d(TAG, Integer.toString(aPlayers.size()));
-            mAdapter.setPlayers(aPlayers);
+            // mAdapter.setPlayers(aPlayers);
             mAdapter.notifyDataSetChanged();
         });
     }
@@ -93,27 +96,22 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
 
     public class PlayerListAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
-        private List<Player> mPlayers = new ArrayList<Player>();
+        private List<Player> mPlayers = new ArrayList<>();
         private List<Player> mDisplayedPlayers;
 
         PlayerListAdapter(Context context){
             mLayoutInflater = LayoutInflater.from(context);
-//            mPlayers.add(new Player());
             mDisplayedPlayers = mPlayers;
-//            Log.d(TAG, Integer.toString(mPlayers.size()));
         }
 
         public void setPlayers(List<Player> newPlayers){
             mPlayers = newPlayers;
-            mDisplayedPlayers = mPlayers;
-//            Log.d(TAG, "131231215");
-//            Log.d(TAG, Integer.toString(mPlayers.size()));
-
+            mDisplayedPlayers = newPlayers;
         }
 
         @Override
         public int getCount() {
-            return mDisplayedPlayers.size();
+            return mDisplayedPlayers == null ? mDisplayedPlayers.size() : 0;
         }
 
         @Override
@@ -130,16 +128,13 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = mLayoutInflater.inflate(R.layout.view_players_item, parent, false);
             TextView nameTV = convertView.findViewById(R.id.view_players_name_tv);
-            Player myPlayer = mDisplayedPlayers.get(position);
+            final Player myPlayer = mDisplayedPlayers.get(position);
             nameTV.setText(myPlayer.getName());
             Log.d(TAG, "sfgesgsgsjglsfghsh");
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
-                    myIntent.putExtra("player", mDisplayedPlayers.get(position));
-                    startActivity(myIntent);
-                }
+            convertView.setOnClickListener(v -> {
+                Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
+                myIntent.putExtra("player", myPlayer);
+                startActivity(myIntent);
             });
             return convertView;
         }

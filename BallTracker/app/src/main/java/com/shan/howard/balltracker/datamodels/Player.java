@@ -23,7 +23,6 @@ public class Player implements Parcelable {
     @ColumnInfo(name = "deleted_at_")
     private Calendar deletedAt = null;
 
-
     public long getId() {
         return id;
     }
@@ -47,7 +46,6 @@ public class Player implements Parcelable {
     public void setTeamId(long teamId) {
         this.teamId = teamId;
     }
-
 
     @Override
     public int describeContents() {
