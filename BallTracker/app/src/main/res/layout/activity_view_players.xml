@@ -37,7 +37,7 @@
         android:src="@drawable/plus_icon" />
 
     <EditText
-        android:id="@+id/searchEditText"
+        android:id="@+id/searchET"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Search"
@@ -46,10 +46,10 @@
         android:padding="10dp"/>
 
     <ListView
-        android:id="@+id/view_players_list_view"
+        android:id="@+id/view_players_players_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchEditText"
+        android:layout_below="@+id/searchET"
         android:dividerHeight="5dp"
         android:layout_marginTop="5dp"/>
 

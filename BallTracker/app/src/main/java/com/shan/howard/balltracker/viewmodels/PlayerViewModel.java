@@ -38,4 +38,5 @@ public class PlayerViewModel extends AndroidViewModel {
     public void delete(Player... aPlayers) {
         mRepository.delete(aPlayers);
     }
+
 }

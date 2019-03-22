@@ -1,6 +1,5 @@
 package com.shan.howard.balltracker;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -28,36 +27,27 @@ import java.util.List;
 
 public class ViewPlayersActivity extends AppCompatActivity implements Button.OnClickListener{
     private static final String TAG = MainActivity.class.getName();
-    private ListView listV;
-    private Button backButton;
-    private ImageView newPlayerButton;
-    private EditText search;
+    private ListView mLv;
+    private Button mBackButton;
+    private ImageView mNewPlayerButton;
+    private EditText mETsearch;
     private PlayerListAdapter mAdapter;
 
     private PlayerViewModel mPlayerViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_players);
 
         mAdapter = new PlayerListAdapter(ViewPlayersActivity.this);
-        listV = findViewById(R.id.view_players_list_view);
-        listV.setAdapter(mAdapter);
+        mLv = findViewById(R.id.view_players_players_view);
+        mLv.setAdapter(mAdapter);
 
-        backButton = findViewById(R.id.view_players_back_btn);
-        backButton.setOnClickListener(this);
-
-        newPlayerButton = findViewById(R.id.view_players_new_player_btn);
-        newPlayerButton.setOnClickListener(this);
-
-        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
-        mPlayerViewModel.selectAllLive().observe(this, Players -> {
-            mAdapter.setPlayers(Players);
-            mAdapter.notifyDataSetChanged();
-        });
-
-        search = findViewById(R.id.searchEditText);
-        search.addTextChangedListener(new TextWatcher() {
+        mBackButton = findViewById(R.id.view_players_back_btn);
+        mBackButton.setOnClickListener(this);
+        mETsearch = findViewById(R.id.searchET);
+        mETsearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -73,6 +63,16 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
             public void afterTextChanged(Editable editable) {
 
             }
+        });
+
+        mNewPlayerButton = findViewById(R.id.view_players_new_player_btn);
+        mNewPlayerButton.setOnClickListener(this);
+
+        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+        mPlayerViewModel.selectAllLive().observe(this, aPlayers -> {
+            Log.d(TAG, Integer.toString(aPlayers.size()));
+            mAdapter.setPlayers(aPlayers);
+            mAdapter.notifyDataSetChanged();
         });
     }
 
@@ -90,19 +90,25 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
                 break;
         }
     }
-    class PlayerListAdapter extends BaseAdapter {
+
+    public class PlayerListAdapter extends BaseAdapter {
         private LayoutInflater mLayoutInflater;
-        private List<Player> mPlayers = new ArrayList<>();
+        private List<Player> mPlayers = new ArrayList<Player>();
         private List<Player> mDisplayedPlayers;
 
         PlayerListAdapter(Context context){
-            mLayoutInflater =LayoutInflater.from(context);
+            mLayoutInflater = LayoutInflater.from(context);
+//            mPlayers.add(new Player());
             mDisplayedPlayers = mPlayers;
+//            Log.d(TAG, Integer.toString(mPlayers.size()));
         }
 
         public void setPlayers(List<Player> newPlayers){
-            this.mPlayers = newPlayers;
+            mPlayers = newPlayers;
             mDisplayedPlayers = mPlayers;
+//            Log.d(TAG, "131231215");
+//            Log.d(TAG, Integer.toString(mPlayers.size()));
+
         }
 
         @Override
@@ -121,29 +127,51 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = mLayoutInflater.inflate(R.layout.view_teams_item, viewGroup, false);
-            TextView nameTV = view.findViewById(R.id.view_teams_name_tv);
-            Player myPlayer = mDisplayedPlayers.get(i);
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            convertView = mLayoutInflater.inflate(R.layout.view_players_item, parent, false);
+            TextView nameTV = convertView.findViewById(R.id.view_players_name_tv);
+            Player myPlayer = mDisplayedPlayers.get(position);
             nameTV.setText(myPlayer.getName());
-
-            view.setOnClickListener(v -> {
-//                    Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
-//                    myIntent.putExtra("team", mDisplayedPlayers.get(i));
-//                    startActivity(myIntent);
+            Log.d(TAG, "sfgesgsgsjglsfghsh");
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
+                    myIntent.putExtra("player", mDisplayedPlayers.get(position));
+                    startActivity(myIntent);
+                }
             });
-            return view;
+            return convertView;
         }
+
         Filter getFilter(){
             return new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence charSequence) {
-                    return null;
+                    FilterResults results = new FilterResults();
+                    ArrayList<Player> FilteredArrList = new ArrayList<Player>();
+                    if (charSequence == null || charSequence.length() == 0) {
+                        results.count = mPlayers.size();
+                        results.values = mPlayers;
+                    } else {
+                        charSequence = charSequence.toString().toLowerCase();
+                        for (int i = 0; i < mPlayers.size(); i++) {
+                            String data = mPlayers.get(i).getName();
+                            if (data.toLowerCase().contains(charSequence)) {
+                                FilteredArrList.add(mPlayers.get(i));
+                            }
+                        }
+                        results.count = FilteredArrList.size();
+                        results.values = FilteredArrList;
+                    }
+                    return results;
                 }
 
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
+                    mDisplayedPlayers = (List<Player>) filterResults.values;
+                    Log.d(TAG, "hello");
+                    notifyDataSetChanged();
                 }
             };
         }
