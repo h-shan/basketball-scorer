@@ -8,167 +8,230 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
-import com.shan.howard.balltracker.viewmodels.GameViewModel;
+import com.shan.howard.balltracker.viewmodels.EventViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button trackGameBtn;
-    Button reviewGameBtn;
-    Button trashBtn;
-    Button team1Btn;
-    Button team2Btn;
-    TextView scoreTV;
-    TextView dateTV;
+    // Top Arrow Buttons
+    private Button reviewGameBtn;
+    private Button editGameBtn;
 
-    TextView team1TV;
-    TextView team1QT1TV;
-    TextView team1QT2TV;
-    TextView team1QT3TV;
-    TextView team1QT4TV;
-    TextView team1OT1TV;
-    TextView team1OT2TV;
-    TextView team1TotalTV;
+    // Game Summary
+    private Button yourTeamBtn;
+    private Button opposingTeamBtn;
+    private TextView scoreTv;
+    private TextView dateTv;
 
-    TextView team2TV;
-    TextView team2QT1TV;
-    TextView team2QT2TV;
-    TextView team2QT3TV;
-    TextView team2QT4TV;
-    TextView team2OT1TV;
-    TextView team2OT2TV;
-    TextView team2TotalTV;
+    // Quarter and Overtime Summary
+    private TextView yourTeamTv;
+    private TextView yourTeamQt1Tv;
+    private TextView yourTeamQt2Tv;
+    private TextView yourTeamQt3Tv;
+    private TextView yourTeamQt4Tv;
+    private TextView yourTeamOt1Tv;
+    private TextView yourTeamOt2Tv;
+    private TextView yourTeamTotalScoreTv;
 
-    TextView team13PtTV;
-    TextView team12PtTV;
-    TextView team1FreeThrowTV;
-    TextView team1FoulTV;
+    private TextView opposingTeamTv;
+    private TextView opposingTeamQt1Tv;
+    private TextView opposingTeamQt2Tv;
+    private TextView opposingTeamQt3Tv;
+    private TextView opposingTeamQt4Tv;
+    private TextView opposingTeamOt1Tv;
+    private TextView opposingTeamOt2Tv;
+    private TextView opposingTeamTotalScoreTv;
 
-    TextView team23PtTV;
-    TextView team22PtTV;
-    TextView team2FreeThrowTV;
-    TextView team2FoulTV;
+    // Game Details
+    private TextView yourTeamThreePointersTv;
+    private TextView yourTeamTwoPointersTv;
+    private TextView yourTeamFreeThrowsTv;
+    private TextView yourTeamFoulsTv;
 
-    Game currentGame;
-    GameViewModel mGameViewModel;
+    private TextView opposingTeamThreePointersTv;
+    private TextView opposingTeamTwoPointersTv;
+    private TextView opposingTeamFreeThrowsTv;
+    private TextView opposingTeamFoulsTv;
 
-    Team yourTeam;
-    Team opposingTeam;
-    TeamViewModel mTeamViewModel;
+    // Local Variables
+    private Game curGame;
+    private Team yourTeam;
+    private Team opposingTeam;
+
+    private TeamViewModel mTeamViewModel;
+
+    enum Points {
+        THREE_POINTER, TWO_POINTER, FREE_THROW, FOUL;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_specific_game);
 
-        // Pass extras through intent
-        Intent myIntent = getIntent();
-        Long gameID = myIntent.getLongExtra("gameID", -1);
+        // Get Arrow Button
+        reviewGameBtn = findViewById(R.id.review_game_btn);
+        editGameBtn = findViewById(R.id.edit_game_btn);
 
-        // Get Widgets by id
-        trackGameBtn = findViewById(R.id.trackGame_btn);
-        reviewGameBtn = findViewById(R.id.reviewGame_btn);
-        trashBtn = findViewById(R.id.trash_btn);
-        team1Btn = findViewById(R.id.team1_btn);
-        team2Btn = findViewById(R.id.team2_btn);
-        scoreTV = findViewById(R.id.score_tv);
-        dateTV = findViewById(R.id.date_tv);
-        
-        team1TV = findViewById(R.id.team1_tv);
-        team1QT1TV = findViewById(R.id.team1QT1_tv);
-        team1QT2TV = findViewById(R.id.team1QT2_tv);
-        team1QT3TV = findViewById(R.id.team1QT3_tv);
-        team1QT4TV = findViewById(R.id.team1QT4_tv);
-        team1OT1TV = findViewById(R.id.team1OT1_tv);
-        team1OT2TV = findViewById(R.id.team1OT2_tv);
-        team1TotalTV = findViewById(R.id.team1Total_tv);
+        // Get Game Summary
+        yourTeamBtn = findViewById(R.id.your_team_btn);
+        opposingTeamBtn = findViewById(R.id.opposing_team_btn);
+        scoreTv = findViewById(R.id.score_tv);
+        dateTv = findViewById(R.id.date_tv);
 
-        team2TV = findViewById(R.id.team2_tv);
-        team2QT1TV = findViewById(R.id.team2QT1_tv);
-        team2QT2TV = findViewById(R.id.team2QT2_tv);
-        team2QT3TV = findViewById(R.id.team2QT3_tv);
-        team2QT4TV = findViewById(R.id.team2QT4_tv);
-        team2OT1TV = findViewById(R.id.team2OT1_tv);
-        team2OT2TV = findViewById(R.id.team2OT2_tv);
-        team2TotalTV = findViewById(R.id.team2Total_tv);
+        // Get Quarter and Overtime Summary
+        yourTeamTv = findViewById(R.id.your_team_tv);
+        yourTeamQt1Tv = findViewById(R.id.your_team_qt1_tv);
+        yourTeamQt2Tv = findViewById(R.id.your_team_qt2_tv);
+        yourTeamQt3Tv = findViewById(R.id.your_team_qt3_tv);
+        yourTeamQt4Tv = findViewById(R.id.your_team_qt4_tv);
+        yourTeamOt1Tv = findViewById(R.id.your_team_ot1_tv);
+        yourTeamOt2Tv = findViewById(R.id.your_team_ot2_tv);
+        yourTeamTotalScoreTv = findViewById(R.id.your_team_total_score_tv);
 
-        team13PtTV = findViewById(R.id.team1_3Pt);
-        team12PtTV = findViewById(R.id.team1_2Pt);
-        team1FreeThrowTV = findViewById(R.id.team1_freeThrow);
-        team1FoulTV = findViewById(R.id.team1_foul);
+        opposingTeamTv = findViewById(R.id.opposing_team_tv);
+        opposingTeamQt1Tv = findViewById(R.id.opposing_team_qt1_tv);
+        opposingTeamQt2Tv = findViewById(R.id.opposing_team_qt2_tv);
+        opposingTeamQt3Tv = findViewById(R.id.opposing_team_qt3_tv);
+        opposingTeamQt4Tv = findViewById(R.id.opposing_team_qt4_tv);
+        opposingTeamOt1Tv = findViewById(R.id.opposing_team_ot1_tv);
+        opposingTeamOt2Tv = findViewById(R.id.opposing_team_ot2_tv);
+        opposingTeamTotalScoreTv = findViewById(R.id.opposing_team_total_score_tv);
 
-        team23PtTV = findViewById(R.id.team2_3Pt);
-        team22PtTV = findViewById(R.id.team2_2Pt);
-        team2FreeThrowTV = findViewById(R.id.team2_freeThrow);
-        team2FoulTV = findViewById(R.id.team2_foul);
+        // Get Game Details
+        yourTeamThreePointersTv = findViewById(R.id.your_team_three_pointers_tv);
+        yourTeamTwoPointersTv = findViewById(R.id.your_team_two_pointers_tv);
+        yourTeamFreeThrowsTv = findViewById(R.id.your_team_free_throws_tv);
+        yourTeamFoulsTv = findViewById(R.id.your_team_fouls_tv);
 
-        // TODO Get Game object
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
-        mGameViewModel.selectById(gameID);
-        mGameViewModel.selectAllLive().observe(this, aGames -> {
-            currentGame = aGames.get(0);
-        });
+        opposingTeamThreePointersTv = findViewById(R.id.opposing_team_three_pointers_tv);
+        opposingTeamTwoPointersTv = findViewById(R.id.opposing_team_two_pointers_tv);
+        opposingTeamFreeThrowsTv = findViewById(R.id.opposing_team_free_throws_tv);
+        opposingTeamFoulsTv = findViewById(R.id.opposing_team_fouls_tv);
 
-        // TODO Get Teams object
-        Long team1ID = currentGame.getYourTeamId();
-        Long team2ID = currentGame.getOpposingTeamId();
-
+        // Setup Team View Model
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-        mTeamViewModel.selectById(team1ID);
-        mTeamViewModel.selectAllLive().observe(this, aTeam -> {
-            yourTeam = aTeam.get(0);
-        });
 
-        mTeamViewModel.selectById(team2ID);
-        mTeamViewModel.selectAllLive().observe(this, aTeam -> {
-           opposingTeam = aTeam.get(0);
-        });
+        // Get Game and Team from Intent
+        Intent myIntent = getIntent();
+        curGame = myIntent.getParcelableExtra("game");
+        yourTeam = mTeamViewModel.selectById(curGame.getYourTeamId());
+        opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
 
-        // Set Widget Text
-        team1Btn.setText(yourTeam.getName());
-        team2Btn.setText(opposingTeam.getName());
-        scoreTV.setText(currentGame.getYourTeamScore() + " - " + currentGame.getOpposingTeamScore());
-        dateTV.setText(currentGame.getDate().toString());
-
-        // TODO Game implement QT, OT, and 3-2-1 Pt
-        team1TV.setText(yourTeam.getName());
-        team2TV.setText(opposingTeam.getName());
-
-        // Set Widget Button
-        trackGameBtn.setOnClickListener(this);
-        reviewGameBtn.setOnClickListener(this);
-        trashBtn.setOnClickListener(this);
-        team1Btn.setOnClickListener(this);
-        team2Btn.setOnClickListener(this);
+        setButtons();
+        setTextViews();
     }
 
     @Override
-    public void onClick(View v){
-        switch (v.getId()){
-            case R.id.trackGame_btn:
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.review_game_btn:
                 finish();
                 break;
-            case R.id.reviewGame_btn:
-                Intent intentReview = new Intent(ReviewSpecificGameActivity.this, TrackGameActivity.class);
-                // TODO Add getIntent in TrackGameActivity
-                intentReview.putExtra("gameID", currentGame.getId());
-                startActivity(intentReview);
+
+            case R.id.edit_game_btn:
+                Intent editGameIntent = new Intent(this, ReviewGameActivity.class);
+                editGameIntent.putExtra("game", curGame);
+                startActivity(editGameIntent);
                 break;
-            case R.id.trash_btn:
-                // TODO Add popup (snackbar)
+
+            case R.id.your_team_btn:
+                Intent yourTeamIntent = new Intent(this, EditTeamActivity.class);
+                yourTeamIntent.putExtra("team", yourTeam);
+                startActivity(yourTeamIntent);
                 break;
-            case R.id.team1_tv:
-                Intent intentTeam1 = new Intent(ReviewSpecificGameActivity.this, ViewTeamsActivity.class);
-                intentTeam1.putExtra("teamID", yourTeam.getId());
-                startActivity(intentTeam1);
+
+            case R.id.opposing_team_btn:
+                Intent opposingTeamIntent = new Intent(this, EditTeamActivity.class);
+                opposingTeamIntent.putExtra("team", opposingTeam);
+                startActivity(opposingTeamIntent);
                 break;
-            case R.id.team2_tv:
-                Intent intentTeam2 = new Intent(ReviewSpecificGameActivity.this, ViewTeamsActivity.class);
-                intentTeam2.putExtra("teamID", opposingTeam.getId());
-                startActivity(intentTeam2);
-                break;
+
         }
+    }
+
+    public void setButtons() {
+        reviewGameBtn.setOnClickListener(this);
+        editGameBtn.setOnClickListener(this);
+        yourTeamBtn.setOnClickListener(this);
+        opposingTeamBtn.setOnClickListener(this);
+    }
+
+    public void setTextViews() {
+
+        // Set Game Summary Text
+        yourTeamBtn.setText(yourTeam.getName());
+        opposingTeamBtn.setText(opposingTeam.getName());
+        scoreTv.setText(curGame.getYourTeamScore() + " - " + curGame.getOpposingTeamScore());
+        dateTv.setText(curGame.getDate().toString());
+
+        // Set Quarter, Overtime Summary and Details
+        yourTeamTv.setText(yourTeam.getName());
+        opposingTeamTv.setText(opposingTeam.getName());
+
+        EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
+
+            // Row 0: yourTeam
+            // Row 1: opposingTeam
+
+            // teamQuarters
+            // Col 0: Qt1
+            // Col 1: Qt2
+            // Col 2: Qt3
+            // Col 3: Qt4
+            // Col 4: Ot1
+            // Col 5: Ot2
+
+            // teamEvents
+            // Col 0: THREE_POINTER
+            // Col 1: TWO_POINTER
+            // Col 2: FREE_THROW
+            // Col 3: FOUL
+
+            // Categorizes each event based on team, quarter, and event
+            int[][] teamQuarters = new int[2][6];
+            int[][] teamEvents = new int[2][4];
+
+            for (int i = 0; i < aEvents.size(); i++) {
+                Event curEvent = aEvents.get(i);
+
+                int team = curEvent.getTeamId()==yourTeam.getId() ? 0 : 1;
+                int qt = curEvent.getQuarter();
+                int event = Points.valueOf(curEvent.getEventType()).ordinal();
+
+                teamQuarters[team][qt]++;
+                teamEvents[team][event]++;
+            }
+
+            // Sets each numerical text view
+            yourTeamQt1Tv.setText(teamQuarters[0][0]);
+            yourTeamQt2Tv.setText(teamQuarters[0][1]);
+            yourTeamQt3Tv.setText(teamQuarters[0][2]);
+            yourTeamQt4Tv.setText(teamQuarters[0][3]);
+            yourTeamOt1Tv.setText(teamQuarters[0][4]);
+            yourTeamOt2Tv.setText(teamQuarters[0][5]);
+
+            opposingTeamQt1Tv.setText(teamQuarters[1][0]);
+            opposingTeamQt2Tv.setText(teamQuarters[1][1]);
+            opposingTeamQt3Tv.setText(teamQuarters[1][2]);
+            opposingTeamQt4Tv.setText(teamQuarters[1][3]);
+            opposingTeamOt1Tv.setText(teamQuarters[1][4]);
+            opposingTeamOt2Tv.setText(teamQuarters[1][5]);
+            
+            yourTeamThreePointersTv.setText(teamEvents[0][0]);
+            yourTeamTwoPointersTv.setText(teamEvents[0][1]);
+            yourTeamFreeThrowsTv.setText(teamEvents[0][2]);
+            yourTeamFoulsTv.setText(teamEvents[0][3]);
+
+            opposingTeamThreePointersTv.setText(teamEvents[1][0]);
+            opposingTeamTwoPointersTv.setText(teamEvents[1][1]);
+            opposingTeamFreeThrowsTv.setText(teamEvents[1][2]);
+            opposingTeamFoulsTv.setText(teamEvents[1][3]);
+        });
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,98 +7,85 @@
     tools:context=".ReviewSpecificGameActivity">
 
     <Button
-        android:id="@+id/trackGame_btn"
-        android:layout_width="100dp"
+        android:id="@+id/review_game_btn"
+        android:layout_width="80dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/right_pointed_button"
-        android:text="@string/track_game"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/reviewGame_btn"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/left_pointed_button"
-        android:text="@string/review_games"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/back" />
 
     <Button
-        android:id="@+id/trash_btn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="55dp"
-        android:background="@drawable/trash"
-        app:layout_constraintEnd_toStartOf="@+id/trackGame_btn"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toEndOf="@+id/reviewGame_btn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/edit_game_btn"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15sp"
+        android:background="@drawable/right_pointed_button"
+        android:text="@string/edit" />
 
-    <Button
-        android:id="@+id/team1_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/circle"
-        android:text="@string/team1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reviewGame_btn" />
+    <LinearLayout
 
-    <Button
-        android:id="@+id/team2_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/circle"
-        android:text="@string/team2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackGame_btn" />
-
-    <TextView
-        android:id="@+id/score_tv"
-        android:layout_width="wrap_content"
+        android:id="@+id/team_score_date_ll"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="29dp"
-        android:text="@string/teamScore"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toStartOf="@+id/team2_btn"
-        app:layout_constraintStart_toEndOf="@+id/team1_btn"
-        app:layout_constraintTop_toBottomOf="@+id/trash_btn" />
+        android:layout_below="@id/review_game_btn"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15sp">
 
-    <TextView
-        android:id="@+id/date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginEnd="68dp"
-        android:text="@string/date"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/team2_btn"
-        app:layout_constraintStart_toEndOf="@+id/team1_btn"
-        app:layout_constraintTop_toBottomOf="@+id/score_tv" />
+        <Button
+            android:id="@+id/your_team_btn"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/circle"
+            android:text="@string/your_team" />
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/score_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/team_score"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/date_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:text="@string/date"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/opposing_team_btn"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/circle"
+            android:text="@string/opposing_team" />
+
+    </LinearLayout>
 
     <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="367dp"
-        android:layout_height="124dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="380dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:id="@+id/team_score_tl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/team_score_date_ll"
+        android:layout_marginStart="5sp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="5sp">
 
         <View
             android:layout_width="fill_parent"
@@ -115,12 +102,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Team"
-                android:textSize="15dp" />
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/team" />
 
             <View
                 android:layout_width="1dp"
@@ -128,12 +116,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT1"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt1"
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="1dp"
@@ -141,12 +131,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT2"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt2"
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="1dp"
@@ -154,12 +146,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT3"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/qt3" />
 
             <View
                 android:layout_width="1dp"
@@ -167,12 +160,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT4"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt4" />
 
             <View
                 android:layout_width="1dp"
@@ -180,12 +174,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT1"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot1" />
 
             <View
                 android:layout_width="1dp"
@@ -193,12 +188,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT2"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
@@ -206,12 +202,13 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Total"
-                android:textSize="15dp" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/total_score" />
 
             <View
                 android:layout_width="2dp"
@@ -222,7 +219,7 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="#F0000000" />
 
         <TableRow
@@ -235,13 +232,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1_tv"
-                android:layout_width="wrap_content"
+                android:id="@+id/your_team_tv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/team1"
-                android:textSize="15dp" />
+                android:layout_weight="2"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/your_team" />
 
             <View
                 android:layout_width="1dp"
@@ -249,13 +247,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1QT1_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT1"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_qt1_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt1" />
 
             <View
                 android:layout_width="1dp"
@@ -263,13 +262,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1QT2_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT2"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_qt2_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt2" />
 
             <View
                 android:layout_width="1dp"
@@ -277,13 +277,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1QT3_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT3"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_qt3_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt3" />
 
             <View
                 android:layout_width="1dp"
@@ -291,13 +292,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1QT4_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT4"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_qt4_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt4" />
 
             <View
                 android:layout_width="1dp"
@@ -305,13 +307,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1OT1_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT1"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_ot1_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot1" />
 
             <View
                 android:layout_width="1dp"
@@ -319,13 +322,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1OT2_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT2"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_ot2_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
@@ -333,13 +337,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team1Total_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Total"
-                android:textSize="15dp" />
+                android:id="@+id/your_team_total_score_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/total_score" />
 
             <View
                 android:layout_width="2dp"
@@ -350,7 +355,7 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="#F0000000" />
 
         <TableRow
@@ -363,13 +368,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2_tv"
-                android:layout_width="wrap_content"
+                android:id="@+id/opposing_team_tv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/team2"
-                android:textSize="15dp" />
+                android:layout_weight="2"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/opposing_team" />
 
             <View
                 android:layout_width="1dp"
@@ -377,13 +383,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2QT1_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT1"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_qt1_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt1" />
 
             <View
                 android:layout_width="1dp"
@@ -391,13 +398,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2QT2_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT2"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_qt2_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt2" />
 
             <View
                 android:layout_width="1dp"
@@ -405,13 +413,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2QT3_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT3"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_qt3_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt3" />
 
             <View
                 android:layout_width="1dp"
@@ -419,13 +428,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2QT4_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="QT4"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_qt4_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/qt4" />
 
             <View
                 android:layout_width="1dp"
@@ -433,13 +443,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2OT1_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT1"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_ot1_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot1" />
 
             <View
                 android:layout_width="1dp"
@@ -447,13 +458,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2OT2_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="OT2"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_ot2_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
@@ -461,259 +473,14 @@
                 android:background="#F0000000" />
 
             <TextView
-                android:id="@+id/team2Total_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Total"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-        </TableRow>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#F0000000" />
-
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="258dp"
-        android:layout_height="364dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout">
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#F0000000" />
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team1_3Pt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team1_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="3 Pointers"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team2_3Pt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team2_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-        </TableRow>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#F0000000" />
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team1_2Pt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team1_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="2 Pointers"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team2_2Pt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team2_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-        </TableRow>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#F0000000" />
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team1_freeThrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team1_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Free Throw"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team2_freeThrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team2_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-        </TableRow>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#F0000000" />
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team1_foul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team1_3Pt"
-                android:textSize="15dp" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="Foul"
-                android:textSize="15dp"
-                android:gravity="center"/>
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="fill_parent"
-                android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/team2_foul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="team2_3Pt"
-                android:textSize="15dp" />
+                android:id="@+id/opposing_team_total_score_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/total_score" />
 
             <View
                 android:layout_width="2dp"
@@ -730,4 +497,259 @@
     </TableLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/team_score_tl"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#F0000000" />
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/your_team_three_pointers_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/three_pointer" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/opposing_team_three_pointers_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+        </TableRow>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#F0000000" />
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/your_team_two_pointers_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/two_pointer" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/opposing_team_two_pointers_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+        </TableRow>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#F0000000" />
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/your_team_free_throws_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/free_throw" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/opposing_team_free_throws_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+        </TableRow>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#F0000000" />
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/your_team_fouls_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/fouls" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+            <TextView
+                android:id="@+id/opposing_team_fouls_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/pt" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="#F0000000" />
+
+        </TableRow>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#F0000000" />
+
+    </TableLayout>
+
+</RelativeLayout>

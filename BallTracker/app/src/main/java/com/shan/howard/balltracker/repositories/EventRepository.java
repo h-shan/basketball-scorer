@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.shan.howard.balltracker.BallTrackerDatabase;
 import com.shan.howard.balltracker.dao.EventDao;
 import com.shan.howard.balltracker.datamodels.Event;
+import com.shan.howard.balltracker.datamodels.Game;
 
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class EventRepository {
 
     public LiveData<List<Event>> selectAllLive() {
         return mAllEvents;
+    }
+
+    public LiveData<List<Event>> selectByGameId(Long gameId) {
+        return mEventDao.selectByGameId(gameId);
     }
 
     public Event selectById(long anId) {

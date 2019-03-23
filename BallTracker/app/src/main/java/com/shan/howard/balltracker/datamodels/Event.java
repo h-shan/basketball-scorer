@@ -2,12 +2,19 @@ package com.shan.howard.balltracker.datamodels;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Calendar;
 
 @Entity(tableName = "events")
 public class Event {
+
+    @Ignore
+    public static final String THREE_POINTER = "THREE_POINTER";
+    public static final String TWO_POINTER = "TWO_POINTER";
+    public static final String FREE_THROW = "FREE_THROW";
+    public static final String FOUL = "FOUL";
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_")

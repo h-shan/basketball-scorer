@@ -24,8 +24,11 @@ public interface EventDao {
     @Query("SELECT * from events")
     LiveData<List<Event>> selectAllLive();
 
-    @Query("SELECT * FROM events WHERE id_ == :anId")
+    @Query("SELECT * FROM events WHERE id_ = :anId")
     Event selectById(long anId);
+
+    @Query("SELECT * FROM events WHERE game_id_ = :gameId")
+    LiveData<List<Event>> selectByGameId(Long gameId);
 
     @Delete
     public void delete(Event... events);
