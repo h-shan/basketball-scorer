@@ -126,10 +126,12 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             TextView nameTV = convertView.findViewById(R.id.view_teams_name_tv);
             Team myTeam = mDisplayedTeams.get(position);
             nameTV.setText(myTeam.getName());
+            Log.d(TAG, "sfgesgsgsjglsfghsh");
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class);
                     myIntent.putExtra("team", mDisplayedTeams.get(position));
                     startActivity(myIntent);

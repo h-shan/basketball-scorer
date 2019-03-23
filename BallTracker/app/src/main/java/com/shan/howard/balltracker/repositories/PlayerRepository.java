@@ -53,7 +53,6 @@ public class PlayerRepository {
 
         @Override
         protected Void doInBackground(final Player... params) {
-
             mAsyncTaskDao.insert(params);
             return null;
         }

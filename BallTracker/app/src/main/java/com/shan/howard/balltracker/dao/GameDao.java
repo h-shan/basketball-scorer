@@ -19,10 +19,10 @@ public interface GameDao {
     @Update
     public void update(Game... games);
 
-    @Query("SELECT * FROM games WHERE deleted_at_ == NULL")
+    @Query("SELECT * FROM games WHERE deleted_at_ IS NULL")
     LiveData<List<Game>> selectAllLive();
 
-    @Query("SELECT * FROM games WHERE id_ == :anId")
+    @Query("SELECT * FROM games WHERE id_ = :anId")
     Game selectById(long anId);
 
     @Query("UPDATE games SET deleted_at_ = strftime('%s', 'now') WHERE id_ IN(:gameIds)")
