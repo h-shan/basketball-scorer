@@ -25,6 +25,10 @@ public class PlayerViewModel extends AndroidViewModel {
         return mAllPlayers;
     }
 
+    public LiveData<List<Player>> selectByTeamId(long teamId) {
+        return mRepository.selectByTeam(teamId);
+    }
+
     public Player selectById(long anId) {
         return mRepository.selectById(anId);
     }

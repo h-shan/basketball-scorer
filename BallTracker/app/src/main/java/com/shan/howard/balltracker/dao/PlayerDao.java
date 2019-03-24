@@ -27,4 +27,8 @@ public interface PlayerDao {
 
     @Query("UPDATE games SET deleted_at_ = strftime('%s', 'now') WHERE id_ IN(:playerIds)")
     public void delete(List<Long> playerIds);
+
+    @Query("SELECT * FROM players WHERE team_id_ = :teamId")
+    LiveData<List<Player>> selectByTeam(long teamId);
+
 }
