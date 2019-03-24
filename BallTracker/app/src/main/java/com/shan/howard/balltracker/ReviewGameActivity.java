@@ -210,6 +210,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             TextView dateTV = convertView.findViewById(R.id.date_tv);
 
             Game currentGame = mDisplayedGames.get(position);
+
             Team yourTeam = null;
             Team opposingTeam = null;
 

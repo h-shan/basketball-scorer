@@ -121,6 +121,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Get Game and Team from Intent
         Intent myIntent = getIntent();
         curGame = myIntent.getParcelableExtra("game");
+
         mTeamViewModel.selectById(curGame.getYourTeamId()).observe(this, aTeam -> {
             yourTeam = aTeam;
             setYourTeam(yourTeam);
@@ -130,6 +131,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             opposingTeam = aTeam;
             setOpposingTeam(opposingTeam);
         });
+
 
         setButtons();
         setGameDetail(curGame);
@@ -161,7 +163,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 startActivity(opposingTeamIntent);
                 break;
 
-            case R.id.screenshot_btn:
+            //case R.id.screenshot_btn:
                 
         }
     }

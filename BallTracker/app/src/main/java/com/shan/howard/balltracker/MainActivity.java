@@ -13,7 +13,7 @@ public class MainActivity extends Activity implements Button.OnClickListener {
     Button myNewGameButton;
     Button mTeamsButton;
     Button mReviewButton;
-    Button mPlayersButton;
+//    Button mPlayersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,8 @@ public class MainActivity extends Activity implements Button.OnClickListener {
         mTeamsButton.setOnClickListener(this);
         mReviewButton = findViewById(R.id.main_review_games_btn);
         mReviewButton.setOnClickListener(this);
-        mTeamsButton = findViewById(R.id.main_players_btn);
-        mTeamsButton.setOnClickListener(this);
+//        mPlayersButton = findViewById(R.id.main_players_btn);
+//        mPlayersButton.setOnClickListener(this);
     }
 
     @Override
@@ -43,11 +43,12 @@ public class MainActivity extends Activity implements Button.OnClickListener {
                 Intent myIntent1 = new Intent(this, ViewTeamsActivity.class);
                 startActivity(myIntent1);
                 break;
-            case R.id.main_players_btn:
-                Log.d(TAG, "Moving to View Teams Activity");
-                Intent myIntent2 = new Intent(this, ViewPlayersActivity.class);
-                startActivity(myIntent2);
-                break;
+//            case R.id.main_players_btn:
+//                Log.d(TAG, "Moving to View Players Activity");
+//                Intent myIntent2 = new Intent(this, ViewPlayersActivity.class);
+//                myIntent2.putExtra("ac)
+//                startActivity(myIntent2);
+//                break;
             case R.id.main_review_games_btn:
                 Log.d(TAG, "Moving to Review Games Activity");
                 Intent intentReviewGame = new Intent(this, ReviewGameActivity.class);

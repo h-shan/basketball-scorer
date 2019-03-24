@@ -12,7 +12,8 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="15dp"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:background="#ffffff">
 
         <Button
             android:id="@+id/new_game_back_btn"
@@ -28,7 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/new_game" />
+            android:text="@string/new_game"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:textColor="#E4430A"/>
 
         <Button
             android:id="@+id/new_game_track_btn"
