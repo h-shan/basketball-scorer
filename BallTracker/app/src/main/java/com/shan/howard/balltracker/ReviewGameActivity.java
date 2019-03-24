@@ -232,7 +232,6 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
                 dateTV.setText(date);
             }
 
-
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +21,6 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
     private Team mTeam;
     private Button mTeamButton;
     private Button mDeleteButton;
-    private Button playerList;
     private Button myTeamColor;
     private EditText mNameET;
     private EditText mCoachET;
@@ -40,9 +38,6 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
 
         mTeamButton = findViewById(R.id.edit_team_back_btn);
         mTeamButton.setOnClickListener(this);
-
-        playerList = findViewById(R.id.edit_team_player_list_btn);
-        playerList.setOnClickListener(this);
 
         myTeamColor = findViewById(R.id.colorButton);
         GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
@@ -95,12 +90,6 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             case R.id.edit_team_back_btn:
                 mTeamViewModel.update(mTeam);
                 finish();
-                break;
-            case R.id.edit_team_player_list_btn:
-                Intent i = new Intent(EditTeamActivity.this, ViewPlayersActivity.class);
-                i.putExtra("team", mTeam);
-//                Log.d(MainActivity.class.getName(),"f");
-                startActivity(i);
                 break;
             case R.id.edit_team_delete_btn:
                 mTeamViewModel.delete(mTeam);
