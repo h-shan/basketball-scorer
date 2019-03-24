@@ -29,6 +29,10 @@ public class EventViewModel extends AndroidViewModel {
         return mRepository.selectByGameId(gameId);
     }
 
+    public LiveData<List<Event>> selectByGameAndTeamId(long gameId, long teamId) {
+        return mRepository.selectByGameAndTeamId(gameId, teamId);
+    }
+
     public LiveData<Event> selectById(long anId) {
         return mRepository.selectById(anId);
     }

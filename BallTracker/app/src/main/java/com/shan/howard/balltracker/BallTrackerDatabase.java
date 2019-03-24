@@ -8,12 +8,10 @@ import android.content.Context;
 
 import com.shan.howard.balltracker.dao.EventDao;
 import com.shan.howard.balltracker.dao.GameDao;
-import com.shan.howard.balltracker.dao.PlayerDao;
 import com.shan.howard.balltracker.dao.TeamDao;
 import com.shan.howard.balltracker.datamodels.Converter;
 import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
-import com.shan.howard.balltracker.datamodels.Player;
 import com.shan.howard.balltracker.datamodels.Team;
 
 @Database(entities = {Team.class, Event.class, Player.class, Game.class}, version = 4, exportSchema = false)

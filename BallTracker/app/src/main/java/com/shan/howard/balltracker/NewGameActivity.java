@@ -52,7 +52,7 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mNotesEditText = findViewById(R.id.new_game_notes_edit_text);
         updateLabel();
 
-        mBackButton = findViewById(R.id.new_game_back_btn);
+        mBackButton = findViewById(R.id.track_game_back_btn);
         mBackButton.setOnClickListener(this);
         mTrackButton = findViewById(R.id.new_game_track_btn);
         mTrackButton.setOnClickListener(this);
@@ -75,12 +75,15 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.new_game_back_btn:
+            case R.id.track_game_back_btn:
                 finish();
                 break;
             case R.id.new_game_track_btn:
                 saveGame();
                 Intent myIntent = new Intent(this, TrackGameActivity.class);
+                myIntent.putExtra("GAME", mGame);
+                myIntent.putExtra("YOUR_TEAM", mTeams.get(mYourTeamSpinner.getSelectedItemPosition()));
+                myIntent.putExtra("OPPOSING_TEAM", mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition()));
                 startActivity(myIntent);
                 break;
             case R.id.new_game_date_edit_text:

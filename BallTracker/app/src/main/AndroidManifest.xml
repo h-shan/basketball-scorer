@@ -9,8 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditPlayerActivity" />
-        <activity android:name=".ViewPlayersActivity" />
         <activity android:name=".ReviewSpecificGameActivity" />
         <activity android:name=".ReviewGameActivity" />
         <activity android:name=".EditTeamActivity" />

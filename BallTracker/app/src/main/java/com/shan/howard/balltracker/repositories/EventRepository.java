@@ -29,6 +29,10 @@ public class EventRepository {
         return mEventDao.selectByGameId(gameId);
     }
 
+    public LiveData<List<Event>> selectByGameAndTeamId(long gameId, long teamId) {
+        return mEventDao.selectByGameAndTeamId(gameId, teamId);
+    }
+
     public LiveData<Event> selectById(long anId) {
         return mEventDao.selectById(anId);
     }

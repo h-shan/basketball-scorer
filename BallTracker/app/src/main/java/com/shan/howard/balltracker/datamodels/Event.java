@@ -4,11 +4,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 
 @Entity(tableName = "events")
-public class Event {
+public class Event implements Comparable<Event> {
 
     @Ignore
     public static final String THREE_POINTER = "THREE_POINTER";
@@ -23,9 +24,6 @@ public class Event {
     @ColumnInfo(name = "game_id_")
     private long gameId;
 
-    @ColumnInfo(name = "player_id_")
-    private long playerId;
-
     @ColumnInfo(name = "team_id_")
     private long teamId;
 
@@ -37,6 +35,9 @@ public class Event {
 
     @ColumnInfo(name = "deleted_at_")
     private Calendar deletedAt = null;
+
+    @ColumnInfo(name = "created_at_")
+    private Calendar createdAt = Calendar.getInstance();
 
     public long getId() {
         return id;
@@ -52,14 +53,6 @@ public class Event {
 
     public void setGameId(long gameId) {
         this.gameId = gameId;
-    }
-
-    public long getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(long playerId) {
-        this.playerId = playerId;
     }
 
     public long getTeamId() {
@@ -92,5 +85,14 @@ public class Event {
 
     public void setDeletedAt(Calendar deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event o) {
+        if (this.quarter != o.quarter) {
+            return this.quarter - o.quarter;
+        } else {
+            return this.createdAt.compareTo(o.createdAt);
+        }
     }
 }

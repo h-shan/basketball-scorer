@@ -1,22 +1,49 @@
 package com.shan.howard.balltracker;
 
-import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class TrackGameActivity extends Activity {
+import com.shan.howard.balltracker.datamodels.Game;
+import com.shan.howard.balltracker.datamodels.Team;
+import com.shan.howard.balltracker.viewmodels.EventViewModel;
+import com.shan.howard.balltracker.viewmodels.TeamViewModel;
+
+import java.util.Map;
+
+import static com.shan.howard.balltracker.datamodels.Event.FOUL;
+import static com.shan.howard.balltracker.datamodels.Event.FREE_THROW;
+import static com.shan.howard.balltracker.datamodels.Event.THREE_POINTER;
+import static com.shan.howard.balltracker.datamodels.Event.TWO_POINTER;
+
+public class TrackGameActivity extends AppCompatActivity implements Button.OnClickListener {
     private static final String[] QUARTERS = { "Q1", "Q2", "Q3", "Q4" };
     private static final String[] PLACEHOLDER_EVENTS = { "Player 1 scored 2 points.", "Player 2 scored 3 points." };
 
     private Spinner mQuarterSpinner;
     private RecyclerView mLogRecyclerView;
     private MyAdapter mAdapter;
+    private Game mGame;
+    private Team mYourTeam, mOpposingTeam;
+
+    private EventViewModel mEventViewModel;
+    private PlayerViewModel mPlayerViewModel;
+    private TeamViewModel mTeamViewModel;
+
+    private Map<Long, Team> theTeamCache;
+    private Map<Long, Player> thePlayerCache;
+
+    private TextView mYourTeamNameTV, mOpposingTeamNameTV;
+    private TextView mYourTeamScoreTV, mOpposingTeamScoreTV;
+    private Button mBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +56,59 @@ public class TrackGameActivity extends Activity {
         mLogRecyclerView = findViewById(R.id.recyclerView);
         mLogRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mLogRecyclerView.setLayoutManager(layoutManager);
-
-        // specify an adapter (see also next example)
         mAdapter = new MyAdapter(PLACEHOLDER_EVENTS);
         mLogRecyclerView.setAdapter(mAdapter);
+
+
+        mYourTeamNameTV = findViewById(R.id.track_game_your_team_name_tv);
+        mOpposingTeamNameTV = findViewById(R.id.track_game_opposing_team_name_tv);
+        mYourTeamScoreTV = findViewById(R.id.track_game_your_team_score_tv);
+        mOpposingTeamScoreTV = findViewById(R.id.track_game_opposing_team_score_tv);
+        mBackButton = findViewById(R.id.track_game_back_btn);
+        mBackButton.setOnClickListener(this);
+
+        mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+        mGame = getIntent().getParcelableExtra("GAME");
+
+        mYourTeam = getIntent().getParcelableExtra("YOUR_TEAM");
+        mOpposingTeam = getIntent().getParcelableExtra("OPPOSING_TEAM");
+        mYourTeamNameTV.setText(mYourTeam.getName());
+        mOpposingTeamNameTV.setText(mOpposingTeam.getName());
+
+        mEventViewModel.selectByGameAndTeamId(mGame.getId(), mGame.getYourTeamId()).observe(this, events -> {
+
+        });
+
+        mEventViewModel.selectByGameId(mGame.getId()).observe(this, events -> {
+            events.stream().map(anEvent -> {
+                StringBuilder myBuilder = new StringBuilder();
+                switch (anEvent.getEventType()) {
+                   case THREE_POINTER:
+                       if (anEvent.getPlayerId() != 0) {
+
+                       }
+                       break;
+                   case TWO_POINTER:
+                   case FOUL:
+                   case FREE_THROW:
+                       break;
+               }
+               return myBuilder.toString();
+            });
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.track_game_back_btn:
+                finish();
+                break;
+        }
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
