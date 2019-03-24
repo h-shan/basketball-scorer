@@ -161,6 +161,8 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 startActivity(opposingTeamIntent);
                 break;
 
+            case R.id.screenshot_btn:
+                
         }
     }
 
