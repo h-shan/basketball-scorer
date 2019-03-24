@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="15dp"
         android:weightSum="3">
@@ -32,6 +31,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="View/Edit Player"
+            android:layout_gravity="center"
             android:textColor="#000000" />
 
     </LinearLayout>
