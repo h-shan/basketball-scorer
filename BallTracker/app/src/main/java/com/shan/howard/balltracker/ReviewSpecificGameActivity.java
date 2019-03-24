@@ -1,12 +1,18 @@
 package com.shan.howard.balltracker;
 
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
@@ -14,6 +20,8 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.stream.IntStream;
 
@@ -65,6 +73,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     private Team opposingTeam;
 
     private TeamViewModel mTeamViewModel;
+    private EventViewModel mEventViewModel;
 
     enum Points {
         THREE_POINTER, TWO_POINTER, FREE_THROW, FOUL;
@@ -74,6 +83,24 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_specific_game);
+
+        Event event1 = new Event();
+        event1.setId(1);
+        event1.setTeamId(1);
+        event1.setGameId(10);
+        event1.setQuarter(1);
+        event1.setEventType("THREE_POINTER");
+
+        Event event2 = new Event();
+        event2.setId(2);
+        event2.setTeamId(2);
+        event2.setGameId(10);
+        event2.setQuarter(3);
+        event2.setEventType("FREE_THROW");
+
+        mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        mEventViewModel.insert(event1);
+        mEventViewModel.insert(event2);
 
         // Get Arrow Button
         reviewGameBtn = findViewById(R.id.review_game_btn);
@@ -163,8 +190,50 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 startActivity(opposingTeamIntent);
                 break;
 
-            //case R.id.screenshot_btn:
-                
+            case R.id.screenshot_btn:
+                View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+                shareImage(store(getScreenShot(rootView), "ReviewSpecificGameActivity"));
+        }
+    }
+
+    public static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
+    public static File store(Bitmap bm, String fileName){
+        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
+        File dir = new File(dirPath);
+        if(!dir.exists())
+            dir.mkdirs();
+        File file = new File(dirPath, fileName);
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private void shareImage(File file){
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        try {
+            startActivity(Intent.createChooser(intent, "Share Screenshot"));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
         }
     }
 
