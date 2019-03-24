@@ -35,11 +35,9 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private Team mYourTeam, mOpposingTeam;
 
     private EventViewModel mEventViewModel;
-    private PlayerViewModel mPlayerViewModel;
     private TeamViewModel mTeamViewModel;
 
     private Map<Long, Team> theTeamCache;
-    private Map<Long, Player> thePlayerCache;
 
     private TextView mYourTeamNameTV, mOpposingTeamNameTV;
     private TextView mYourTeamScoreTV, mOpposingTeamScoreTV;
@@ -70,7 +68,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mBackButton.setOnClickListener(this);
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-        mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
         mGame = getIntent().getParcelableExtra("GAME");
 
@@ -88,9 +85,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                 StringBuilder myBuilder = new StringBuilder();
                 switch (anEvent.getEventType()) {
                    case THREE_POINTER:
-                       if (anEvent.getPlayerId() != 0) {
-
-                       }
                        break;
                    case TWO_POINTER:
                    case FOUL:

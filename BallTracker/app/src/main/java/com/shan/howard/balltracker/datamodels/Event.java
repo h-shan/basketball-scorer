@@ -87,6 +87,14 @@ public class Event implements Comparable<Event> {
         this.deletedAt = deletedAt;
     }
 
+    public Calendar getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Calendar createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public int compareTo(@NonNull Event o) {
         if (this.quarter != o.quarter) {
