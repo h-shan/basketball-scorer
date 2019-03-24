@@ -99,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:layout_marginStart="8dp"
-
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
@@ -152,93 +152,44 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="92dp"
-        android:layout_height="349dp"
-        android:layout_marginStart="8dp"
 
-        android:orientation="vertical"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <Button
-            android:id="@+id/track_game_player1_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/button7"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Player 1"
-            android:background="@drawable/bg_btn2"/>
+            android:text="Clippers"
+            android:textAllCaps="false"
+
+            android:background="@drawable/bg_circle_bt2" />
 
         <Button
-            android:id="@+id/track_game_player2_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/button8"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="108dp"
             android:layout_weight="1"
-            android:text="Player 2"
-            android:background="@drawable/bg_btn2"/>
-
-        <Button
-            android:id="@+id/track_game_player3_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="Player 3"
-            android:background="@drawable/bg_btn2"/>
-
-        <Button
-            android:id="@+id/track_game_player4_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="Player 4"
-            android:background="@drawable/bg_btn2"/>
-
-        <Button
-            android:id="@+id/track_game_player5_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="Player 5"
-            android:background="@drawable/bg_btn2"/>
-
+            android:text="Kings"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_circle_bt2"
+            />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="8dp"
-        android:text="Clippers"
-        android:textAllCaps="false"
-        android:background="@drawable/bg_bt1"
-        app:layout_constraintBottom_toTopOf="@+id/button8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.551" />
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="108dp"
-        android:text="Kings"
-        android:textAllCaps="false"
-        android:background="@drawable/bg_bt1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
