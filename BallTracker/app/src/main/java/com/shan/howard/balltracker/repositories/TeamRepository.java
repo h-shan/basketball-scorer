@@ -27,7 +27,7 @@ public class TeamRepository {
         return mAllTeams;
     }
 
-    public Team selectById(long anId) {
+    public LiveData<Team> selectById(long anId) {
         return mTeamDao.selectById(anId);
     }
 

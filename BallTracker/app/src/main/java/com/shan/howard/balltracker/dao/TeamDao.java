@@ -23,7 +23,7 @@ public interface TeamDao {
     LiveData<List<Team>> selectAllLive();
 
     @Query("SELECT * FROM teams WHERE id_ = :anId")
-    Team selectById(long anId);
+    LiveData<Team> selectById(long anId);
 
     @Query("UPDATE teams SET deleted_at_ = CAST(strftime('%s', 'now') As BIGINT) WHERE id_ IN (:teamIds)")
     public int delete(List<Long> teamIds);

@@ -27,7 +27,7 @@ public class GameRepository {
         return mAllGames;
     }
 
-    public Game selectById(long anId) {
+    public LiveData<Game> selectById(long anId) {
         return mGameDao.selectById(anId);
     }
 
