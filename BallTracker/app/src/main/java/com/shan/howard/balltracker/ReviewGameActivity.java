@@ -190,10 +190,10 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             TextView dateTV = convertView.findViewById(R.id.date_tv);
 
             Game currentGame = mDisplayedGames.get(position);
-            Team yourTeam = mTeamViewModel.selectById(currentGame.getYourTeamId());
-            Team opposingTeam = mTeamViewModel.selectById(currentGame.getOpposingTeamId());
+//            Team yourTeam = mTeamViewModel.selectById(currentGame.getYourTeamId());
+//            Team opposingTeam = mTeamViewModel.selectById(currentGame.getOpposingTeamId());
 
-            teamsTV.setText(yourTeam.getName() + " vs " + opposingTeam.getName());
+//            teamsTV.setText(yourTeam.getName() + " vs " + opposingTeam.getName());
             dateTV.setText(currentGame.getDate().toString());
 
             convertView.setOnClickListener(new View.OnClickListener() {

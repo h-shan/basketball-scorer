@@ -118,8 +118,8 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Get Game and Team from Intent
         Intent myIntent = getIntent();
         curGame = myIntent.getParcelableExtra("game");
-        yourTeam = mTeamViewModel.selectById(curGame.getYourTeamId());
-        opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
+//        yourTeam = mTeamViewModel.selectById(curGame.getYourTeamId());
+//        opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
 
         setButtons();
         setTextViews();
