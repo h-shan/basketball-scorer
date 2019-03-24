@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,14 +22,16 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.stream.IntStream;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // Top Arrow Buttons
+    // Top Buttons
     private Button reviewGameBtn;
     private Button editGameBtn;
+    private Button screenShotBtn;
 
     // Game Summary
     private Button yourTeamBtn;
@@ -104,6 +107,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Get Arrow Button
         reviewGameBtn = findViewById(R.id.review_game_btn);
         editGameBtn = findViewById(R.id.edit_game_btn);
+        screenShotBtn = findViewById(R.id.screenshot_btn);
 
         // Get Game Summary
         yourTeamBtn = findViewById(R.id.your_team_btn);
@@ -191,10 +195,11 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             case R.id.screenshot_btn:
                 View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
                 shareImage(store(getScreenShot(rootView), "ReviewSpecificGameActivity"));
+                break;
         }
     }
 
-    public static Bitmap getScreenShot(View view) {
+    public Bitmap getScreenShot(View view) {
         View screenView = view.getRootView();
         screenView.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
@@ -202,37 +207,26 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         return bitmap;
     }
 
-    public static File store(Bitmap bm, String fileName){
-        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
-        File dir = new File(dirPath);
-        if(!dir.exists())
-            dir.mkdirs();
-        File file = new File(dirPath, fileName);
+    public String store(Bitmap bm, String fileName) {
+        File imageFile = new File(new File(Environment.getExternalStorageDirectory().toString()), fileName);
         try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-            fOut.flush();
-            fOut.close();
+            FileOutputStream out = new FileOutputStream(imageFile);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return file;
+        return imageFile.getAbsolutePath();
     }
 
-    private void shareImage(File file){
-        Uri uri = Uri.fromFile(file);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType("image/*");
-
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        try {
-            startActivity(Intent.createChooser(intent, "Share Screenshot"));
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
-        }
+    private void shareImage(String path) {
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("application/image");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+        startActivity(Intent.createChooser(emailIntent, "Send mail"));
     }
 
     public void setButtons() {
@@ -240,9 +234,10 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         editGameBtn.setOnClickListener(this);
         yourTeamBtn.setOnClickListener(this);
         opposingTeamBtn.setOnClickListener(this);
+        screenShotBtn.setOnClickListener(this);
     }
 
-    public void setGameDetail(Game curGame){
+    public void setGameDetail(Game curGame) {
         scoreTv.setText(this.curGame.getYourTeamScore() + " - " + this.curGame.getOpposingTeamScore());
 
         Calendar gameCalendar = curGame.getDate();
@@ -250,7 +245,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         dateTv.setText(date);
     }
 
-    public void setOpposingTeam(Team opposingTeam){
+    public void setOpposingTeam(Team opposingTeam) {
         // Set Team Name
         this.opposingTeamBtn.setText(this.opposingTeam.getName());
         this.opposingTeamTv.setText(this.opposingTeam.getName());
@@ -280,7 +275,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             for (int i = 0; i < aEvents.size(); i++) {
                 Event curEvent = aEvents.get(i);
 
-                if(curEvent.getTeamId()==this.opposingTeam.getId()){
+                if (curEvent.getTeamId() == this.opposingTeam.getId()) {
                     int qt = curEvent.getQuarter();
                     int event = Points.valueOf(curEvent.getEventType()).ordinal();
 
@@ -337,7 +332,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             for (int i = 0; i < aEvents.size(); i++) {
                 Event curEvent = aEvents.get(i);
 
-                if(curEvent.getTeamId()==this.yourTeam.getId()){
+                if (curEvent.getTeamId() == this.yourTeam.getId()) {
                     int qt = curEvent.getQuarter();
                     int event = Points.valueOf(curEvent.getEventType()).ordinal();
 
@@ -355,7 +350,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             yourTeamOt1Tv.setText(String.valueOf(teamQuarters[4]));
             yourTeamOt2Tv.setText(String.valueOf(teamQuarters[5]));
             yourTeamTotalScoreTv.setText(String.valueOf(IntStream.of(teamQuarters).sum()));
-            
+
             yourTeamThreePointersTv.setText(String.valueOf(teamEvents[0]));
             yourTeamTwoPointersTv.setText(String.valueOf(teamEvents[1]));
             yourTeamFreeThrowsTv.setText(String.valueOf(teamEvents[2]));
