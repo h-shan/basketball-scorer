@@ -14,6 +14,9 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
+import java.util.Calendar;
+import java.util.stream.IntStream;
+
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Top Arrow Buttons
@@ -118,11 +121,18 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Get Game and Team from Intent
         Intent myIntent = getIntent();
         curGame = myIntent.getParcelableExtra("game");
-        yourTeam = mTeamViewModel.selectById(curGame.getYourTeamId());
-        opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
+        mTeamViewModel.selectById(curGame.getYourTeamId()).observe(this, aTeam -> {
+            yourTeam = aTeam;
+            setYourTeam(yourTeam);
+        });
+        //opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
+        mTeamViewModel.selectById(curGame.getOpposingTeamId()).observe(this, aTeam -> {
+            opposingTeam = aTeam;
+            setOpposingTeam(opposingTeam);
+        });
 
         setButtons();
-        setTextViews();
+        setGameDetail(curGame);
     }
 
     @Override
@@ -134,7 +144,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 break;
 
             case R.id.edit_game_btn:
-                Intent editGameIntent = new Intent(this, ReviewGameActivity.class);
+                Intent editGameIntent = new Intent(this, TrackGameActivity.class);
                 editGameIntent.putExtra("game", curGame);
                 startActivity(editGameIntent);
                 break;
@@ -161,23 +171,22 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         opposingTeamBtn.setOnClickListener(this);
     }
 
-    public void setTextViews() {
+    public void setGameDetail(Game curGame){
+        scoreTv.setText(this.curGame.getYourTeamScore() + " - " + this.curGame.getOpposingTeamScore());
 
-        // Set Game Summary Text
-        yourTeamBtn.setText(yourTeam.getName());
-        opposingTeamBtn.setText(opposingTeam.getName());
-        scoreTv.setText(curGame.getYourTeamScore() + " - " + curGame.getOpposingTeamScore());
-        dateTv.setText(curGame.getDate().toString());
+        Calendar gameCalendar = curGame.getDate();
+        String date = gameCalendar.get(Calendar.MONTH) + "/" + gameCalendar.get(Calendar.DATE) + "/" + gameCalendar.get(Calendar.YEAR);
+        dateTv.setText(date);
+    }
+
+    public void setOpposingTeam(Team opposingTeam){
+        // Set Team Name
+        this.opposingTeamBtn.setText(this.opposingTeam.getName());
+        this.opposingTeamTv.setText(this.opposingTeam.getName());
 
         // Set Quarter, Overtime Summary and Details
-        yourTeamTv.setText(yourTeam.getName());
-        opposingTeamTv.setText(opposingTeam.getName());
-
         EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
-
-            // Row 0: yourTeam
-            // Row 1: opposingTeam
 
             // teamQuarters
             // Col 0: Qt1
@@ -194,44 +203,92 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             // Col 3: FOUL
 
             // Categorizes each event based on team, quarter, and event
-            int[][] teamQuarters = new int[2][6];
-            int[][] teamEvents = new int[2][4];
+            int[] teamQuarters = new int[6];
+            int[] teamEvents = new int[4];
 
             for (int i = 0; i < aEvents.size(); i++) {
                 Event curEvent = aEvents.get(i);
 
-                int team = curEvent.getTeamId()==yourTeam.getId() ? 0 : 1;
-                int qt = curEvent.getQuarter();
-                int event = Points.valueOf(curEvent.getEventType()).ordinal();
+                if(curEvent.getTeamId()==this.opposingTeam.getId()){
+                    int qt = curEvent.getQuarter();
+                    int event = Points.valueOf(curEvent.getEventType()).ordinal();
 
-                teamQuarters[team][qt]++;
-                teamEvents[team][event]++;
+                    teamQuarters[qt]++;
+                    teamEvents[event]++;
+                }
+
             }
 
             // Sets each numerical text view
-            yourTeamQt1Tv.setText(teamQuarters[0][0]);
-            yourTeamQt2Tv.setText(teamQuarters[0][1]);
-            yourTeamQt3Tv.setText(teamQuarters[0][2]);
-            yourTeamQt4Tv.setText(teamQuarters[0][3]);
-            yourTeamOt1Tv.setText(teamQuarters[0][4]);
-            yourTeamOt2Tv.setText(teamQuarters[0][5]);
+            opposingTeamQt1Tv.setText(String.valueOf(teamQuarters[0]));
+            opposingTeamQt2Tv.setText(String.valueOf(teamQuarters[1]));
+            opposingTeamQt3Tv.setText(String.valueOf(teamQuarters[2]));
+            opposingTeamQt4Tv.setText(String.valueOf(teamQuarters[3]));
+            opposingTeamOt1Tv.setText(String.valueOf(teamQuarters[4]));
+            opposingTeamOt2Tv.setText(String.valueOf(teamQuarters[5]));
+            opposingTeamTotalScoreTv.setText(String.valueOf(IntStream.of(teamQuarters).sum()));
 
-            opposingTeamQt1Tv.setText(teamQuarters[1][0]);
-            opposingTeamQt2Tv.setText(teamQuarters[1][1]);
-            opposingTeamQt3Tv.setText(teamQuarters[1][2]);
-            opposingTeamQt4Tv.setText(teamQuarters[1][3]);
-            opposingTeamOt1Tv.setText(teamQuarters[1][4]);
-            opposingTeamOt2Tv.setText(teamQuarters[1][5]);
+            opposingTeamThreePointersTv.setText(String.valueOf(teamEvents[0]));
+            opposingTeamTwoPointersTv.setText(String.valueOf(teamEvents[1]));
+            opposingTeamFreeThrowsTv.setText(String.valueOf(teamEvents[2]));
+            opposingTeamFoulsTv.setText(String.valueOf(teamEvents[3]));
+        });
+    }
+
+    public void setYourTeam(Team yourTeam) {
+
+        // Set Team Name
+        this.yourTeamBtn.setText(this.yourTeam.getName());
+        this.yourTeamTv.setText(this.yourTeam.getName());
+
+        // Set Quarter, Overtime Summary and Details
+        EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
+
+            // teamQuarters
+            // Col 0: Qt1
+            // Col 1: Qt2
+            // Col 2: Qt3
+            // Col 3: Qt4
+            // Col 4: Ot1
+            // Col 5: Ot2
+
+            // teamEvents
+            // Col 0: THREE_POINTER
+            // Col 1: TWO_POINTER
+            // Col 2: FREE_THROW
+            // Col 3: FOUL
+
+            // Categorizes each event based on team, quarter, and event
+            int[] teamQuarters = new int[6];
+            int[] teamEvents = new int[4];
+
+            for (int i = 0; i < aEvents.size(); i++) {
+                Event curEvent = aEvents.get(i);
+
+                if(curEvent.getTeamId()==this.yourTeam.getId()){
+                    int qt = curEvent.getQuarter();
+                    int event = Points.valueOf(curEvent.getEventType()).ordinal();
+
+                    teamQuarters[qt]++;
+                    teamEvents[event]++;
+                }
+
+            }
+
+            // Sets each numerical text view
+            yourTeamQt1Tv.setText(String.valueOf(teamQuarters[0]));
+            yourTeamQt2Tv.setText(String.valueOf(teamQuarters[1]));
+            yourTeamQt3Tv.setText(String.valueOf(teamQuarters[2]));
+            yourTeamQt4Tv.setText(String.valueOf(teamQuarters[3]));
+            yourTeamOt1Tv.setText(String.valueOf(teamQuarters[4]));
+            yourTeamOt2Tv.setText(String.valueOf(teamQuarters[5]));
+            yourTeamTotalScoreTv.setText(String.valueOf(IntStream.of(teamQuarters).sum()));
             
-            yourTeamThreePointersTv.setText(teamEvents[0][0]);
-            yourTeamTwoPointersTv.setText(teamEvents[0][1]);
-            yourTeamFreeThrowsTv.setText(teamEvents[0][2]);
-            yourTeamFoulsTv.setText(teamEvents[0][3]);
-
-            opposingTeamThreePointersTv.setText(teamEvents[1][0]);
-            opposingTeamTwoPointersTv.setText(teamEvents[1][1]);
-            opposingTeamFreeThrowsTv.setText(teamEvents[1][2]);
-            opposingTeamFoulsTv.setText(teamEvents[1][3]);
+            yourTeamThreePointersTv.setText(String.valueOf(teamEvents[0]));
+            yourTeamTwoPointersTv.setText(String.valueOf(teamEvents[1]));
+            yourTeamFreeThrowsTv.setText(String.valueOf(teamEvents[2]));
+            yourTeamFoulsTv.setText(String.valueOf(teamEvents[3]));
         });
     }
 }

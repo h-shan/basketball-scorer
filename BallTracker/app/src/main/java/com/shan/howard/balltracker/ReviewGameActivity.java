@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,7 +21,9 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
     private Spinner opposingTeamSpinner;
     private ListView viewGamesLv;
 
-    private List<Team> mTeams;
+    private List<Team> mAllTeams;
     private List<Game> mAllGames;
 
     private GameViewModel mGameViewModel;
@@ -59,11 +60,21 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         mTeamAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
         mTeamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Get all of the teams and store into mTeams
+        // Get all of the teams and store into mAllTeams
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+
+        Team team1 = new Team();
+        team1.setId(1);
+        team1.setName("Team1");
+        Team team2 = new Team();
+        team2.setId(2);
+        team2.setName("Team2");
+        mTeamViewModel.insert(team1);
+        mTeamViewModel.insert(team2);
+
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             if (aTeams != null) {
-                mTeams = aTeams;
+                mAllTeams = aTeams;
                 mTeamAdapter.clear();
                 mTeamAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
                 mTeamAdapter.notifyDataSetChanged();
@@ -80,6 +91,14 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         // Set game list view adapter
         mGameAdapter = new GameListAdapter(ReviewGameActivity.this);
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+
+        Game game1 = new Game();
+        game1.setId(10);
+        game1.setYourTeamId(1);
+        game1.setOpposingTeamId(2);
+        mGameViewModel.insert(game1);
+
+        viewGamesLv.setAdapter(null);
         mGameViewModel.selectAllLive().observe(this, aGames -> {
             mAllGames = aGames;
             mGameAdapter.setGames(aGames);
@@ -105,10 +124,10 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
         // Selects team from spinners if not blank
         if (yourTeamSpinner.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
-            yourTeam = mTeams.get(yourTeamSpinner.getSelectedItemPosition());
+            yourTeam = mAllTeams.get(yourTeamSpinner.getSelectedItemPosition());
         }
         if (opposingTeamSpinner.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
-            opposingTeam = mTeams.get(opposingTeamSpinner.getSelectedItemPosition());
+            opposingTeam = mAllTeams.get(opposingTeamSpinner.getSelectedItemPosition());
         }
 
         List<Game> filterGameList = new ArrayList<>();
@@ -149,7 +168,8 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        yourTeamSpinner.setSelection(0);
+        opposingTeamSpinner.setSelection(0);
     }
 
     public class GameListAdapter extends BaseAdapter {
@@ -190,11 +210,27 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             TextView dateTV = convertView.findViewById(R.id.date_tv);
 
             Game currentGame = mDisplayedGames.get(position);
-            Team yourTeam = mTeamViewModel.selectById(currentGame.getYourTeamId());
-            Team opposingTeam = mTeamViewModel.selectById(currentGame.getOpposingTeamId());
+            Team yourTeam = null;
+            Team opposingTeam = null;
 
-            teamsTV.setText(yourTeam.getName() + " vs " + opposingTeam.getName());
-            dateTV.setText(currentGame.getDate().toString());
+            // Gets the team
+            for (int i = 0; i < mAllTeams.size(); i++) {
+                if (mAllTeams.get(i).getId() == currentGame.getYourTeamId()) {
+                    yourTeam = mAllTeams.get(i);
+                } else if (mAllTeams.get(i).getId() == currentGame.getOpposingTeamId()) {
+                    opposingTeam = mAllTeams.get(i);
+                }
+            }
+
+            if (yourTeam != null && opposingTeam != null) {
+                String teamsVs = yourTeam.getName() + " vs " + opposingTeam.getName();
+                teamsTV.setText(teamsVs);
+
+                Calendar gameCalendar = currentGame.getDate();
+                String date = gameCalendar.get(Calendar.MONTH) + "/" + gameCalendar.get(Calendar.DATE) + "/" + gameCalendar.get(Calendar.YEAR);
+                dateTV.setText(date);
+            }
+
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
