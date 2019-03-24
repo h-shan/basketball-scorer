@@ -99,7 +99,7 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             case R.id.edit_team_player_list_btn:
                 Intent i = new Intent(EditTeamActivity.this, ViewPlayersActivity.class);
                 i.putExtra("team", mTeam);
-                Log.d(MainActivity.class.getName(),"f");
+//                Log.d(MainActivity.class.getName(),"f");
                 startActivity(i);
                 break;
             case R.id.edit_team_delete_btn:
