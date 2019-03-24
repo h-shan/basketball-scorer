@@ -74,23 +74,26 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
         mNewPlayerButton = findViewById(R.id.view_players_new_player_btn);
         mNewPlayerButton.setOnClickListener(this);
         mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
-        mPlayerViewModel.selectAllLive().observe(this, aPlayers -> {
-            Log.d(TAG, Integer.toString(aPlayers.size()));
-             mAdapter.setPlayers(aPlayers);
-            mAdapter.notifyDataSetChanged();
-        });
-//        mPlayerViewModel.selectByTeamId(mTeam.getId()).observe(this, aPlayers -> {
+//        mPlayerViewModel.selectAllLive().observe(this, aPlayers -> {
 //            Log.d(TAG, Integer.toString(aPlayers.size()));
-//            mAdapter.setPlayers(aPlayers);
+//             mAdapter.setPlayers(aPlayers);
 //            mAdapter.notifyDataSetChanged();
 //        });
+        mPlayerViewModel.selectByTeamId(mTeam.getId()).observe(this, aPlayers -> {
+            Log.d(TAG, Integer.toString(aPlayers.size()));
+            mAdapter.setPlayers(aPlayers);
+            mAdapter.notifyDataSetChanged();
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.view_players_new_player_btn:
-                mPlayerViewModel.insert(new Player());
+                Player temp = new Player();
+                temp.setTeamId(mTeam.getId());
+                temp.setName("New Player");
+                mPlayerViewModel.insert(temp);
                 Log.d(TAG, "New player!");
                 break;
             case R.id.view_players_back_btn:

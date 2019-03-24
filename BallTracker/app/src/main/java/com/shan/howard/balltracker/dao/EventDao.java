@@ -25,7 +25,7 @@ public interface EventDao {
     LiveData<List<Event>> selectAllLive();
 
     @Query("SELECT * FROM events WHERE id_ = :anId")
-    Event selectById(long anId);
+    LiveData<Event> selectById(long anId);
 
     @Query("SELECT * FROM events WHERE game_id_ = :gameId")
     LiveData<List<Event>> selectByGameId(Long gameId);

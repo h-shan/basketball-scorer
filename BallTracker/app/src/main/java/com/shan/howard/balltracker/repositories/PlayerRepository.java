@@ -31,7 +31,7 @@ public class PlayerRepository {
         return mPlayerDao.selectByTeam(teamId);
     }
 
-    public Player selectById(long anId) {
+    public LiveData<Player> selectById(long anId) {
         return mPlayerDao.selectById(anId);
     }
 

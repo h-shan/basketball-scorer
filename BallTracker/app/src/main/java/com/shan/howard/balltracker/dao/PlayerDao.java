@@ -23,7 +23,7 @@ public interface PlayerDao {
     LiveData<List<Player>> selectAllLive();
 
     @Query("SELECT * FROM players WHERE id_ = :anId")
-    Player selectById(long anId);
+    LiveData<Player> selectById(long anId);
 
     @Query("UPDATE games SET deleted_at_ = strftime('%s', 'now') WHERE id_ IN(:playerIds)")
     public void delete(List<Long> playerIds);
