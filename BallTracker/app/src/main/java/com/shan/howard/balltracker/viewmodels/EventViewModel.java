@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
 import com.shan.howard.balltracker.datamodels.Event;
-import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.repositories.EventRepository;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class EventViewModel extends AndroidViewModel {
         return mRepository.selectByGameId(gameId);
     }
 
-    public Event selectById(long anId) {
+    public LiveData<Event> selectById(long anId) {
         return mRepository.selectById(anId);
     }
 

@@ -25,7 +25,7 @@ public class TeamViewModel extends AndroidViewModel {
         return mAllTeams;
     }
 
-    public Team selectById(long anId) {
+    public LiveData<Team> selectById(long anId) {
         return mRepository.selectById(anId);
     }
 

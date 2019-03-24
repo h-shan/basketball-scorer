@@ -29,7 +29,7 @@ public class PlayerViewModel extends AndroidViewModel {
         return mRepository.selectByTeam(teamId);
     }
 
-    public Player selectById(long anId) {
+    public LiveData<Player> selectById(long anId) {
         return mRepository.selectById(anId);
     }
 
