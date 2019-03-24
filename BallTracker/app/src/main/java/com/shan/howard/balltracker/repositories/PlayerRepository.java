@@ -27,6 +27,10 @@ public class PlayerRepository {
         return mAllPlayers;
     }
 
+    public LiveData<List<Player>> selectByTeam(long teamId) {
+        return mPlayerDao.selectByTeam(teamId);
+    }
+
     public Player selectById(long anId) {
         return mPlayerDao.selectById(anId);
     }

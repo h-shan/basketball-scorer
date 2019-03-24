@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.shan.howard.balltracker.datamodels.Player;
+import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.PlayerViewModel;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
     private ImageView mNewPlayerButton;
     private EditText mETsearch;
     private PlayerListAdapter mAdapter;
+    private Team mTeam;
 
     private PlayerViewModel mPlayerViewModel;
 
@@ -40,6 +42,9 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_players);
+
+        Intent myIntent = getIntent();
+        mTeam = myIntent.getParcelableExtra("team");
 
         mAdapter = new PlayerListAdapter(ViewPlayersActivity.this);
         mLv = findViewById(R.id.view_players_players_view);
@@ -68,15 +73,17 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
 
         mNewPlayerButton = findViewById(R.id.view_players_new_player_btn);
         mNewPlayerButton.setOnClickListener(this);
-
-        mAdapter.setPlayers(Collections.singletonList(new Player()));
-
         mPlayerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
         mPlayerViewModel.selectAllLive().observe(this, aPlayers -> {
             Log.d(TAG, Integer.toString(aPlayers.size()));
-            // mAdapter.setPlayers(aPlayers);
+             mAdapter.setPlayers(aPlayers);
             mAdapter.notifyDataSetChanged();
         });
+//        mPlayerViewModel.selectByTeamId(mTeam.getId()).observe(this, aPlayers -> {
+//            Log.d(TAG, Integer.toString(aPlayers.size()));
+//            mAdapter.setPlayers(aPlayers);
+//            mAdapter.notifyDataSetChanged();
+//        });
     }
 
     @Override
@@ -111,7 +118,7 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
 
         @Override
         public int getCount() {
-            return mDisplayedPlayers == null ? mDisplayedPlayers.size() : 0;
+            return mDisplayedPlayers != null ? mDisplayedPlayers.size() : 0;
         }
 
         @Override
@@ -134,6 +141,7 @@ public class ViewPlayersActivity extends AppCompatActivity implements Button.OnC
             convertView.setOnClickListener(v -> {
                 Intent myIntent = new Intent(ViewPlayersActivity.this, EditPlayerActivity.class);
                 myIntent.putExtra("player", myPlayer);
+                myIntent.putExtra("team", mTeam);
                 startActivity(myIntent);
             });
             return convertView;
