@@ -33,7 +33,9 @@
             android:gravity="center"
             android:text="View/Edit Player"
             android:layout_gravity="center"
-            android:textColor="#000000" />
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:textColor="#E4430A" />
 
     </LinearLayout>
     <LinearLayout
