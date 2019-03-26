@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.stream.IntStream;
+
+import static java.security.AccessController.getContext;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -193,39 +196,46 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 break;
 
             case R.id.screenshot_btn:
-                View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-                shareImage(store(getScreenShot(rootView), "ReviewSpecificGameActivity"));
+                takeScreenShot();
                 break;
         }
     }
 
-    public Bitmap getScreenShot(View view) {
-        View screenView = view.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
-        return bitmap;
-    }
-
-    public String store(Bitmap bm, String fileName) {
-        File imageFile = new File(new File(Environment.getExternalStorageDirectory().toString()), fileName);
+    public void takeScreenShot() {
         try {
-            FileOutputStream out = new FileOutputStream(imageFile);
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/ReviewGame.png";
+
+            // create bitmap screen capture
+            View v1 = getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.PNG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            shareImage(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
             e.printStackTrace();
         }
-        return imageFile.getAbsolutePath();
     }
 
-    private void shareImage(String path) {
+
+    public void shareImage(File imageFile) {
+        Uri contentUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".my.package.name.provider", imageFile);
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("application/image");
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+        emailIntent.setType("image/png");
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(emailIntent, "Send mail"));
     }
 
@@ -239,7 +249,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
 
     public void setGameDetail(Game curGame) {
         scoreTv.setText(this.curGame.getYourTeamScore() + " - " + this.curGame.getOpposingTeamScore());
-
         Calendar gameCalendar = curGame.getDate();
         String date = gameCalendar.get(Calendar.MONTH) + "/" + gameCalendar.get(Calendar.DATE) + "/" + gameCalendar.get(Calendar.YEAR);
         dateTv.setText(date);
