@@ -13,8 +13,9 @@
         <Button
             android:id="@+id/track_game_back_btn"
             android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_gravity="left"
+            android:layout_centerVertical="true"
             android:background="@drawable/left_pointed_button"
             android:text="@string/back" />
 
@@ -34,6 +35,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
             android:id="@+id/new_game_track_btn"
             android:layout_alignParentEnd="true"
             android:background="@drawable/begin_bt"/>
