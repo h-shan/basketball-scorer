@@ -6,43 +6,39 @@
     android:orientation="vertical"
     tools:context="com.shan.howard.balltracker.NewGameActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="15dp"
-        android:weightSum="3"
-        android:background="#ffffff">
-
+        android:padding="15dp">
         <Button
             android:id="@+id/track_game_back_btn"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
             android:background="@drawable/left_pointed_button"
             android:text="@string/back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:text="@string/new_game"
             android:fontFamily="serif"
             android:textStyle="bold"
             android:textColor="#E4430A"/>
 
         <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="20dp"
             android:id="@+id/new_game_track_btn"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/right_pointed_button"
-            android:text="@string/track" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/begin_bt"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

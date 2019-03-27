@@ -248,10 +248,10 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     }
 
     private void unselectEventTypeButtons() {
-        unhighlightEventTypeButton(mFoulButton);
-        unhighlightEventTypeButton(mFreeThrowButton);
-        unhighlightEventTypeButton(mTwoPointerButton);
-        unhighlightEventTypeButton(mThreePointerButton);
+        mFoulButton.setBackgroundResource(R.drawable.yellow_solid);
+        mFreeThrowButton.setBackgroundResource(R.drawable.green_solid);
+        mTwoPointerButton.setBackgroundResource(R.drawable.green_solid);
+        mThreePointerButton.setBackgroundResource(R.drawable.green_solid);
     }
 
     private void processEventTypeClicked(View aView, String anEventType) {
@@ -289,7 +289,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         ShapeDrawable sd = new ShapeDrawable();
         sd.setShape(new RectShape());
         sd.getPaint().setColor(Color.RED);
-        sd.getPaint().setStrokeWidth(10f);
+        sd.getPaint().setStrokeWidth(20f);
         sd.getPaint().setStyle(Paint.Style.STROKE);
         aView.setBackground(sd);
     }

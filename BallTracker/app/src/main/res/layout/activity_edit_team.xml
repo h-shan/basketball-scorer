@@ -21,7 +21,7 @@
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_margin="0dp"
-            android:layout_weight="1"
+            android:layout_gravity="left"
             android:background="@drawable/left_pointed_button"
             android:text="Teams"
             android:textAllCaps="false"/>
@@ -35,16 +35,6 @@
             android:fontFamily="serif"
             android:textStyle="bold"
             android:textColor="#E4430A"/>
-
-        <Button
-            android:id="@+id/edit_team_player_list_btn"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/right_pointed_button"
-            android:text="Player List"
-            android:textAllCaps="false"/>
     </LinearLayout>
 
     <LinearLayout
