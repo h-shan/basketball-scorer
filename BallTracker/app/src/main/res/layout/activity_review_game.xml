@@ -8,11 +8,12 @@
 
     <Button
         android:id="@+id/main_menu_btn"
-        android:layout_width="40dp"
+        android:layout_width="70dp"
         android:layout_height="40dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/back_button" />
+        android:text="Back"
+        android:background="@drawable/left_pointed_button" />
 
     <TextView
         android:layout_width="50dp"
