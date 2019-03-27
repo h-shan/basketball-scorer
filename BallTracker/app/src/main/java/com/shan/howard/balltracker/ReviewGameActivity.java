@@ -21,9 +21,10 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ReviewGameActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -225,19 +226,16 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             if (yourTeam != null && opposingTeam != null) {
                 String teamsVs = yourTeam.getName() + " vs " + opposingTeam.getName();
                 teamsTV.setText(teamsVs);
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat mySdf = new SimpleDateFormat(myFormat, Locale.US);
 
-                Calendar gameCalendar = currentGame.getDate();
-                String date = gameCalendar.get(Calendar.MONTH) + "/" + gameCalendar.get(Calendar.DATE) + "/" + gameCalendar.get(Calendar.YEAR);
-                dateTV.setText(date);
+                dateTV.setText(mySdf.format(currentGame.getDate().getTime()));
             }
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent myIntent = new Intent(ReviewGameActivity.this, ReviewSpecificGameActivity.class);
-                    myIntent.putExtra("game", mDisplayedGames.get(position));
-                    startActivity(myIntent);
-                }
+            convertView.setOnClickListener(v -> {
+                Intent myIntent = new Intent(ReviewGameActivity.this, ReviewSpecificGameActivity.class);
+                myIntent.putExtra("game", mDisplayedGames.get(position));
+                startActivity(myIntent);
             });
 
             return convertView;

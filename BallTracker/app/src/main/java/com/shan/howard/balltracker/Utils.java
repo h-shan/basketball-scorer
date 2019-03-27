@@ -32,4 +32,17 @@ public class Utils {
     public static String convertEventToLog(String aTeamName, String anEvent) {
         return String.format("%s %s", aTeamName, EVENT_TYPE_TO_ACTION.get(anEvent));
     }
+
+    public static int getEventValue(String anEvent) {
+        switch (anEvent) {
+            case FREE_THROW:
+                return 1;
+            case TWO_POINTER:
+                return 2;
+            case THREE_POINTER:
+                return 3;
+            default:
+                return 0;
+        }
+    }
 }
