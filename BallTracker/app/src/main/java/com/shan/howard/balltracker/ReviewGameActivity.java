@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static com.shan.howard.balltracker.TrackGameActivity.GAME;
+
 public class ReviewGameActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Button mainMenuBtn;
@@ -234,7 +236,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
             convertView.setOnClickListener(v -> {
                 Intent myIntent = new Intent(ReviewGameActivity.this, ReviewSpecificGameActivity.class);
-                myIntent.putExtra("game", mDisplayedGames.get(position));
+                myIntent.putExtra(GAME, mDisplayedGames.get(position));
                 startActivity(myIntent);
             });
 

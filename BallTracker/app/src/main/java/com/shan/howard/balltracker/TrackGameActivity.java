@@ -2,6 +2,7 @@ package com.shan.howard.balltracker;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
@@ -178,7 +179,10 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                 processTeamClicked(v, mYourTeam.getId());
                 break;
             case R.id.track_game_finish_btn:
-
+                Intent myIntent = new Intent(this, ReviewSpecificGameActivity.class);
+                myIntent.putExtra(GAME, mGame);
+                startActivity(myIntent);
+                break;
         }
     }
 

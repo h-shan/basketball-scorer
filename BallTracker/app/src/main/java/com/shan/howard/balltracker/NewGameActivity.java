@@ -1,5 +1,7 @@
 package com.shan.howard.balltracker;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -60,12 +62,13 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
-            if (aTeams != null) {
+            if (aTeams != null && aTeams.size() >= 2) {
                 mTeams = aTeams;
                 mTeamsAdapter.clear();
                 mTeamsAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
                 mTeamsAdapter.notifyDataSetChanged();
             }
+            alertNotEnoughTeams();
         });
 
         mYourTeamSpinner.setAdapter(mTeamsAdapter);
@@ -115,5 +118,21 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mGame.setYourTeamId(myYourTeam.getId());
         mGame.setNotes(mNotesEditText.getText().toString());
         mGameViewModel.insert(mGame);
+    }
+
+    private void alertNotEnoughTeams() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        Activity myActivity = this;
+// 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage("You do not have enough teams to create a new game. Please create at least two teams by clicking on the \"Team\" button on the home page.")
+                .setTitle("Not Enough Teams!")
+                .setPositiveButton("OK", (dialog, id) -> {
+                    myActivity.finish();
+                });
+
+// 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
