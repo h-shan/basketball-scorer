@@ -21,7 +21,6 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -64,10 +63,10 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
 
         Team team1 = new Team();
-        team1.setId(1);
+        team1.setId(1L);
         team1.setName("Team1");
         Team team2 = new Team();
-        team2.setId(2);
+        team2.setId(2L);
         team2.setName("Team2");
         mTeamViewModel.insert(team1);
         mTeamViewModel.insert(team2);
@@ -93,7 +92,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
         Game game1 = new Game();
-        game1.setId(10);
+        game1.setId(10L);
         game1.setYourTeamId(1);
         game1.setOpposingTeamId(2);
         mGameViewModel.insert(game1);

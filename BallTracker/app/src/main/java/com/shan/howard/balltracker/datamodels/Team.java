@@ -7,12 +7,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 @Entity(tableName = "teams")
 public class Team implements Parcelable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "id_")
-    private long id;
+    private Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
     @ColumnInfo(name = "name_")
     private String name = "New team";
@@ -26,11 +27,11 @@ public class Team implements Parcelable {
     @ColumnInfo(name = "deleted_at_")
     private Calendar deletedAt = null;
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -58,19 +59,6 @@ public class Team implements Parcelable {
         this.coach = coach;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
-        dest.writeString(this.name);
-        dest.writeInt(this.color);
-        dest.writeString(this.coach);
-    }
-
     public Calendar getDeletedAt() {
         return deletedAt;
     }
@@ -79,17 +67,32 @@ public class Team implements Parcelable {
         this.deletedAt = deletedAt;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeInt(this.color);
+        dest.writeString(this.coach);
+        dest.writeSerializable(this.deletedAt);
+    }
+
     public Team() {
     }
 
     protected Team(Parcel in) {
-        this.id = in.readLong();
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
         this.color = in.readInt();
         this.coach = in.readString();
+        this.deletedAt = (Calendar) in.readSerializable();
     }
 
-    public static final Parcelable.Creator<Team> CREATOR = new Parcelable.Creator<Team>() {
+    public static final Creator<Team> CREATOR = new Creator<Team>() {
         @Override
         public Team createFromParcel(Parcel source) {
             return new Team(source);

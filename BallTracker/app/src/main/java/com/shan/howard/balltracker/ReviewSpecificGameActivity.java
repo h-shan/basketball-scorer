@@ -1,19 +1,16 @@
 package com.shan.howard.balltracker;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
@@ -23,11 +20,8 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.stream.IntStream;
-
-import static java.security.AccessController.getContext;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,14 +84,14 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         setContentView(R.layout.activity_review_specific_game);
 
         Event event1 = new Event();
-        event1.setId(1);
+        event1.setId(1L);
         event1.setTeamId(1);
         event1.setGameId(10);
         event1.setQuarter(1);
         event1.setEventType("THREE_POINTER");
 
         Event event2 = new Event();
-        event2.setId(2);
+        event2.setId(2L);
         event2.setTeamId(2);
         event2.setGameId(10);
         event2.setQuarter(3);

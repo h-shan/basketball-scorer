@@ -7,12 +7,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 @Entity(tableName = "games")
 public class Game implements Parcelable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "id_")
-    private long id;
+    private long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
     @ColumnInfo(name = "date_")
     private Calendar date = Calendar.getInstance();

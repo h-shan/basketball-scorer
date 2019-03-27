@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 @Entity(tableName = "events")
 public class Event implements Comparable<Event> {
@@ -17,9 +18,9 @@ public class Event implements Comparable<Event> {
     public static final String FREE_THROW = "FREE_THROW";
     public static final String FOUL = "FOUL";
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "id_")
-    private long id;
+    private long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
     @ColumnInfo(name = "game_id_")
     private long gameId;
