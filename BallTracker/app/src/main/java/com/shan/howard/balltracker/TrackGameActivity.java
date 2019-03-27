@@ -54,6 +54,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private EventViewModel mEventViewModel;
     private TeamViewModel mTeamViewModel;
     private LiveData<List<Event>> mEventsLiveData;
+    private List<Event> mEvents;
 
     private TextView mYourTeamNameTV, mOpposingTeamNameTV;
     private TextView mYourTeamScoreTV, mOpposingTeamScoreTV;
@@ -130,6 +131,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private void setUpLogListener() {
         mEventsLiveData.removeObservers(this);
         mEventsLiveData.observe(this, events -> {
+            mEvents = events;
             mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
             mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
             mAdapter.setEventLogs(events.stream()
@@ -192,11 +194,13 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         class MyViewHolder extends RecyclerView.ViewHolder {
             View mView;
             TextView mLogTextView;
+            Button mDeleteLogButton;
 
             MyViewHolder(View aView) {
                 super(aView);
                 mView = aView;
                 mLogTextView = aView.findViewById(R.id.log_list_item_text);
+                mDeleteLogButton = aView.findViewById(R.id.delete_log);
             }
         }
 
@@ -214,6 +218,10 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             holder.mLogTextView.setText(mEventLogs.get(position));
+            holder.mDeleteLogButton.setOnClickListener(v -> {
+                mEventViewModel.delete(mEvents.get(position));
+                this.notifyDataSetChanged();
+            });
         }
 
         @Override
