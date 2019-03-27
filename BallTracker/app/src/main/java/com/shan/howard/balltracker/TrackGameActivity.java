@@ -26,6 +26,7 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.shan.howard.balltracker.datamodels.Event.FOUL;
@@ -125,6 +126,8 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private void setUpLogListener() {
         mEventsLiveData.removeObservers(this);
         mEventsLiveData.observe(this, events -> {
+            mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
+            mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
             mAdapter.setEventLogs(events.stream()
                     .filter(anEvent -> anEvent.getQuarter() == mCurrentQuarter)
                     .sorted()
@@ -134,6 +137,25 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                     }).collect(Collectors.toList()));
             mAdapter.notifyDataSetChanged();
         });
+    }
+
+    private int getTeamScore(List<Event> anEvents, long aTeamId) {
+        Optional<Integer> myScore = anEvents.stream().filter(anEvent -> anEvent.getTeamId() == aTeamId).map(anEvent -> {
+            switch (anEvent.getEventType()) {
+                case FREE_THROW:
+                    return 1;
+                case TWO_POINTER:
+                    return 2;
+                case THREE_POINTER:
+                    return 3;
+                default:
+                    return 0;
+            }
+        }).reduce(Integer::sum);
+        if (myScore.isPresent()) {
+            return myScore.get();
+        }
+        return 0;
     }
 
     @Override
