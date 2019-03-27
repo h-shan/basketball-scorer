@@ -20,8 +20,11 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.stream.IntStream;
+
+import static com.shan.howard.balltracker.TrackGameActivity.*;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -83,23 +86,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_specific_game);
 
-        Event event1 = new Event();
-        event1.setId(1L);
-        event1.setTeamId(1);
-        event1.setGameId(10);
-        event1.setQuarter(1);
-        event1.setEventType("THREE_POINTER");
-
-        Event event2 = new Event();
-        event2.setId(2L);
-        event2.setTeamId(2);
-        event2.setGameId(10);
-        event2.setQuarter(3);
-        event2.setEventType("FREE_THROW");
-
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-        mEventViewModel.insert(event1);
-        mEventViewModel.insert(event2);
 
         // Get Arrow Button
         reviewGameBtn = findViewById(R.id.review_game_btn);
@@ -147,16 +134,15 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
 
         // Get Game and Team from Intent
         Intent myIntent = getIntent();
-        curGame = myIntent.getParcelableExtra("game");
+        curGame = myIntent.getParcelableExtra(GAME);
 
         mTeamViewModel.selectById(curGame.getYourTeamId()).observe(this, aTeam -> {
             yourTeam = aTeam;
-            setYourTeam(yourTeam);
+            setYourTeam();
         });
-        //opposingTeam = mTeamViewModel.selectById(curGame.getOpposingTeamId());
         mTeamViewModel.selectById(curGame.getOpposingTeamId()).observe(this, aTeam -> {
             opposingTeam = aTeam;
-            setOpposingTeam(opposingTeam);
+            setOpposingTeam();
         });
 
         setButtons();
@@ -166,14 +152,14 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.review_game_btn:
                 finish();
                 break;
-
             case R.id.edit_game_btn:
                 Intent editGameIntent = new Intent(this, TrackGameActivity.class);
-                editGameIntent.putExtra("game", curGame);
+                editGameIntent.putExtra(GAME, curGame);
+                editGameIntent.putExtra(YOUR_TEAM, yourTeam);
+                editGameIntent.putExtra(OPPOSING_TEAM, opposingTeam);
                 startActivity(editGameIntent);
                 break;
 
@@ -242,13 +228,13 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     }
 
     public void setGameDetail(Game curGame) {
-        scoreTv.setText(this.curGame.getYourTeamScore() + " - " + this.curGame.getOpposingTeamScore());
-        Calendar gameCalendar = curGame.getDate();
-        String date = gameCalendar.get(Calendar.MONTH) + "/" + gameCalendar.get(Calendar.DATE) + "/" + gameCalendar.get(Calendar.YEAR);
-        dateTv.setText(date);
+        scoreTv.setText(String.format(Locale.US, "%d - %d", curGame.getYourTeamScore(), curGame.getOpposingTeamScore()));
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat mySdf = new SimpleDateFormat(myFormat, Locale.US);
+        dateTv.setText(mySdf.format(curGame.getDate().getTime()));
     }
 
-    public void setOpposingTeam(Team opposingTeam) {
+    public void setOpposingTeam() {
         // Set Team Name
         this.opposingTeamBtn.setText(this.opposingTeam.getName());
         this.opposingTeamTv.setText(this.opposingTeam.getName());
@@ -256,22 +242,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Set Quarter, Overtime Summary and Details
         EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
-
-            // teamQuarters
-            // Col 0: Qt1
-            // Col 1: Qt2
-            // Col 2: Qt3
-            // Col 3: Qt4
-            // Col 4: Ot1
-            // Col 5: Ot2
-
-            // teamEvents
-            // Col 0: THREE_POINTER
-            // Col 1: TWO_POINTER
-            // Col 2: FREE_THROW
-            // Col 3: FOUL
-
-            // Categorizes each event based on team, quarter, and event
             int[] teamQuarters = new int[6];
             int[] teamEvents = new int[4];
 
@@ -279,16 +249,13 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 Event curEvent = aEvents.get(i);
 
                 if (curEvent.getTeamId() == this.opposingTeam.getId()) {
-                    int qt = curEvent.getQuarter();
+                    int qt = curEvent.getQuarter() - 1;
                     int event = Points.valueOf(curEvent.getEventType()).ordinal();
 
-                    teamQuarters[qt]++;
+                    teamQuarters[qt] += Utils.getEventValue(curEvent.getEventType());
                     teamEvents[event]++;
                 }
-
             }
-
-            // Sets each numerical text view
             opposingTeamQt1Tv.setText(String.valueOf(teamQuarters[0]));
             opposingTeamQt2Tv.setText(String.valueOf(teamQuarters[1]));
             opposingTeamQt3Tv.setText(String.valueOf(teamQuarters[2]));
@@ -304,7 +271,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         });
     }
 
-    public void setYourTeam(Team yourTeam) {
+    public void setYourTeam() {
 
         // Set Team Name
         this.yourTeamBtn.setText(this.yourTeam.getName());
@@ -313,22 +280,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Set Quarter, Overtime Summary and Details
         EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
-
-            // teamQuarters
-            // Col 0: Qt1
-            // Col 1: Qt2
-            // Col 2: Qt3
-            // Col 3: Qt4
-            // Col 4: Ot1
-            // Col 5: Ot2
-
-            // teamEvents
-            // Col 0: THREE_POINTER
-            // Col 1: TWO_POINTER
-            // Col 2: FREE_THROW
-            // Col 3: FOUL
-
-            // Categorizes each event based on team, quarter, and event
             int[] teamQuarters = new int[6];
             int[] teamEvents = new int[4];
 
@@ -336,10 +287,10 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 Event curEvent = aEvents.get(i);
 
                 if (curEvent.getTeamId() == this.yourTeam.getId()) {
-                    int qt = curEvent.getQuarter();
+                    int qt = curEvent.getQuarter() - 1;
                     int event = Points.valueOf(curEvent.getEventType()).ordinal();
 
-                    teamQuarters[qt]++;
+                    teamQuarters[qt] += Utils.getEventValue(curEvent.getEventType());
                     teamEvents[event]++;
                 }
 

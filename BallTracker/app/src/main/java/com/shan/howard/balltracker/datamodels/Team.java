@@ -18,11 +18,8 @@ public class Team implements Parcelable {
     @ColumnInfo(name = "name_")
     private String name = "New team";
 
-    @ColumnInfo(name = "color_")
-    private int color = 0xFFFF0000;
-
-    @ColumnInfo(name = "coach_")
-    private String coach = "";
+    @ColumnInfo(name = "notes_")
+    private String notes = "";
 
     @ColumnInfo(name = "deleted_at_")
     private Calendar deletedAt = null;
@@ -43,28 +40,20 @@ public class Team implements Parcelable {
         this.name = name;
     }
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public String getCoach() {
-        return coach;
-    }
-
-    public void setCoach(String coach) {
-        this.coach = coach;
-    }
-
     public Calendar getDeletedAt() {
         return deletedAt;
     }
 
     public void setDeletedAt(Calendar deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override
@@ -76,8 +65,7 @@ public class Team implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.name);
-        dest.writeInt(this.color);
-        dest.writeString(this.coach);
+        dest.writeString(this.notes);
         dest.writeSerializable(this.deletedAt);
     }
 
@@ -87,8 +75,7 @@ public class Team implements Parcelable {
     protected Team(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
-        this.color = in.readInt();
-        this.coach = in.readString();
+        this.notes = in.readString();
         this.deletedAt = (Calendar) in.readSerializable();
     }
 

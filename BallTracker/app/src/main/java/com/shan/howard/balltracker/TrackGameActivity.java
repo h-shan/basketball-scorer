@@ -2,6 +2,7 @@ package com.shan.howard.balltracker;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
@@ -35,7 +36,10 @@ import static com.shan.howard.balltracker.datamodels.Event.THREE_POINTER;
 import static com.shan.howard.balltracker.datamodels.Event.TWO_POINTER;
 
 public class TrackGameActivity extends AppCompatActivity implements Button.OnClickListener {
-    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT"};
+    public static final String GAME = "GAME";
+    public static final String YOUR_TEAM = "YOUR_TEAM";
+    public static final String OPPOSING_TEAM = "OPPOSING_TEAM";
+    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT1", "OT2"};
 
     private Spinner mQuarterSpinner;
     private RecyclerView mLogRecyclerView;
@@ -140,18 +144,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     }
 
     private int getTeamScore(List<Event> anEvents, long aTeamId) {
-        Optional<Integer> myScore = anEvents.stream().filter(anEvent -> anEvent.getTeamId() == aTeamId).map(anEvent -> {
-            switch (anEvent.getEventType()) {
-                case FREE_THROW:
-                    return 1;
-                case TWO_POINTER:
-                    return 2;
-                case THREE_POINTER:
-                    return 3;
-                default:
-                    return 0;
-            }
-        }).reduce(Integer::sum);
+        Optional<Integer> myScore = anEvents.stream().filter(anEvent -> anEvent.getTeamId() == aTeamId).map(x -> Utils.getEventValue(x.getEventType())).reduce(Integer::sum);
         if (myScore.isPresent()) {
             return myScore.get();
         }
@@ -184,6 +177,11 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                 break;
             case R.id.track_game_your_team_btn:
                 processTeamClicked(v, mYourTeam.getId());
+                break;
+            case R.id.track_game_finish_btn:
+                Intent myIntent = new Intent(this, ReviewSpecificGameActivity.class);
+                myIntent.putExtra(GAME, mGame);
+                startActivity(myIntent);
                 break;
         }
     }

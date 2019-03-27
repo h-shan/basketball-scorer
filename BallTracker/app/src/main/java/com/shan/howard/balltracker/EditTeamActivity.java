@@ -2,12 +2,10 @@ package com.shan.howard.balltracker;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +13,13 @@ import android.widget.EditText;
 import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
-import yuku.ambilwarna.AmbilWarnaDialog;
-
 public class EditTeamActivity extends AppCompatActivity implements Button.OnClickListener {
     private Team mTeam;
     private Button mTeamButton;
     private Button mDeleteButton;
-    private Button myTeamColor;
     private EditText mNameET;
-    private EditText mCoachET;
-    private int currentColor;
+    private EditText mNotesET;
     private TeamViewModel mTeamViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +31,11 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
 
         mTeamButton = findViewById(R.id.edit_team_back_btn);
         mTeamButton.setOnClickListener(this);
-
-        myTeamColor = findViewById(R.id.colorButton);
-        GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
-        bg.setColor(mTeam.getColor());
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel .class);
 
         mNameET = findViewById(R.id.edit_team_name_et);
-        mCoachET = findViewById(R.id.edit_team_coach_et);
         mDeleteButton = findViewById(R.id.edit_team_delete_btn);
         mNameET.setText(mTeam.getName());
-        mCoachET.setText(mTeam.getCoach());
         mNameET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -65,19 +52,21 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
 
             }
         });
-        mCoachET.addTextChangedListener(new TextWatcher() {
+        mNotesET = findViewById(R.id.edit_team_notes_edit_text);
+        mNotesET.setText(mTeam.getNotes());
+        mNotesET.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mTeam.setCoach(charSequence.toString());
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mTeam.setNotes(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -98,29 +87,5 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             default:
                 break;
         }
-    }
-
-    public void btnSelectColor(View view) {
-
-        openDialog(false);
-    }
-
-    private  void openDialog (boolean supportAlpha){
-        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
-
-            }
-
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
-                currentColor = color;
-                GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
-                bg.setColor(color);
-                Log.d("edit team", String.format("Color: %x", color));
-                mTeam.setColor(color);
-            }
-        });
-        dialog.show();
     }
 }
