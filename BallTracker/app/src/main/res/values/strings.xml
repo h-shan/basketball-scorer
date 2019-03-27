@@ -6,8 +6,8 @@
     <string name="review_games">Reivew Games</string>
     <string name="track">Track</string>
     <string name="back">Back</string>
-    <string name="your_team">Your Team</string>
-    <string name="opposing_team">Opposing Team</string>
+    <string name="your_team">Team 1</string>
+    <string name="opposing_team">Team 2</string>
     <string name="date">Date</string>
     <string name="main_menu">Main Menu</string>
     <string name="edit_game">Edit Game</string>

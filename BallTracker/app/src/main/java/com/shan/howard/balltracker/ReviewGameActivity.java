@@ -65,15 +65,6 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         // Get all of the teams and store into mAllTeams
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
 
-        Team team1 = new Team();
-        team1.setId(1L);
-        team1.setName("Team1");
-        Team team2 = new Team();
-        team2.setId(2L);
-        team2.setName("Team2");
-        mTeamViewModel.insert(team1);
-        mTeamViewModel.insert(team2);
-
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             if (aTeams != null) {
                 mAllTeams = aTeams;

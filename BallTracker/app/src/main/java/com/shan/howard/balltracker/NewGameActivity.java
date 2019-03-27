@@ -67,8 +67,9 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 mTeamsAdapter.clear();
                 mTeamsAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
                 mTeamsAdapter.notifyDataSetChanged();
+            } else {
+                alertNotEnoughTeams();
             }
-            alertNotEnoughTeams();
         });
 
         mYourTeamSpinner.setAdapter(mTeamsAdapter);
