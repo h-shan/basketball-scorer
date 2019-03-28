@@ -59,7 +59,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private TextView mYourTeamNameTV, mOpposingTeamNameTV;
     private TextView mYourTeamScoreTV, mOpposingTeamScoreTV;
     private Button mYourTeamButton, mOpposingTeamButton;
-    private Button mFreeThrowButton, mFoulButton, mTwoPointerButton, mThreePointerButton, mCancelButton;
+    private Button mFreeThrowButton, mFoulButton, mTwoPointerButton, mThreePointerButton, mCancelButton, mFinishButton;
     private Button mBackButton;
 
     @Override
@@ -106,6 +106,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mTwoPointerButton = findViewById(R.id.track_game_two_pointer_btn);
         mThreePointerButton = findViewById(R.id.track_game_three_pointer_btn);
         mCancelButton = findViewById(R.id.track_game_cancel_btn);
+        mFinishButton = findViewById(R.id.track_game_finish_btn);
 
         mYourTeamButton.setText(mYourTeam.getName());
         mOpposingTeamButton.setText(mOpposingTeam.getName());
@@ -118,6 +119,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mTwoPointerButton.setOnClickListener(this);
         mThreePointerButton.setOnClickListener(this);
         mCancelButton.setOnClickListener(this);
+        mFinishButton.setOnClickListener(this);
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);

@@ -31,7 +31,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner mYourTeamSpinner;
     private Spinner mOpposingTeamSpinner;
     private EditText mDateEditText;
-    private EditText mNotesEditText;
     private Button mBackButton;
     private Button mTrackButton;
     private TeamViewModel mTeamViewModel;
@@ -51,7 +50,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         mDateEditText = findViewById(R.id.new_game_date_edit_text);
         mDateEditText.setOnClickListener(this);
-        mNotesEditText = findViewById(R.id.new_game_notes_edit_text);
         updateLabel();
 
         mBackButton = findViewById(R.id.track_game_back_btn);
@@ -117,7 +115,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         Team myOpposingTeam = mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
         mGame.setOpposingTeamId(myOpposingTeam.getId());
         mGame.setYourTeamId(myYourTeam.getId());
-        mGame.setNotes(mNotesEditText.getText().toString());
         mGameViewModel.insert(mGame);
     }
 

@@ -293,7 +293,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                     teamQuarters[qt] += Utils.getEventValue(curEvent.getEventType());
                     teamEvents[event]++;
                 }
-
             }
 
             // Sets each numerical text view

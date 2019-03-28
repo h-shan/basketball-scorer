@@ -85,12 +85,6 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         mGameAdapter = new GameListAdapter(ReviewGameActivity.this);
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
-        Game game1 = new Game();
-        game1.setId(10L);
-        game1.setYourTeamId(1);
-        game1.setOpposingTeamId(2);
-        mGameViewModel.insert(game1);
-
         viewGamesLv.setAdapter(null);
         mGameViewModel.selectAllLive().observe(this, aGames -> {
             mAllGames = aGames;
