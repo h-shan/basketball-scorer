@@ -5,12 +5,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +64,15 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private Button mFreeThrowButton, mFoulButton, mTwoPointerButton, mThreePointerButton, mCancelButton, mFinishButton;
     private Button mBackButton;
 
+    public boolean isColorDark(int color){
+        double darkness = 1-(0.299*Color.red(color) + 0.587*Color.green(color) + 0.114*Color.blue(color))/255;
+        if(darkness<0.5){
+            return false; // It's a light color
+        }else{
+            return true; // It's a dark color
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +121,14 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
 
         mYourTeamButton.setText(mYourTeam.getName());
         mOpposingTeamButton.setText(mOpposingTeam.getName());
+        GradientDrawable ydrawable = (GradientDrawable)mYourTeamButton.getBackground();
+        ydrawable.setColor(mYourTeam.getColor());
+        GradientDrawable odrawable = (GradientDrawable)mOpposingTeamButton.getBackground();
+        odrawable.setColor(mOpposingTeam.getColor());
+        if(isColorDark(mYourTeam.getColor()))
+            mYourTeamButton.setTextColor(0xffffffff);
+        if(isColorDark(mOpposingTeam.getColor()))
+            mOpposingTeamButton.setTextColor(0xffffffff);
 
         mBackButton.setOnClickListener(this);
         mYourTeamButton.setOnClickListener(this);
@@ -224,6 +243,19 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                 mEventViewModel.delete(mEvents.get(position));
                 this.notifyDataSetChanged();
             });
+
+            int teamColor;
+            if(mEvents.get(position).getTeamId() == mYourTeam.getId()) {
+                teamColor = mYourTeam.getColor();
+//                System.out.println(teamColor);
+            } else {
+                teamColor = mOpposingTeam.getColor();
+//                System.out.println(teamColor);
+            }
+            holder.mView.setBackgroundColor(teamColor);
+
+            if(isColorDark(teamColor))
+                holder.mLogTextView.setTextColor(0xffffffff);
         }
 
         @Override
@@ -251,8 +283,8 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
 
     private void unselectTeamButtons() {
         mCurrentTeamId = -1;
-        unhighlightTeamButton(mYourTeamButton);
-        unhighlightTeamButton(mOpposingTeamButton);
+        unhighlightTeamButton1(mYourTeamButton);
+        unhighlightTeamButton2(mOpposingTeamButton);
     }
 
     private void unselectEventTypeButtons() {
@@ -310,7 +342,11 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         aView.setBackgroundResource(R.drawable.bg_circle_selected);
     }
 
-    private void unhighlightTeamButton(View aView) {
+    private void unhighlightTeamButton1(View aView) {
         aView.setBackgroundResource(R.drawable.bg_circle_bt2);
+    }
+
+    private void unhighlightTeamButton2(View aView) {
+        aView.setBackgroundResource(R.drawable.bg_circle_bt3);
     }
 }

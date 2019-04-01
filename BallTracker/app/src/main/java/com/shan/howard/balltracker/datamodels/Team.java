@@ -24,6 +24,9 @@ public class Team implements Parcelable {
     @ColumnInfo(name = "deleted_at_")
     private Calendar deletedAt = null;
 
+    @ColumnInfo(name = "color_")
+    private int color = 0xFFFF0000;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,6 +59,10 @@ public class Team implements Parcelable {
         this.notes = notes;
     }
 
+    public int getColor() { return color; }
+
+    public void setColor(int color) { this.color = color; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,6 +73,7 @@ public class Team implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.name);
         dest.writeString(this.notes);
+        dest.writeInt(this.color);
         dest.writeSerializable(this.deletedAt);
     }
 
@@ -77,6 +85,7 @@ public class Team implements Parcelable {
         this.name = in.readString();
         this.notes = in.readString();
         this.deletedAt = (Calendar) in.readSerializable();
+        this.color = in.readInt();
     }
 
     public static final Creator<Team> CREATOR = new Creator<Team>() {
@@ -90,4 +99,5 @@ public class Team implements Parcelable {
             return new Team[size];
         }
     };
+
 }
