@@ -31,4 +31,5 @@
     <string name="two_pointer">2 Pointers</string>
     <string name="free_throw">Free Throws</string>
     <string name="fouls">Fouls</string>
+    <string name="search">Search</string>
 </resources>
