@@ -2,61 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/main_menu_btn"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:text="Back"
-        android:background="@drawable/left_pointed_button" />
-
-    <TextView
-        android:layout_width="50dp"
-        android:layout_height="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:fontFamily="serif"
-        android:gravity="center"
-        android:text="@string/games"
-        android:textColor="#E4430A"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/spinner_ll"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/game_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_menu_btn"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/yourTeam_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_weight="1"/>
-
-        <Spinner
-            android:id="@+id/opposingTeam_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
     <ListView
         android:id="@+id/view_games_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner_ll"
+        android:layout_below="@+id/game_tb"
         android:layout_marginTop="5dp"
         android:dividerHeight="5dp" />
-
 
 </RelativeLayout>
