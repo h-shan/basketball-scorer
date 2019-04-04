@@ -26,6 +26,7 @@ import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -149,6 +150,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mEventsLiveData.removeObservers(this);
         mEventsLiveData.observe(this, events -> {
             mEvents = events;
+            Collections.sort(events);
             mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
             mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
             mAdapter.setEventLogs(events.stream()
