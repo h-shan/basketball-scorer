@@ -2,10 +2,12 @@ package com.shan.howard.balltracker;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,12 +15,17 @@ import android.widget.EditText;
 import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class EditTeamActivity extends AppCompatActivity implements Button.OnClickListener {
     private Team mTeam;
     private Button mTeamButton;
     private Button mDeleteButton;
     private EditText mNameET;
     private EditText mNotesET;
+    private Button myTeamColor;
+    private int currentColor;
+
     private TeamViewModel mTeamViewModel;
 
     @Override
@@ -32,7 +39,9 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
         mTeamButton = findViewById(R.id.edit_team_back_btn);
         mTeamButton.setOnClickListener(this);
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel .class);
-
+        myTeamColor = findViewById(R.id.colorButton);
+        GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
+        bg.setColor(mTeam.getColor());
         mNameET = findViewById(R.id.edit_team_name_et);
         mDeleteButton = findViewById(R.id.edit_team_delete_btn);
         mNameET.setText(mTeam.getName());
@@ -87,5 +96,29 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             default:
                 break;
         }
+    }
+
+    public void btnSelectColor(View view) {
+
+        openDialog(false);
+    }
+
+    private  void openDialog (boolean supportAlpha){
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+
+            }
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                currentColor = color;
+                GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
+                bg.setColor(color);
+                Log.d("edit team", String.format("Color: %x", color));
+                mTeam.setColor(color);
+            }
+        });
+        dialog.show();
     }
 }

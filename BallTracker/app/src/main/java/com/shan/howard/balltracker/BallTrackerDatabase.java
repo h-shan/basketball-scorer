@@ -14,7 +14,7 @@ import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
 
-@Database(entities = {Team.class, Event.class, Game.class}, version = 8, exportSchema = false)
+@Database(entities = {Team.class, Event.class, Game.class}, version = 9, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class BallTrackerDatabase extends RoomDatabase {
     public abstract TeamDao teamDao();

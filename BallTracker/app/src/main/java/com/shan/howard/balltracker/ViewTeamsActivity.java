@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +34,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
     private ImageView mNewTeamButton;
     private EditText mEtsearch;
     private TeamListAdapter mAdapter;
+    private FloatingActionButton fab;
 
     private TeamViewModel mTeamViewModel;
 
@@ -43,6 +46,18 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         mAdapter = new TeamListAdapter(ViewTeamsActivity.this);
         mLv = findViewById(R.id.view_teams_teams_lv);
         mLv.setAdapter(mAdapter);
+        fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                mTeamViewModel.insert(new Team());
+//                Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class); //mod the edit team activity
+//                myIntent.putExtra("team", mDisplayedTeams.get(position));
+//                startActivity(myIntent);
+
+            }
+        });
 
         mBackButton = findViewById(R.id.view_teams_back_btn);
         mBackButton.setOnClickListener(this);
