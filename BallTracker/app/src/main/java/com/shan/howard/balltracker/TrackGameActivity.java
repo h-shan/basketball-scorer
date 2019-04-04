@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
-import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private String mCurrentEventType = null;
 
     private EventViewModel mEventViewModel;
-    private TeamViewModel mTeamViewModel;
     private LiveData<List<Event>> mEventsLiveData;
     private List<Event> mEvents;
 
@@ -141,7 +138,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mFinishButton.setOnClickListener(this);
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
 
         mYourTeamNameTV.setText(mYourTeam.getName());
         mOpposingTeamNameTV.setText(mOpposingTeam.getName());
@@ -163,6 +159,11 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                         return Utils.convertEventToLog(myTeamName, anEvent.getEventType());
                     }).collect(Collectors.toList()));
             mAdapter.notifyDataSetChanged();
+            mLogRecyclerView.post(() -> {
+                if (mAdapter.getItemCount() > 0) {
+                    mLogRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+                }
+            });
         });
     }
 
