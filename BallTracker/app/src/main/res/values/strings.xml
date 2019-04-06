@@ -32,4 +32,6 @@
     <string name="free_throw">Free Throws</string>
     <string name="fouls">Fouls</string>
     <string name="search">Search</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
 </resources>

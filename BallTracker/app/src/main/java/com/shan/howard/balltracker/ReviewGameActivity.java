@@ -61,11 +61,7 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_back:
-                finish();
-                return true;
             case R.id.action_search:
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
