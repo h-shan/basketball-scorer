@@ -32,5 +32,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:backgroundTint="@color/colorOrange"
-        android:src="@drawable/plus_sign" />
+        android:src="@drawable/icon_plus" />
 </RelativeLayout>

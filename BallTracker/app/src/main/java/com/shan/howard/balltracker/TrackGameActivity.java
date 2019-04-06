@@ -47,7 +47,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     public static final String GAME = "GAME";
     public static final String YOUR_TEAM = "YOUR_TEAM";
     public static final String OPPOSING_TEAM = "OPPOSING_TEAM";
-    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT1", "OT2"};
+    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT"};
 
     private Spinner mQuarterSpinner;
     private RecyclerView mLogRecyclerView;
@@ -160,7 +160,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private void setUpLogListener() {
         mEventsLiveData.removeObservers(this);
         mEventsLiveData.observe(this, events -> {
-            mEvents = events;
+            mEvents = events.stream().filter(anEvent -> anEvent.getQuarter() == mCurrentQuarter).collect(Collectors.toList());
             Collections.sort(events);
             mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
             mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
