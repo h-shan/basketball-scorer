@@ -10,12 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".ReviewSpecificGameActivity" />
-        <activity android:name=".ReviewGameActivity" />
+
+        <activity android:name=".ReviewGameActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".EditTeamActivity"
             android:parentActivityName="com.shan.howard.balltracker.ViewTeamsActivity"/>
         <activity android:name=".ViewTeamsActivity"
             android:label="@string/teams"
             android:parentActivityName=".MainActivity"/>
+
         <activity android:name=".TrackGameActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
