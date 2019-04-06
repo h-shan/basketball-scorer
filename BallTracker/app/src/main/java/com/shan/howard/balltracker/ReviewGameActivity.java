@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,13 @@ import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,6 +82,7 @@ public class ReviewGameActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.game_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Game or Date");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -171,6 +179,10 @@ public class ReviewGameActivity extends AppCompatActivity {
                     } else {
                         charSequence = charSequence.toString().toLowerCase();
                         for (int i = 0; i < mGames.size(); i++) {
+                            String myFormat = "MM/dd/yy";
+                            SimpleDateFormat mySdf = new SimpleDateFormat(myFormat, Locale.US);
+                            String date = mySdf.format(mGames.get(i).getDate().getTime());
+
                             long yourTeamId = mGames.get(i).getYourTeamId();
                             long opposingTeamId = mGames.get(i).getOpposingTeamId();
 
@@ -190,7 +202,10 @@ public class ReviewGameActivity extends AppCompatActivity {
                             }
 
                             String data = yourTeam.getName() + " vs " + opposingTeam.getName();
-                            if (data.toLowerCase().contains(charSequence)) {
+                            if(date.contains(charSequence)){
+                                FilteredArrList.add(mGames.get(i));
+                            }
+                            else if (data.toLowerCase().contains(charSequence)) {
                                 FilteredArrList.add(mGames.get(i));
                             }
                         }
