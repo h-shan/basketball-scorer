@@ -5,19 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,12 +30,8 @@ import java.util.List;
 public class ViewTeamsActivity extends AppCompatActivity implements Button.OnClickListener {
     private static final String TAG = MainActivity.class.getName();
     private ListView mLv;
-    private Button mBackButton;
-    private ImageView mNewTeamButton;
-    private EditText mEtsearch;
     private TeamListAdapter mAdapter;
-    private FloatingActionButton fab;
-
+    private FloatingActionButton mNewTeamButton;
     private TeamViewModel mTeamViewModel;
 
     @Override
@@ -46,59 +42,53 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
         mAdapter = new TeamListAdapter(ViewTeamsActivity.this);
         mLv = findViewById(R.id.view_teams_teams_lv);
         mLv.setAdapter(mAdapter);
-        fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                mTeamViewModel.insert(new Team());
-//                Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class); //mod the edit team activity
-//                myIntent.putExtra("team", mDisplayedTeams.get(position));
-//                startActivity(myIntent);
-
-            }
-        });
-
-        mBackButton = findViewById(R.id.view_teams_back_btn);
-        mBackButton.setOnClickListener(this);
-        mEtsearch = findViewById(R.id.searchET);
-        mEtsearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d("edittext", charSequence.toString());
-                mAdapter.getFilter().filter(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        mNewTeamButton = findViewById(R.id.view_teams_new_team_btn);
-        mNewTeamButton.setOnClickListener(this);
 
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             mAdapter.setTeams(aTeams);
             mAdapter.notifyDataSetChanged();
         });
+
+        Toolbar myToolbar = findViewById(R.id.view_teams_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
+
+        mNewTeamButton = findViewById(R.id.view_teams_new_team);
+        mNewTeamButton.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_teams_options_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.view_teams_options_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.view_teams_new_team_btn:
-                mTeamViewModel.insert(new Team());
-                Log.d(TAG, "New team!");
-                break;
-            case R.id.view_teams_back_btn:
-                finish();
+            case R.id.view_teams_new_team:
+                Team myTeam = new Team();
+                mTeamViewModel.insert(myTeam);
+                editTeam(myTeam);
                 break;
             default:
                 break;
@@ -143,15 +133,7 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             nameTV.setText(myTeam.getName());
             Log.d(TAG, "sfgesgsgsjglsfghsh");
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class);
-                    myIntent.putExtra("team", mDisplayedTeams.get(position));
-                    startActivity(myIntent);
-                }
-            });
+            convertView.setOnClickListener(v -> editTeam(mDisplayedTeams.get(position)));
             return convertView;
         }
 
@@ -186,6 +168,10 @@ public class ViewTeamsActivity extends AppCompatActivity implements Button.OnCli
             };
         }
     }
+
+    private void editTeam(Team aTeam) {
+        Intent myIntent = new Intent(ViewTeamsActivity.this, EditTeamActivity.class);
+        myIntent.putExtra("team", aTeam);
+        startActivity(myIntent);
+    }
 }
-
-

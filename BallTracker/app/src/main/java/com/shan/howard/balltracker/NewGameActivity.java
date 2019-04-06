@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,6 +23,7 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -35,9 +37,14 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Button mTrackButton;
     private TeamViewModel mTeamViewModel;
     private GameViewModel mGameViewModel;
-    private ArrayAdapter<String> mTeamsAdapter;
+    private ArrayAdapter<String> yourTeamsAdapter;
+    private ArrayAdapter<String> opposingTeamsAdapter;
+    private long yourTeamID;
+    private long opposingTeamID;
 
     private List<Team> mTeams;
+    private List<Team> yourTeams;
+    private List<Team> opposingTeams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
 
         mYourTeamSpinner = findViewById(R.id.new_game_your_team_spinner);
         mOpposingTeamSpinner = findViewById(R.id.new_game_opposing_team_spinner);
-        mTeamsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        yourTeamsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        opposingTeamsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
 
         mDateEditText = findViewById(R.id.new_game_date_edit_text);
         mDateEditText.setOnClickListener(this);
@@ -62,16 +70,77 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             if (aTeams != null && aTeams.size() >= 2) {
                 mTeams = aTeams;
-                mTeamsAdapter.clear();
-                mTeamsAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
-                mTeamsAdapter.notifyDataSetChanged();
+                yourTeamID = mTeams.get(0).getId();
+                opposingTeamID = mTeams.get(1).getId();
+
+                yourTeamsAdapter.clear();
+                yourTeams = newTeams(mTeams);
+                removeTeamByID(yourTeams,opposingTeamID);
+                yourTeamsAdapter.addAll(yourTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                yourTeamsAdapter.notifyDataSetChanged();
+
+                opposingTeamsAdapter.clear();
+                opposingTeams = newTeams(mTeams);
+                removeTeamByID(opposingTeams,yourTeamID);
+                opposingTeamsAdapter.addAll(opposingTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                opposingTeamsAdapter.notifyDataSetChanged();
+
             } else {
                 alertNotEnoughTeams();
             }
         });
 
-        mYourTeamSpinner.setAdapter(mTeamsAdapter);
-        mOpposingTeamSpinner.setAdapter(mTeamsAdapter);
+        mYourTeamSpinner.setAdapter(yourTeamsAdapter);
+
+        mOpposingTeamSpinner.setAdapter(opposingTeamsAdapter);
+
+        mYourTeamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                opposingTeams = newTeams(mTeams);
+                removeTeamByID(opposingTeams,yourTeams.get(position).getId());
+                opposingTeamsAdapter.clear();
+                opposingTeamsAdapter.addAll(opposingTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                opposingTeamsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+
+        mOpposingTeamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                yourTeams = newTeams(mTeams);
+                removeTeamByID(yourTeams,opposingTeams.get(position).getId());
+                yourTeamsAdapter.clear();
+                yourTeamsAdapter.addAll(yourTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                yourTeamsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+    }
+
+    public void removeTeamByID(List<Team> Teams, long ID){
+        for (Iterator<Team> iterator = Teams.iterator(); iterator.hasNext(); ) {
+            Team value = iterator.next();
+            if (value.getId() == ID) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private List<Team> newTeams(List<Team> mTeams){
+        List<Team> res = new ArrayList<Team>(mTeams);
+        return  res;
     }
 
     @Override
@@ -94,6 +163,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

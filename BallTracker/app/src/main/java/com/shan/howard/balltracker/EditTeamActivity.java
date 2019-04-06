@@ -4,10 +4,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +21,8 @@ import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class EditTeamActivity extends AppCompatActivity implements Button.OnClickListener {
+public class EditTeamActivity extends AppCompatActivity {
     private Team mTeam;
-    private Button mTeamButton;
-    private Button mDeleteButton;
     private EditText mNameET;
     private EditText mNotesET;
     private Button myTeamColor;
@@ -36,14 +38,11 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
         Intent myIntent = getIntent();
         mTeam = myIntent.getParcelableExtra("team");
 
-        mTeamButton = findViewById(R.id.edit_team_back_btn);
-        mTeamButton.setOnClickListener(this);
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel .class);
         myTeamColor = findViewById(R.id.colorButton);
         GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
         bg.setColor(mTeam.getColor());
         mNameET = findViewById(R.id.edit_team_name_et);
-        mDeleteButton = findViewById(R.id.edit_team_delete_btn);
         mNameET.setText(mTeam.getName());
         mNameET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,6 +53,7 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mTeam.setName(charSequence.toString());
+                setTitle(mTeam.getName());
             }
 
             @Override
@@ -79,31 +79,30 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
 
             }
         });
-        mDeleteButton.setOnClickListener(this);
-    }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.edit_team_back_btn:
-                mTeamViewModel.update(mTeam);
-                finish();
-                break;
-            case R.id.edit_team_delete_btn:
-                mTeamViewModel.delete(mTeam);
-                finish();
-                break;
-            default:
-                break;
+        Toolbar myToolbar = findViewById(R.id.edit_team_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
         }
+
+        setTitle(mTeam.getName());
     }
 
     public void btnSelectColor(View view) {
-
         openDialog(false);
     }
 
-    private  void openDialog (boolean supportAlpha){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_team_options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void openDialog (boolean supportAlpha){
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
@@ -120,5 +119,23 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+                Log.d("EditTeamActivity", "Tapped back!");
+                mTeamViewModel.update(mTeam);
+                finish();
+                return true;
+            case R.id.edit_team_options_delete:
+                mTeamViewModel.delete(mTeam);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 
 import static com.shan.howard.balltracker.TrackGameActivity.GAME;
 
-public class ReviewGameActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ReviewGameActivity extends AppCompatActivity {
 
     private List<Team> mAllTeams;
     //private List<Game> mAllGames;
@@ -50,51 +51,29 @@ public class ReviewGameActivity extends AppCompatActivity implements SearchView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_game);
 
-        // Set Team Adapter
-        mTeamAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
-        mTeamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Get all of the teams and store into mAllTeams
-        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
-            if (aTeams != null) {
-                mAllTeams = aTeams;
-                mTeamAdapter.clear();
-                mTeamAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
-                mTeamAdapter.notifyDataSetChanged();
-            }
-        });
-
-        // Set game list view adapter
         mGameAdapter = new GameListAdapter(ReviewGameActivity.this);
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
-
         gameLV = findViewById(R.id.view_games_lv);
-        gameLV.setAdapter(null);
-        mGameViewModel.selectAllLive().observe(this, aGames -> {
-            //mAllGames = aGames;
-            mGameAdapter.setGames(aGames);
-            mGameAdapter.notifyDataSetChanged();
-        });
         gameLV.setAdapter(mGameAdapter);
 
-        // App Bar
-        gameTB = (Toolbar) findViewById(R.id.game_tb);
+        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
+            mAllTeams = aTeams;
+        });
+
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        mGameViewModel.selectAllLive().observe(this, aTeams ->{
+            mGameAdapter.setGames(aTeams);
+            mGameAdapter.notifyDataSetChanged();
+        });
+
+        gameTB = findViewById(R.id.game_tb);
         setSupportActionBar(gameTB);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
-    // App Bar Settings
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        mGameAdapter.getFilter().filter(newText);
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -106,7 +85,18 @@ public class ReviewGameActivity extends AppCompatActivity implements SearchView.
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mGameAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }

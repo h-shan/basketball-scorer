@@ -18,8 +18,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".EditTeamActivity" />
-        <activity android:name=".ViewTeamsActivity" />
+        <activity android:name=".EditTeamActivity"
+            android:parentActivityName="com.shan.howard.balltracker.ViewTeamsActivity"/>
+        <activity android:name=".ViewTeamsActivity"
+            android:label="@string/teams"/>
+
         <activity android:name=".TrackGameActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
