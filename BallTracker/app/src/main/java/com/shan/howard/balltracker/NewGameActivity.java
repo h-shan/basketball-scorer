@@ -161,8 +161,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 saveGame();
                 Intent myIntent = new Intent(this, TrackGameActivity.class);
                 myIntent.putExtra("GAME", mGame);
-                myIntent.putExtra("YOUR_TEAM", mTeams.get(mYourTeamSpinner.getSelectedItemPosition()));
-                myIntent.putExtra("OPPOSING_TEAM", mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition()));
+                myIntent.putExtra("YOUR_TEAM", yourTeams.get(mYourTeamSpinner.getSelectedItemPosition()));
+                myIntent.putExtra("OPPOSING_TEAM", opposingTeams.get(mOpposingTeamSpinner.getSelectedItemPosition()));
                 startActivity(myIntent);
                 break;
             case R.id.new_game_date_edit_text:
