@@ -1,6 +1,5 @@
 package com.shan.howard.balltracker;
 
-import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ListView;
@@ -70,7 +68,6 @@ public class ReviewGameActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,10 +181,11 @@ public class ReviewGameActivity extends AppCompatActivity {
                                 if (yourTeam != null && opposingTeam != null) {
                                     break;
                                 }
-                                if (mAllTeams.get(i).getId() == yourTeamId) {
-                                    yourTeam = mAllTeams.get(i);
-                                } else if (mAllTeams.get(i).getId() == opposingTeamId) {
-                                    opposingTeam = mAllTeams.get(i);
+                                if (mAllTeams.get(j).getId() == yourTeamId) {
+                                    yourTeam = mAllTeams.get(j);
+                                }
+                                if (mAllTeams.get(j).getId() == opposingTeamId) {
+                                    opposingTeam = mAllTeams.get(j);
                                 }
                             }
 
