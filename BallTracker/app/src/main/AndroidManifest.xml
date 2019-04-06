@@ -10,7 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".ReviewSpecificGameActivity" />
-        <activity android:name=".ReviewGameActivity" />
+
+        <activity android:name=".ReviewGameActivity"
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".EditTeamActivity" />
         <activity android:name=".ViewTeamsActivity" />
         <activity android:name=".TrackGameActivity" />

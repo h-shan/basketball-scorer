@@ -1,21 +1,23 @@
 package com.shan.howard.balltracker;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
+import android.app.SearchManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
@@ -26,15 +28,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.shan.howard.balltracker.TrackGameActivity.GAME;
 
-public class ReviewGameActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-
-    private Toolbar gameToolbar;
+public class ReviewGameActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private List<Team> mAllTeams;
-    private List<Game> mAllGames;
+    //private List<Game> mAllGames;
+
+    private ListView gameLV;
+    private Toolbar gameTB;
 
     private GameViewModel mGameViewModel;
     private TeamViewModel mTeamViewModel;
@@ -46,40 +50,65 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_game);
 
-        gameToolbar = (Toolbar) findViewById(R.id.game_tb);
-        setSupportActionBar(gameToolbar);
+        // Set Team Adapter
+        mTeamAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        mTeamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        // Get all of the teams and store into mAllTeams
+        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
+            if (aTeams != null) {
+                mAllTeams = aTeams;
+                mTeamAdapter.clear();
+                mTeamAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
+                mTeamAdapter.notifyDataSetChanged();
+            }
+        });
+
+        // Set game list view adapter
+        mGameAdapter = new GameListAdapter(ReviewGameActivity.this);
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+
+        gameLV = findViewById(R.id.view_games_lv);
+        gameLV.setAdapter(null);
+        mGameViewModel.selectAllLive().observe(this, aGames -> {
+            //mAllGames = aGames;
+            mGameAdapter.setGames(aGames);
+            mGameAdapter.notifyDataSetChanged();
+        });
+        gameLV.setAdapter(mGameAdapter);
+
+        // App Bar
+        gameTB = (Toolbar) findViewById(R.id.game_tb);
+        setSupportActionBar(gameTB);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    // App Bar Settings
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
+    public boolean onQueryTextChange(String newText) {
+        mGameAdapter.getFilter().filter(newText);
+        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_back:
-                finish();
-                return true;
-            case R.id.action_search:
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+        getMenuInflater().inflate(R.menu.game_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
 
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     public class GameListAdapter extends BaseAdapter {
@@ -125,13 +154,11 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             Team opposingTeam = null;
 
             // Gets the team
-            for (int i = 0; i < mAllTeams.size(); i++) {
+            for (int i = 0; i < mAllTeams.size(); i++)
                 if (mAllTeams.get(i).getId() == currentGame.getYourTeamId()) {
                     yourTeam = mAllTeams.get(i);
-                } else if (mAllTeams.get(i).getId() == currentGame.getOpposingTeamId()) {
+                } else if (mAllTeams.get(i).getId() == currentGame.getOpposingTeamId())
                     opposingTeam = mAllTeams.get(i);
-                }
-            }
 
             if (yourTeam != null && opposingTeam != null) {
                 String teamsVs = yourTeam.getName() + " vs " + opposingTeam.getName();
@@ -150,15 +177,55 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
 
             return convertView;
         }
-    }
 
-    public static class CreateGameDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    FilterResults results = new FilterResults();
+                    ArrayList<Game> FilteredArrList = new ArrayList<Game>();
+                    if (charSequence == null || charSequence.length() == 0) {
+                        results.count = mGames.size();
+                        results.values = mGames;
+                    } else {
+                        charSequence = charSequence.toString().toLowerCase();
+                        for (int i = 0; i < mGames.size(); i++) {
+                            long yourTeamId = mGames.get(i).getYourTeamId();
+                            long opposingTeamId = mGames.get(i).getOpposingTeamId();
 
+                            Team yourTeam = null;
+                            Team opposingTeam = null;
 
-            return builder.create();
+                            for (int j = 0; j < mAllTeams.size(); j++) {
+                                if (yourTeam != null && opposingTeam != null) {
+                                    break;
+                                }
+                                if (mAllTeams.get(i).getId() == yourTeamId) {
+                                    yourTeam = mAllTeams.get(i);
+                                } else if (mAllTeams.get(i).getId() == opposingTeamId) {
+                                    opposingTeam = mAllTeams.get(i);
+                                }
+                            }
+
+                            String data = yourTeam.getName() + " vs " + opposingTeam.getName();
+                            if (data.toLowerCase().contains(charSequence)) {
+                                FilteredArrList.add(mGames.get(i));
+                            }
+                        }
+                        results.count = FilteredArrList.size();
+                        results.values = FilteredArrList;
+                    }
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    mDisplayedGames = (List<Game>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
+
     }
+
 }

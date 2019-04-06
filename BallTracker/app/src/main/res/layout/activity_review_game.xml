@@ -11,8 +11,9 @@
         android:id="@+id/game_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorOrange"
         android:minHeight="?attr/actionBarSize"
+        android:elevation="@dimen/menu_elevation"
         android:theme="?attr/actionBarTheme" />
 
     <ListView
