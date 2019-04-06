@@ -154,9 +154,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.track_game_back_btn:
-                finish();
-                break;
             case R.id.new_game_track_btn:
                 saveGame();
                 Intent myIntent = new Intent(this, TrackGameActivity.class);
@@ -171,8 +168,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
-
-
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
