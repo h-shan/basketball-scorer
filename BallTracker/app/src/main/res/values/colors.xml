@@ -6,4 +6,6 @@
     <color name="colorSelector">#FF3300</color>
     <color name="colorYourTeam">#FF3300</color>
     <color name="colorOpposingTeam">#FF3300</color>
+    <color name="colorWhite">#FFFF</color>
+    <color name="colorOrange">#FFA500</color>
 </resources>

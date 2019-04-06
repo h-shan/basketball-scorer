@@ -1,20 +1,21 @@
 package com.shan.howard.balltracker;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
@@ -25,16 +26,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static com.shan.howard.balltracker.TrackGameActivity.GAME;
 
 public class ReviewGameActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private Button mainMenuBtn;
-    private Spinner yourTeamSpinner;
-    private Spinner opposingTeamSpinner;
-    private ListView viewGamesLv;
+    private Toolbar gameToolbar;
 
     private List<Team> mAllTeams;
     private List<Game> mAllGames;
@@ -49,114 +46,36 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_game);
 
-        // Set Widgets
-        mainMenuBtn = findViewById(R.id.main_menu_btn);
-        yourTeamSpinner = findViewById(R.id.yourTeam_spinner);
-        opposingTeamSpinner = findViewById(R.id.opposingTeam_spinner);
-        viewGamesLv = findViewById(R.id.view_games_lv);
+        gameToolbar = (Toolbar) findViewById(R.id.game_tb);
+        setSupportActionBar(gameToolbar);
 
-        // Set click listener
-        mainMenuBtn.setOnClickListener(this);
-
-        // Set Team Adapter
-        mTeamAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
-        mTeamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Get all of the teams and store into mAllTeams
-        mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
-
-        mTeamViewModel.selectAllLive().observe(this, aTeams -> {
-            if (aTeams != null) {
-                mAllTeams = aTeams;
-                mTeamAdapter.clear();
-                mTeamAdapter.addAll(aTeams.stream().map(Team::getName).collect(Collectors.toList()));
-                mTeamAdapter.notifyDataSetChanged();
-            }
-        });
-
-        // Populate spinners with teams
-        yourTeamSpinner.setAdapter(mTeamAdapter);
-        yourTeamSpinner.setOnItemSelectedListener(this);
-
-        opposingTeamSpinner.setAdapter(mTeamAdapter);
-        opposingTeamSpinner.setOnItemSelectedListener(this);
-
-        // Set game list view adapter
-        mGameAdapter = new GameListAdapter(ReviewGameActivity.this);
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
-
-        viewGamesLv.setAdapter(null);
-        mGameViewModel.selectAllLive().observe(this, aGames -> {
-            mAllGames = aGames;
-            mGameAdapter.setGames(aGames);
-            mGameAdapter.notifyDataSetChanged();
-        });
-        viewGamesLv.setAdapter(mGameAdapter);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.main_menu_btn:
-                finish();
-                break;
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        Team yourTeam = null;
-        Team opposingTeam = null;
 
-        // Selects team from spinners if not blank
-        if (yourTeamSpinner.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
-            yourTeam = mAllTeams.get(yourTeamSpinner.getSelectedItemPosition());
-        }
-        if (opposingTeamSpinner.getSelectedItemPosition() != AdapterView.INVALID_POSITION) {
-            opposingTeam = mAllTeams.get(opposingTeamSpinner.getSelectedItemPosition());
-        }
-
-        List<Game> filterGameList = new ArrayList<>();
-
-        // No teams searched
-        if (yourTeam == null && opposingTeam == null) {
-            filterGameList = mAllGames;
-        }
-
-        // Search games for only one team
-        else if (yourTeam == null ^ opposingTeam == null) {
-            Long searchTeamId = (yourTeam != null ? yourTeam : opposingTeam).getId();
-            for (int i = 0; i < mAllGames.size(); i++) {
-                Game currentGame = mAllGames.get(i);
-                if (searchTeamId == currentGame.getYourTeamId() || searchTeamId == currentGame.getOpposingTeamId()) {
-                    filterGameList.add(mAllGames.get(i));
-                }
-            }
-        }
-
-        // Search games for two teams
-        else {
-            Long searchYourTeamId = yourTeam.getId();
-            Long searchOpposingTeamId = opposingTeam.getId();
-
-            for (int i = 0; i < mAllGames.size(); i++) {
-                Game currentGame = mAllGames.get(i);
-                if ((searchYourTeamId == currentGame.getYourTeamId() && searchOpposingTeamId == currentGame.getOpposingTeamId()) ||
-                        (searchYourTeamId == currentGame.getOpposingTeamId() && searchOpposingTeamId == currentGame.getYourTeamId())) {
-                    filterGameList.add(mAllGames.get(i));
-                }
-            }
-        }
-
-        mGameAdapter.setGames(filterGameList);
-        mGameAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        yourTeamSpinner.setSelection(0);
-        opposingTeamSpinner.setSelection(0);
     }
 
     public class GameListAdapter extends BaseAdapter {
@@ -226,6 +145,16 @@ public class ReviewGameActivity extends AppCompatActivity implements View.OnClic
             });
 
             return convertView;
+        }
+    }
+
+    public static class CreateGameDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
+            return builder.create();
         }
     }
 }
