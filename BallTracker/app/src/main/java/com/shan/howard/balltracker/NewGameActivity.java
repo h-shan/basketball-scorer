@@ -6,7 +6,9 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +35,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner mYourTeamSpinner;
     private Spinner mOpposingTeamSpinner;
     private EditText mDateEditText;
-    private Button mBackButton;
     private Button mTrackButton;
     private TeamViewModel mTeamViewModel;
     private GameViewModel mGameViewModel;
@@ -60,8 +61,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mDateEditText.setOnClickListener(this);
         updateLabel();
 
-        mBackButton = findViewById(R.id.track_game_back_btn);
-        mBackButton.setOnClickListener(this);
         mTrackButton = findViewById(R.id.new_game_track_btn);
         mTrackButton.setOnClickListener(this);
 
@@ -127,6 +126,15 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 // sometimes you need nothing here
             }
         });
+
+        Toolbar myToolbar = findViewById(R.id.new_game_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
     }
 
     public void removeTeamByID(List<Team> Teams, long ID){
