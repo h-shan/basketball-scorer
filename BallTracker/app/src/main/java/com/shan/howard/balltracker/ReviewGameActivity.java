@@ -29,14 +29,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static com.shan.howard.balltracker.TrackGameActivity.GAME;
 
 public class ReviewGameActivity extends AppCompatActivity {
 
     private List<Team> mAllTeams;
-    //private List<Game> mAllGames;
 
     private ListView gameLV;
     private Toolbar gameTB;
@@ -44,7 +42,6 @@ public class ReviewGameActivity extends AppCompatActivity {
     private GameViewModel mGameViewModel;
     private TeamViewModel mTeamViewModel;
     private GameListAdapter mGameAdapter;
-    private ArrayAdapter<String> mTeamAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +52,15 @@ public class ReviewGameActivity extends AppCompatActivity {
         gameLV = findViewById(R.id.view_games_lv);
         gameLV.setAdapter(mGameAdapter);
 
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        mGameViewModel.selectAllLive().observe(this, aGames -> {
+            mGameAdapter.setGames(aGames);
+            mGameAdapter.notifyDataSetChanged();
+        });
+
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
         mTeamViewModel.selectAllLive().observe(this, aTeams -> {
             mAllTeams = aTeams;
-        });
-
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
-        mGameViewModel.selectAllLive().observe(this, aTeams ->{
-            mGameAdapter.setGames(aTeams);
-            mGameAdapter.notifyDataSetChanged();
         });
 
         gameTB = findViewById(R.id.game_tb);
@@ -81,10 +78,6 @@ public class ReviewGameActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.game_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -147,8 +140,9 @@ public class ReviewGameActivity extends AppCompatActivity {
             for (int i = 0; i < mAllTeams.size(); i++)
                 if (mAllTeams.get(i).getId() == currentGame.getYourTeamId()) {
                     yourTeam = mAllTeams.get(i);
-                } else if (mAllTeams.get(i).getId() == currentGame.getOpposingTeamId())
+                } else if (mAllTeams.get(i).getId() == currentGame.getOpposingTeamId()) {
                     opposingTeam = mAllTeams.get(i);
+                }
 
             if (yourTeam != null && opposingTeam != null) {
                 String teamsVs = yourTeam.getName() + " vs " + opposingTeam.getName();
