@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
@@ -39,6 +41,7 @@ import static com.shan.howard.balltracker.datamodels.Event.FOUL;
 import static com.shan.howard.balltracker.datamodels.Event.FREE_THROW;
 import static com.shan.howard.balltracker.datamodels.Event.THREE_POINTER;
 import static com.shan.howard.balltracker.datamodels.Event.TWO_POINTER;
+import static java.lang.Math.round;
 
 public class TrackGameActivity extends AppCompatActivity implements Button.OnClickListener {
     public static final String GAME = "GAME";
@@ -150,6 +153,8 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setHomeButtonEnabled(true);
         }
+
+        unselectEventTypeButtons();
     }
 
     private void setUpLogListener() {
@@ -310,10 +315,10 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     }
 
     private void unselectEventTypeButtons() {
-        mFoulButton.setBackgroundResource(R.drawable.yellow_solid);
-        mFreeThrowButton.setBackgroundResource(R.drawable.green_solid);
-        mTwoPointerButton.setBackgroundResource(R.drawable.green_solid);
-        mThreePointerButton.setBackgroundResource(R.drawable.green_solid);
+        unhighlightEventTypeButton(mFoulButton);
+        unhighlightEventTypeButton(mFreeThrowButton);
+        unhighlightEventTypeButton(mTwoPointerButton);
+        unhighlightEventTypeButton(mThreePointerButton);
     }
 
     private void processEventTypeClicked(View aView, String anEventType) {
@@ -347,17 +352,31 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         }
     }
 
+
+
     private void highlightEventTypeButton(View aView) {
-        ShapeDrawable sd = new ShapeDrawable();
-        sd.setShape(new RectShape());
-        sd.getPaint().setColor(Color.RED);
-        sd.getPaint().setStrokeWidth(20f);
-        sd.getPaint().setStyle(Paint.Style.STROKE);
-        aView.setBackground(sd);
+        switch (aView.getId()) {
+            case R.id.track_game_three_pointer_btn:
+            case R.id.track_game_two_pointer_btn:
+            case R.id.track_game_free_throw_btn:
+                aView.setBackgroundResource(R.drawable.green_solid);
+                break;
+            case R.id.track_game_foul_btn:
+                aView.setBackgroundResource(R.drawable.yellow_solid);
+                break;
+        }
     }
 
     private void unhighlightEventTypeButton(View aView) {
-        aView.setBackgroundResource(android.R.drawable.btn_default);
+        GradientDrawable sd = new GradientDrawable();
+        sd.setShape(GradientDrawable.RECTANGLE);
+        GradientDrawable drawable = (GradientDrawable)aView.getBackground();
+        int color = drawable.getColor().getDefaultColor();
+
+        color = (color & 0x00FFFFFF) | 0x2F000000;
+        sd.setColor(color);
+        sd.setStroke(10,Color.BLACK);
+        aView.setBackground(sd);
     }
 
     private void highlightTeamButton(View aView) {
@@ -371,4 +390,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private void unhighlightTeamButton2(View aView) {
         aView.setBackgroundResource(R.drawable.bg_circle_bt3);
     }
+
+
 }
