@@ -23,11 +23,12 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewGameActivity" />
+        <activity android:name=".NewGameActivity"
+            android:label="@string/new_game"
+            android:parentActivityName=".MainActivity"/>
 
         <provider
             android:name=".GenericFileProvider"

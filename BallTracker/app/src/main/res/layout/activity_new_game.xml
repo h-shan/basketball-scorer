@@ -6,72 +6,57 @@
     android:orientation="vertical"
     tools:context="com.shan.howard.balltracker.NewGameActivity">
 
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/new_game_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp">
-        <Button
-            android:id="@+id/track_game_back_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="left"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_bt"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/new_game"
-            android:fontFamily="serif"
-            android:textStyle="bold"
-            android:textColor="#E4430A"/>
-
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/new_game_track_btn"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/begin_bt"/>
-
-    </RelativeLayout>
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="4dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/your_team"/>
-        <Spinner
-            android:id="@+id/new_game_your_team_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="4dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
-        <TextView
+        <LinearLayout
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_team" />
+
+            <Spinner
+                android:id="@+id/new_game_your_team_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/opposing_team"/>
-        <Spinner
-            android:id="@+id/new_game_opposing_team_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/opposing_team" />
+
+            <Spinner
+                android:id="@+id/new_game_opposing_team_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -95,4 +80,10 @@
             android:hint="@string/date"
             tools:ignore="Autofill,KeyboardInaccessibleWidget,TextFields" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/new_game_track_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Game" />
 </LinearLayout>

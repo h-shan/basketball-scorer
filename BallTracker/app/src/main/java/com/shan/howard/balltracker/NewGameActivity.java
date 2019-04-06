@@ -6,7 +6,9 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +35,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner mYourTeamSpinner;
     private Spinner mOpposingTeamSpinner;
     private EditText mDateEditText;
-    private Button mBackButton;
     private Button mTrackButton;
     private TeamViewModel mTeamViewModel;
     private GameViewModel mGameViewModel;
@@ -60,8 +61,6 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
         mDateEditText.setOnClickListener(this);
         updateLabel();
 
-        mBackButton = findViewById(R.id.track_game_back_btn);
-        mBackButton.setOnClickListener(this);
         mTrackButton = findViewById(R.id.new_game_track_btn);
         mTrackButton.setOnClickListener(this);
 
@@ -127,6 +126,15 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 // sometimes you need nothing here
             }
         });
+
+        Toolbar myToolbar = findViewById(R.id.new_game_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
     }
 
     public void removeTeamByID(List<Team> Teams, long ID){
@@ -153,8 +161,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
                 saveGame();
                 Intent myIntent = new Intent(this, TrackGameActivity.class);
                 myIntent.putExtra("GAME", mGame);
-                myIntent.putExtra("YOUR_TEAM", mTeams.get(mYourTeamSpinner.getSelectedItemPosition()));
-                myIntent.putExtra("OPPOSING_TEAM", mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition()));
+                myIntent.putExtra("YOUR_TEAM", yourTeams.get(mYourTeamSpinner.getSelectedItemPosition()));
+                myIntent.putExtra("OPPOSING_TEAM", opposingTeams.get(mOpposingTeamSpinner.getSelectedItemPosition()));
                 startActivity(myIntent);
                 break;
             case R.id.new_game_date_edit_text:
@@ -182,8 +190,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void saveGame() {
-        Team myYourTeam = mTeams.get(mYourTeamSpinner.getSelectedItemPosition());
-        Team myOpposingTeam = mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
+        Team myYourTeam = yourTeams.get(mYourTeamSpinner.getSelectedItemPosition());
+        Team myOpposingTeam = opposingTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
         mGame.setOpposingTeamId(myOpposingTeam.getId());
         mGame.setYourTeamId(myYourTeam.getId());
         mGameViewModel.insert(mGame);
