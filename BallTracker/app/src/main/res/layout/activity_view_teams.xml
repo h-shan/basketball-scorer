@@ -8,63 +8,29 @@
     android:background="#ffffff"
     android:focusable="true">
 
-    <Button
-        android:id="@+id/view_teams_back_btn"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:text="Back"
-        android:background="@drawable/left_pointed_button" />
-
-    <TextView
-        android:layout_width="50dp"
-        android:layout_height="70dp"
-        android:id="@+id/tv1"
-        android:textStyle="bold"
-        android:text="Teams"
-        android:gravity="center"
-        android:fontFamily="serif"
-        android:textColor="#E4430A"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"/>
-
-    <ImageView
-        android:id="@+id/view_teams_new_team_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:src="@drawable/plus_icon" />
-
-    <EditText
-        android:id="@+id/searchET"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/view_teams_tb"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Search"
-        android:background="@drawable/bg_search"
-        android:layout_below="@+id/tv1"
-        android:padding="10dp"/>
-
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
     <ListView
         android:id="@+id/view_teams_teams_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchET"
+        android:layout_below="@+id/view_teams_tb"
         android:dividerHeight="5dp"
         android:layout_marginTop="5dp">
     </ListView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:clickable="true"
+        android:id="@+id/view_teams_new_team"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="15dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        app:srcCompat="@android:drawable/ic_menu_add" />
-
+        android:src="@drawable/plus_sign" />
 </RelativeLayout>
