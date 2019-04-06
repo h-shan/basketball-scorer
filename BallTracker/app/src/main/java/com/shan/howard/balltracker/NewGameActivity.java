@@ -190,8 +190,8 @@ public class NewGameActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void saveGame() {
-        Team myYourTeam = mTeams.get(mYourTeamSpinner.getSelectedItemPosition());
-        Team myOpposingTeam = mTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
+        Team myYourTeam = yourTeams.get(mYourTeamSpinner.getSelectedItemPosition());
+        Team myOpposingTeam = opposingTeams.get(mOpposingTeamSpinner.getSelectedItemPosition());
         mGame.setOpposingTeamId(myOpposingTeam.getId());
         mGame.setYourTeamId(myYourTeam.getId());
         mGameViewModel.insert(mGame);
