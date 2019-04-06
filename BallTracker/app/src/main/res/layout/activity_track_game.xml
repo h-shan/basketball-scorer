@@ -8,6 +8,16 @@
     android:orientation="vertical"
     tools:context="com.shan.howard.balltracker.TrackGameActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/game_tb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/track_game_your_team_btn"
         android:layout_width="130dp"

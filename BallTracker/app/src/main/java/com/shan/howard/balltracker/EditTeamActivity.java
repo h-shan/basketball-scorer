@@ -4,10 +4,15 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,6 +85,14 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
             }
         });
         mDeleteButton.setOnClickListener(this);
+
+        Toolbar myToolbar = findViewById(R.id.edit_team_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -99,11 +112,23 @@ public class EditTeamActivity extends AppCompatActivity implements Button.OnClic
     }
 
     public void btnSelectColor(View view) {
-
         openDialog(false);
     }
 
-    private  void openDialog (boolean supportAlpha){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.game_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnClickListener(v -> {
+            Log.d("EditTeamActivity", "Search Pressed!");
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void openDialog (boolean supportAlpha){
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {

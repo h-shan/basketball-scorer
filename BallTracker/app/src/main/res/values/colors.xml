@@ -4,12 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSelector">#FF3300</color>
-<<<<<<< Updated upstream
     <color name="colorYourTeam">#FF3300</color>
     <color name="colorOpposingTeam">#FF3300</color>
-=======
-
     <color name="colorWhite">#FFFF</color>
     <color name="colorOrange">#FFA500</color>
->>>>>>> Stashed changes
 </resources>

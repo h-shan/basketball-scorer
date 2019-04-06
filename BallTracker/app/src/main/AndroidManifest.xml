@@ -11,7 +11,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".ReviewSpecificGameActivity" />
         <activity android:name=".ReviewGameActivity" />
-        <activity android:name=".EditTeamActivity" />
+        <activity android:name=".EditTeamActivity"
+            android:parentActivityName="com.shan.howard.balltracker.MainActivity"/>
         <activity android:name=".ViewTeamsActivity" />
         <activity android:name=".TrackGameActivity" />
         <activity android:name=".MainActivity">
