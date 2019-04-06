@@ -9,10 +9,14 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,7 +44,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     public static final String GAME = "GAME";
     public static final String YOUR_TEAM = "YOUR_TEAM";
     public static final String OPPOSING_TEAM = "OPPOSING_TEAM";
-    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT1", "OT2"};
+    private static final String[] QUARTERS = {"Q1", "Q2", "Q3", "Q4", "OT"};
 
     private Spinner mQuarterSpinner;
     private RecyclerView mLogRecyclerView;
@@ -59,8 +63,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private TextView mYourTeamNameTV, mOpposingTeamNameTV;
     private TextView mYourTeamScoreTV, mOpposingTeamScoreTV;
     private Button mYourTeamButton, mOpposingTeamButton;
-    private Button mFreeThrowButton, mFoulButton, mTwoPointerButton, mThreePointerButton, mCancelButton, mFinishButton;
-    private Button mBackButton;
+    private Button mFreeThrowButton, mFoulButton, mTwoPointerButton, mThreePointerButton;
 
     public boolean isColorDark(int color){
         double darkness = 1-(0.299*Color.red(color) + 0.587*Color.green(color) + 0.114*Color.blue(color))/255;
@@ -107,15 +110,12 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mOpposingTeamNameTV = findViewById(R.id.track_game_opposing_team_name_tv);
         mYourTeamScoreTV = findViewById(R.id.track_game_your_team_score_tv);
         mOpposingTeamScoreTV = findViewById(R.id.track_game_opposing_team_score_tv);
-        mBackButton = findViewById(R.id.track_game_back_btn);
         mYourTeamButton = findViewById(R.id.track_game_your_team_btn);
         mOpposingTeamButton = findViewById(R.id.track_game_opposing_team_btn);
         mFreeThrowButton = findViewById(R.id.track_game_free_throw_btn);
         mFoulButton = findViewById(R.id.track_game_foul_btn);
         mTwoPointerButton = findViewById(R.id.track_game_two_pointer_btn);
         mThreePointerButton = findViewById(R.id.track_game_three_pointer_btn);
-        mCancelButton = findViewById(R.id.track_game_cancel_btn);
-        mFinishButton = findViewById(R.id.track_game_finish_btn);
 
         mYourTeamButton.setText(mYourTeam.getName());
         mOpposingTeamButton.setText(mOpposingTeam.getName());
@@ -128,15 +128,12 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         if(isColorDark(mOpposingTeam.getColor()))
             mOpposingTeamButton.setTextColor(0xffffffff);
 
-        mBackButton.setOnClickListener(this);
         mYourTeamButton.setOnClickListener(this);
         mOpposingTeamButton.setOnClickListener(this);
         mFreeThrowButton.setOnClickListener(this);
         mFoulButton.setOnClickListener(this);
         mTwoPointerButton.setOnClickListener(this);
         mThreePointerButton.setOnClickListener(this);
-        mCancelButton.setOnClickListener(this);
-        mFinishButton.setOnClickListener(this);
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
@@ -144,12 +141,21 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mOpposingTeamNameTV.setText(mOpposingTeam.getName());
         mEventsLiveData = mEventViewModel.selectByGameId(mGame.getId());
         setUpLogListener();
+
+        Toolbar myToolbar = findViewById(R.id.track_game_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
     }
 
     private void setUpLogListener() {
         mEventsLiveData.removeObservers(this);
         mEventsLiveData.observe(this, events -> {
-            mEvents = events;
+            mEvents = events.stream().filter(anEvent -> anEvent.getQuarter() == mCurrentQuarter).collect(Collectors.toList());
             Collections.sort(events);
             mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
             mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
@@ -180,9 +186,6 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.track_game_back_btn:
-                finish();
-                break;
             case R.id.track_game_foul_btn:
                 processEventTypeClicked(v, FOUL);
                 break;
@@ -195,20 +198,35 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
             case R.id.track_game_three_pointer_btn:
                 processEventTypeClicked(v, THREE_POINTER);
                 break;
-            case R.id.track_game_cancel_btn:
-                resetSelection();
-                break;
             case R.id.track_game_opposing_team_btn:
                 processTeamClicked(v, mOpposingTeam.getId());
                 break;
             case R.id.track_game_your_team_btn:
                 processTeamClicked(v, mYourTeam.getId());
                 break;
-            case R.id.track_game_finish_btn:
-                Intent myIntent = new Intent(this, ReviewSpecificGameActivity.class);
-                myIntent.putExtra(GAME, mGame);
+//            case R.id.track_game_finish_btn:
+//                Intent myIntent = new Intent(this, ReviewSpecificGameActivity.class);
+//                myIntent.putExtra(GAME, mGame);
+//                startActivity(myIntent);
+              //  break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.track_game_options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.track_game_options_finish:
+                Intent myIntent = new Intent(this, ReviewGameActivity.class);
                 startActivity(myIntent);
-                break;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

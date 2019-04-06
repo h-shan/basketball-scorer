@@ -18,8 +18,9 @@
         <activity android:name=".ViewTeamsActivity"
             android:label="@string/teams"
             android:parentActivityName=".MainActivity"/>
-
-        <activity android:name=".TrackGameActivity" />
+        <activity android:name=".TrackGameActivity"
+            android:label="@string/track_game"
+            android:parentActivityName=".NewGameActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

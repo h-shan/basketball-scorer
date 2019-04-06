@@ -16,8 +16,6 @@
     <string name="qt2">QT2</string>
     <string name="qt3">QT3</string>
     <string name="qt4">QT4</string>
-    <string name="ot1">OT1</string>
-    <string name="ot2">OT2</string>
     <string name="total_score">Total</string>
     <string name="track_game">Track Game</string>
     <string name="finish">Finish</string>
@@ -34,4 +32,5 @@
     <string name="search">Search</string>
     <string name="delete">Delete</string>
     <string name="add">Add</string>
+    <string name="share">Share</string>
 </resources>

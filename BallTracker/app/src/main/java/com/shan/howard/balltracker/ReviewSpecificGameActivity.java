@@ -7,7 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,12 +31,6 @@ import java.util.stream.IntStream;
 import static com.shan.howard.balltracker.TrackGameActivity.*;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
-
-    // Top Buttons
-    private Button reviewGameBtn;
-    private Button editGameBtn;
-    private Button screenShotBtn;
-
     // Game Summary
     private Button yourTeamBtn;
     private Button opposingTeamBtn;
@@ -46,7 +44,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     private TextView yourTeamQt3Tv;
     private TextView yourTeamQt4Tv;
     private TextView yourTeamOt1Tv;
-    private TextView yourTeamOt2Tv;
     private TextView yourTeamTotalScoreTv;
 
     private TextView opposingTeamTv;
@@ -55,7 +52,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     private TextView opposingTeamQt3Tv;
     private TextView opposingTeamQt4Tv;
     private TextView opposingTeamOt1Tv;
-    private TextView opposingTeamOt2Tv;
     private TextView opposingTeamTotalScoreTv;
 
     // Game Details
@@ -88,11 +84,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
-        // Get Arrow Button
-        reviewGameBtn = findViewById(R.id.review_game_btn);
-        editGameBtn = findViewById(R.id.edit_game_btn);
-        screenShotBtn = findViewById(R.id.screenshot_btn);
-
         // Get Game Summary
         yourTeamBtn = findViewById(R.id.your_team_btn);
         opposingTeamBtn = findViewById(R.id.opposing_team_btn);
@@ -106,7 +97,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         yourTeamQt3Tv = findViewById(R.id.your_team_qt3_tv);
         yourTeamQt4Tv = findViewById(R.id.your_team_qt4_tv);
         yourTeamOt1Tv = findViewById(R.id.your_team_ot1_tv);
-        yourTeamOt2Tv = findViewById(R.id.your_team_ot2_tv);
         yourTeamTotalScoreTv = findViewById(R.id.your_team_total_score_tv);
 
         opposingTeamTv = findViewById(R.id.opposing_team_tv);
@@ -115,7 +105,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         opposingTeamQt3Tv = findViewById(R.id.opposing_team_qt3_tv);
         opposingTeamQt4Tv = findViewById(R.id.opposing_team_qt4_tv);
         opposingTeamOt1Tv = findViewById(R.id.opposing_team_ot1_tv);
-        opposingTeamOt2Tv = findViewById(R.id.opposing_team_ot2_tv);
         opposingTeamTotalScoreTv = findViewById(R.id.opposing_team_total_score_tv);
 
         // Get Game Details
@@ -145,24 +134,46 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             setOpposingTeam();
         });
 
-        setButtons();
+        setButtonListeners();
         setGameDetail(curGame);
+
+        Toolbar myToolbar = findViewById(R.id.review_specific_game_tb);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.review_game_btn:
-                finish();
-                break;
-            case R.id.edit_game_btn:
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.review_specific_game_options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.review_specific_game_options_edit:
                 Intent editGameIntent = new Intent(this, TrackGameActivity.class);
                 editGameIntent.putExtra(GAME, curGame);
                 editGameIntent.putExtra(YOUR_TEAM, yourTeam);
                 editGameIntent.putExtra(OPPOSING_TEAM, opposingTeam);
                 startActivity(editGameIntent);
-                break;
+                return true;
+            case R.id.review_specific_game_options_share:
+                takeScreenShot();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.your_team_btn:
                 Intent yourTeamIntent = new Intent(this, EditTeamActivity.class);
                 yourTeamIntent.putExtra("team", yourTeam);
@@ -173,10 +184,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 Intent opposingTeamIntent = new Intent(this, EditTeamActivity.class);
                 opposingTeamIntent.putExtra("team", opposingTeam);
                 startActivity(opposingTeamIntent);
-                break;
-
-            case R.id.screenshot_btn:
-                takeScreenShot();
                 break;
         }
     }
@@ -207,7 +214,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         }
     }
 
-
     public void shareImage(File imageFile) {
         Uri contentUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".my.package.name.provider", imageFile);
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -219,12 +225,9 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         startActivity(Intent.createChooser(emailIntent, "Send mail"));
     }
 
-    public void setButtons() {
-        reviewGameBtn.setOnClickListener(this);
-        editGameBtn.setOnClickListener(this);
+    public void setButtonListeners() {
         yourTeamBtn.setOnClickListener(this);
         opposingTeamBtn.setOnClickListener(this);
-        screenShotBtn.setOnClickListener(this);
     }
 
     public void setGameDetail(Game curGame) {
@@ -242,7 +245,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Set Quarter, Overtime Summary and Details
         EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
-            int[] teamQuarters = new int[6];
+            int[] teamQuarters = new int[5];
             int[] teamEvents = new int[4];
 
             for (int i = 0; i < aEvents.size(); i++) {
@@ -261,8 +264,11 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             opposingTeamQt3Tv.setText(String.valueOf(teamQuarters[2]));
             opposingTeamQt4Tv.setText(String.valueOf(teamQuarters[3]));
             opposingTeamOt1Tv.setText(String.valueOf(teamQuarters[4]));
-            opposingTeamOt2Tv.setText(String.valueOf(teamQuarters[5]));
-            opposingTeamTotalScoreTv.setText(String.valueOf(IntStream.of(teamQuarters).sum()));
+
+            int totalScore = IntStream.of(teamQuarters).sum();
+            opposingTeamTotalScoreTv.setText(String.valueOf(totalScore));
+            curGame.setOpposingTeamScore(totalScore);
+            setGameDetail(curGame);
 
             opposingTeamThreePointersTv.setText(String.valueOf(teamEvents[0]));
             opposingTeamTwoPointersTv.setText(String.valueOf(teamEvents[1]));
@@ -272,7 +278,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     }
 
     public void setYourTeam() {
-
         // Set Team Name
         this.yourTeamBtn.setText(this.yourTeam.getName());
         this.yourTeamTv.setText(this.yourTeam.getName());
@@ -280,7 +285,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         // Set Quarter, Overtime Summary and Details
         EventViewModel mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         mEventViewModel.selectByGameId(curGame.getId()).observe(this, aEvents -> {
-            int[] teamQuarters = new int[6];
+            int[] teamQuarters = new int[5];
             int[] teamEvents = new int[4];
 
             for (int i = 0; i < aEvents.size(); i++) {
@@ -301,8 +306,11 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
             yourTeamQt3Tv.setText(String.valueOf(teamQuarters[2]));
             yourTeamQt4Tv.setText(String.valueOf(teamQuarters[3]));
             yourTeamOt1Tv.setText(String.valueOf(teamQuarters[4]));
-            yourTeamOt2Tv.setText(String.valueOf(teamQuarters[5]));
-            yourTeamTotalScoreTv.setText(String.valueOf(IntStream.of(teamQuarters).sum()));
+
+            int totalScore = IntStream.of(teamQuarters).sum();
+            yourTeamTotalScoreTv.setText(String.valueOf(totalScore));
+            curGame.setYourTeamScore(totalScore);
+            setGameDetail(curGame);
 
             yourTeamThreePointersTv.setText(String.valueOf(teamEvents[0]));
             yourTeamTwoPointersTv.setText(String.valueOf(teamEvents[1]));

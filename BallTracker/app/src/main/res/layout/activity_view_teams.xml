@@ -12,7 +12,7 @@
         android:id="@+id/view_teams_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorOrange"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
     <ListView
@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_teams_tb"
-        android:dividerHeight="5dp"
         android:layout_marginTop="5dp">
     </ListView>
 

@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorOrange"
         android:minHeight="?attr/actionBarSize"
-        android:elevation="@dimen/menu_elevation"
         android:theme="?attr/actionBarTheme" />
 
     <ListView
@@ -21,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/game_tb"
-        android:layout_marginTop="5dp"
-        android:dividerHeight="5dp" />
+        android:layout_marginTop="5dp"/>
 
 </RelativeLayout>
