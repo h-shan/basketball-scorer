@@ -70,6 +70,7 @@
             android:onClick="btnSelectColor"
             android:layout_marginLeft="3dp"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

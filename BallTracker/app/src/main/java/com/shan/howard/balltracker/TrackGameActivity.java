@@ -250,12 +250,13 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
             int teamColor;
             if(mEvents.get(position).getTeamId() == mYourTeam.getId()) {
                 teamColor = mYourTeam.getColor();
+                holder.mView.setBackgroundColor(teamColor);
 //                System.out.println(teamColor);
             } else {
                 teamColor = mOpposingTeam.getColor();
+                holder.mView.setBackgroundColor(teamColor);
 //                System.out.println(teamColor);
             }
-            holder.mView.setBackgroundColor(teamColor);
 
             if(isColorDark(teamColor))
                 holder.mLogTextView.setTextColor(0xffffffff);

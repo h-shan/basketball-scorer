@@ -25,7 +25,7 @@ public class Team implements Parcelable {
     private Calendar deletedAt = null;
 
     @ColumnInfo(name = "color_")
-    private int color = 0xFFFF0000;
+    private int color = 0xffff0000;
 
     public void setId(Long id) {
         this.id = id;
@@ -84,8 +84,8 @@ public class Team implements Parcelable {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
         this.notes = in.readString();
-        this.deletedAt = (Calendar) in.readSerializable();
         this.color = in.readInt();
+        this.deletedAt = (Calendar) in.readSerializable();
     }
 
     public static final Creator<Team> CREATOR = new Creator<Team>() {
