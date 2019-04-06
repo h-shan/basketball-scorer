@@ -7,48 +7,32 @@
     android:background="#ffffff"
     tools:context=".ReviewSpecificGameActivity">
 
-    <Button
-        android:id="@+id/review_game_btn"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="15sp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/left_pointed_button"
-        android:text="@string/back" />
-
-    <Button
-        android:id="@+id/edit_game_btn"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15sp"
-        android:background="@drawable/right_pointed_button"
-        android:text="@string/edit" />
-
-    <Button
-        android:id="@+id/screenshot_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/screenshot"
-        android:layout_marginTop="20dp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/review_specific_game_tb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
 
         android:id="@+id/team_score_date_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/review_game_btn"
+        android:layout_below="@+id/review_specific_game_tb"
         android:layout_marginStart="15sp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="15sp">
 
         <Button
             android:id="@+id/your_team_btn"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:layout_alignStart="@+id/team_score_date_ll"
             android:background="@drawable/circle"
             android:text="@string/your_team" />
 
@@ -83,6 +67,7 @@
             android:id="@+id/opposing_team_btn"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:layout_alignEnd="@+id/team_score_date_ll"
             android:background="@drawable/circle"
             android:text="@string/opposing_team" />
 
@@ -190,21 +175,12 @@
                 android:gravity="center_horizontal"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/ot1" />
+                android:text="OT" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="#F0000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
@@ -324,22 +300,12 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/ot1" />
+                android:text="OT" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/your_team_ot2_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
@@ -460,22 +426,12 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/ot1" />
+                android:text="OT" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="#F0000000" />
-
-            <TextView
-                android:id="@+id/opposing_team_ot2_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/ot2" />
 
             <View
                 android:layout_width="1dp"
