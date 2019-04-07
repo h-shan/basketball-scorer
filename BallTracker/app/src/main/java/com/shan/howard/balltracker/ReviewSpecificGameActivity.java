@@ -179,16 +179,17 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
 
                     if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
                             (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE))) {
-                        Log.d("ReviewSpecificGame", "Need Permissions");
 
-                        AlertDialog.Builder permissionsDialog = new AlertDialog.Builder(this);
+                        ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                        //ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+                        /*AlertDialog.Builder permissionsDialog = new AlertDialog.Builder(this);
                         permissionsDialog.setTitle(R.string.allow_permissions_title);
                         permissionsDialog.setMessage(R.string.allow_permissions_details);
                         permissionsDialog.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                                ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                                ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
                             }
                         });
                         permissionsDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -202,11 +203,8 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                                 toast.show();
                             }
                         });
-                        permissionsDialog.show();
+                        permissionsDialog.show();*/
 
-                    } else {
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
                     }
                 }
                 else{
