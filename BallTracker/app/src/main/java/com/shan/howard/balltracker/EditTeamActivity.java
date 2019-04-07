@@ -1,6 +1,8 @@
 package com.shan.howard.balltracker;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -131,8 +133,21 @@ public class EditTeamActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.edit_team_options_delete:
-                mTeamViewModel.delete(mTeam);
-                finish();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setMessage("Are you sure?");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        "Delete",
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            mTeamViewModel.delete(mTeam);
+                            finish();
+                        });
+                builder1.setNegativeButton(
+                        "Cancel",
+                        (dialog, id) -> dialog.cancel());
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
