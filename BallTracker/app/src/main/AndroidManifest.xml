@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ReviewSpecificGameActivity" />
+        <activity android:name=".ReviewSpecificGameActivity"
+            android:parentActivityName=".ReviewGameActivity"/>
 
         <activity android:name=".ReviewGameActivity"
             android:parentActivityName=".MainActivity"/>

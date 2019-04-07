@@ -1,20 +1,33 @@
 package com.shan.howard.balltracker;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
@@ -71,7 +84,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     private Team opposingTeam;
 
     private TeamViewModel mTeamViewModel;
-    private EventViewModel mEventViewModel;
 
     enum Points {
         THREE_POINTER, TWO_POINTER, FREE_THROW, FOUL;
@@ -81,8 +93,6 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_specific_game);
-
-        mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
         // Get Game Summary
         yourTeamBtn = findViewById(R.id.your_team_btn);
@@ -164,10 +174,59 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 startActivity(editGameIntent);
                 return true;
             case R.id.review_specific_game_options_share:
-                takeScreenShot();
+                if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                        (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+
+                    if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
+                            (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE))) {
+                        Log.d("ReviewSpecificGame", "Need Permissions");
+
+                        AlertDialog.Builder permissionsDialog = new AlertDialog.Builder(this);
+                        permissionsDialog.setTitle(R.string.allow_permissions_title);
+                        permissionsDialog.setMessage(R.string.allow_permissions_details);
+                        permissionsDialog.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                                ActivityCompat.requestPermissions(ReviewSpecificGameActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                            }
+                        });
+                        permissionsDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "Cancelled Share";
+                                int duration = Toast.LENGTH_SHORT;
+
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                            }
+                        });
+                        permissionsDialog.show();
+
+                    } else {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                    }
+                }
+                else{
+                    takeScreenShot();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 2:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takeScreenShot();
+                }
+                break;
         }
     }
 

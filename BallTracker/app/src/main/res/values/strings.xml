@@ -33,4 +33,8 @@
     <string name="delete">Delete</string>
     <string name="add">Add</string>
     <string name="share">Share</string>
+    <string name="allow_permissions_title">Allow Permissions?</string>
+    <string name="allow_permissions_details">BallTracker would like to access your storage to share your games. Would you like to enable read and write permissions?</string>
+    <string name="allow">Allow</string>
+    <string name="cancel">Canncel</string>
 </resources>

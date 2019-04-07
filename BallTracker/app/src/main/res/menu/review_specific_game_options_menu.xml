@@ -5,10 +5,10 @@
         android:id="@+id/review_specific_game_options_edit"
         android:title="@string/edit"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_edit"/>
+        android:icon="@drawable/ic_baseline_edit_24px"/>
     <item
         android:id="@+id/review_specific_game_options_share"
         android:title="@string/share"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_share"/>
+        android:icon="@drawable/ic_baseline_share_24px"/>
 </menu>
