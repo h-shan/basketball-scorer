@@ -123,9 +123,9 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mYourTeamButton.setText(mYourTeam.getName());
         mOpposingTeamButton.setText(mOpposingTeam.getName());
         GradientDrawable ydrawable = (GradientDrawable)mYourTeamButton.getBackground();
-        ydrawable.setColor(mYourTeam.getColor());
+        ydrawable.setColor((mYourTeam.getColor() & 0x00FFFFFF) | 0x2F000000);
         GradientDrawable odrawable = (GradientDrawable)mOpposingTeamButton.getBackground();
-        odrawable.setColor(mOpposingTeam.getColor());
+        odrawable.setColor((mOpposingTeam.getColor() & 0x00FFFFFF) | 0x2F000000);
         if(isColorDark(mYourTeam.getColor()))
             mYourTeamButton.setTextColor(0xffffffff);
         if(isColorDark(mOpposingTeam.getColor()))
@@ -342,11 +342,12 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
             mEventViewModel.insert(createEvent(mCurrentEventType, aTeamId));
             resetSelection();
         } else {
-            unselectTeamButtons();
             if (aTeamId != mCurrentTeamId) {
+                unselectTeamButtons();
                 mCurrentTeamId = aTeamId;
                 highlightTeamButton(aView);
             } else {
+                unselectTeamButtons();
                 mCurrentTeamId = -1;
             }
         }
@@ -380,15 +381,25 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     }
 
     private void highlightTeamButton(View aView) {
-        aView.setBackgroundResource(R.drawable.bg_circle_selected);
+        GradientDrawable sd = (GradientDrawable) aView.getBackground();
+        int color = sd.getColor().getDefaultColor();
+        color = (color & 0x00FFFFFF) | 0xFF000000;
+        sd.setColor(color);
+//        aView.setBackgroundResource(R.drawable.bg_circle_selected);
     }
 
     private void unhighlightTeamButton1(View aView) {
-        aView.setBackgroundResource(R.drawable.bg_circle_bt2);
+        GradientDrawable sd = (GradientDrawable) aView.getBackground();
+        int color = sd.getColor().getDefaultColor();
+        color = (color & 0x00FFFFFF) | 0x2F000000;
+        sd.setColor(color);
     }
 
     private void unhighlightTeamButton2(View aView) {
-        aView.setBackgroundResource(R.drawable.bg_circle_bt3);
+        GradientDrawable sd = (GradientDrawable) aView.getBackground();
+        int color = sd.getColor().getDefaultColor();
+        color = (color & 0x00FFFFFF) | 0x2F000000;
+        sd.setColor(color);
     }
 
 
