@@ -291,6 +291,11 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
         scoreTv.setText(String.format(Locale.US, "%d - %d", curGame.getYourTeamScore(), curGame.getOpposingTeamScore()));
         String myFormat = "MM/dd/yy";
         SimpleDateFormat mySdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        if (yourTeam != null && opposingTeam != null) {
+            String myTitle = yourTeam.getName() + " vs " + opposingTeam.getName();
+            setTitle(myTitle);
+        }
         dateTv.setText(mySdf.format(curGame.getDate().getTime()));
     }
 
