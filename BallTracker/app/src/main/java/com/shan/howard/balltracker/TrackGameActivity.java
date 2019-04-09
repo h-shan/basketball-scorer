@@ -122,14 +122,12 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
 
         mYourTeamButton.setText(mYourTeam.getName());
         mOpposingTeamButton.setText(mOpposingTeam.getName());
+        mYourTeamButton.setTextColor(0xff000000);
+        mOpposingTeamButton.setTextColor(0xff000000);
         GradientDrawable ydrawable = (GradientDrawable)mYourTeamButton.getBackground();
         ydrawable.setColor((mYourTeam.getColor() & 0x00FFFFFF) | 0x2F000000);
         GradientDrawable odrawable = (GradientDrawable)mOpposingTeamButton.getBackground();
         odrawable.setColor((mOpposingTeam.getColor() & 0x00FFFFFF) | 0x2F000000);
-        if(isColorDark(mYourTeam.getColor()))
-            mYourTeamButton.setTextColor(0xffffffff);
-        if(isColorDark(mOpposingTeam.getColor()))
-            mOpposingTeamButton.setTextColor(0xffffffff);
 
         mYourTeamButton.setOnClickListener(this);
         mOpposingTeamButton.setOnClickListener(this);
@@ -385,6 +383,8 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         int color = sd.getColor().getDefaultColor();
         color = (color & 0x00FFFFFF) | 0xFF000000;
         sd.setColor(color);
+        if(isColorDark(color))
+            ((Button)aView).setTextColor(0xffffffff);
 //        aView.setBackgroundResource(R.drawable.bg_circle_selected);
     }
 
@@ -393,6 +393,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         int color = sd.getColor().getDefaultColor();
         color = (color & 0x00FFFFFF) | 0x2F000000;
         sd.setColor(color);
+        ((Button)aView).setTextColor(0xff000000);
     }
 
     private void unhighlightTeamButton2(View aView) {
@@ -400,6 +401,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         int color = sd.getColor().getDefaultColor();
         color = (color & 0x00FFFFFF) | 0x2F000000;
         sd.setColor(color);
+        ((Button)aView).setTextColor(0xff000000);
     }
 
 
