@@ -1,5 +1,6 @@
 package com.shan.howard.balltracker;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class EditTeamActivity extends AppCompatActivity {
     private TeamViewModel mTeamViewModel;
     private GameViewModel mGameViewModel;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

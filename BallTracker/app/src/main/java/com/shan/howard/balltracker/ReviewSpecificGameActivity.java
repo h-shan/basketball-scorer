@@ -1,11 +1,5 @@
 package com.shan.howard.balltracker;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
-
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -20,19 +14,17 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
+import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
 
 import java.io.File;
@@ -41,7 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
-import static com.shan.howard.balltracker.TrackGameActivity.*;
+import static com.shan.howard.balltracker.TrackGameActivity.GAME;
+import static com.shan.howard.balltracker.TrackGameActivity.OPPOSING_TEAM;
+import static com.shan.howard.balltracker.TrackGameActivity.YOUR_TEAM;
 
 public class ReviewSpecificGameActivity extends AppCompatActivity implements View.OnClickListener {
     // Game Summary
@@ -84,6 +78,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
     private Team opposingTeam;
 
     private TeamViewModel mTeamViewModel;
+    private GameViewModel mGameViewModel;
 
     enum Points {
         THREE_POINTER, TWO_POINTER, FREE_THROW, FOUL;
@@ -130,6 +125,7 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
 
         // Setup Team View Model
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
         // Get Game and Team from Intent
         Intent myIntent = getIntent();
@@ -210,6 +206,10 @@ public class ReviewSpecificGameActivity extends AppCompatActivity implements Vie
                 else{
                     takeScreenShot();
                 }
+                return true;
+            case R.id.review_specific_game_options_delete:
+                mGameViewModel.delete(curGame);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
