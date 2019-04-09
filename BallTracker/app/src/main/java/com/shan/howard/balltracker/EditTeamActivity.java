@@ -1,8 +1,8 @@
 package com.shan.howard.balltracker;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -18,8 +18,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
+import com.shan.howard.balltracker.viewmodels.GameViewModel;
 import com.shan.howard.balltracker.viewmodels.TeamViewModel;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -29,9 +34,12 @@ public class EditTeamActivity extends AppCompatActivity {
     private EditText mNotesET;
     private Button myTeamColor;
     private int currentColor;
+    private String mScoreSuffix = "";
 
     private TeamViewModel mTeamViewModel;
+    private GameViewModel mGameViewModel;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,7 @@ public class EditTeamActivity extends AppCompatActivity {
         mTeam = myIntent.getParcelableExtra("team");
 
         mTeamViewModel = ViewModelProviders.of(this).get(TeamViewModel .class);
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
         myTeamColor = findViewById(R.id.colorButton);
         GradientDrawable bg = (GradientDrawable) myTeamColor.getBackground();
         bg.setColor(mTeam.getColor());
@@ -55,7 +64,7 @@ public class EditTeamActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mTeam.setName(charSequence.toString());
-                setTitle(mTeam.getName());
+                setTitle(mTeam.getName() + mScoreSuffix);
             }
 
             @Override
@@ -92,6 +101,23 @@ public class EditTeamActivity extends AppCompatActivity {
         }
 
         setTitle(mTeam.getName());
+        mGameViewModel.selectAllLive().observe(this, aGames -> {
+            if (aGames != null) {
+                List<Game> myYourGames = aGames.stream()
+                        .filter(aGame -> aGame.getYourTeamId() == mTeam.getId())
+                        .collect(Collectors.toList());
+                List<Game> myOpposingGames = aGames.stream()
+                        .filter(aGame -> aGame.getOpposingTeamId() == mTeam.getId())
+                        .collect(Collectors.toList());
+                long numWon = myYourGames.stream().filter(aGame -> aGame.getYourTeamScore() > aGame.getOpposingTeamScore()).count();
+                numWon += myOpposingGames.stream().filter(aGame -> aGame.getYourTeamScore() < aGame.getOpposingTeamScore()).count();
+                long numDrew = myYourGames.stream().filter(aGame -> aGame.getYourTeamScore() == aGame.getOpposingTeamScore()).count();
+                numDrew += myOpposingGames.stream().filter(aGame -> aGame.getYourTeamScore() == aGame.getOpposingTeamScore()).count();
+                long numLost = myYourGames.size() + myOpposingGames.size() - numWon - numDrew;
+                mScoreSuffix = String.format(" (%d - %d - %d)", numWon, numLost, numDrew);
+                setTitle(mTeam.getName() + mScoreSuffix);
+            }
+        });
     }
 
     public void btnSelectColor(View view) {
@@ -127,7 +153,6 @@ public class EditTeamActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // todo: goto back activity from here
                 Log.d("EditTeamActivity", "Tapped back!");
                 mTeamViewModel.update(mTeam);
                 finish();
