@@ -4,12 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +25,7 @@ import com.shan.howard.balltracker.datamodels.Event;
 import com.shan.howard.balltracker.datamodels.Game;
 import com.shan.howard.balltracker.datamodels.Team;
 import com.shan.howard.balltracker.viewmodels.EventViewModel;
+import com.shan.howard.balltracker.viewmodels.GameViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +37,6 @@ import static com.shan.howard.balltracker.datamodels.Event.FOUL;
 import static com.shan.howard.balltracker.datamodels.Event.FREE_THROW;
 import static com.shan.howard.balltracker.datamodels.Event.THREE_POINTER;
 import static com.shan.howard.balltracker.datamodels.Event.TWO_POINTER;
-import static java.lang.Math.round;
 
 public class TrackGameActivity extends AppCompatActivity implements Button.OnClickListener {
     public static final String GAME = "GAME";
@@ -60,6 +55,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     private String mCurrentEventType = null;
 
     private EventViewModel mEventViewModel;
+    private GameViewModel mGameViewModel;
     private LiveData<List<Event>> mEventsLiveData;
     private List<Event> mEvents;
 
@@ -137,7 +133,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mThreePointerButton.setOnClickListener(this);
 
         mEventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
         mYourTeamNameTV.setText(mYourTeam.getName());
         mOpposingTeamNameTV.setText(mOpposingTeam.getName());
         mEventsLiveData = mEventViewModel.selectByGameId(mGame.getId());
@@ -160,8 +156,13 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         mEventsLiveData.observe(this, events -> {
             mEvents = events.stream().filter(anEvent -> anEvent.getQuarter() == mCurrentQuarter).collect(Collectors.toList());
             Collections.sort(events);
-            mYourTeamScoreTV.setText(Integer.toString(getTeamScore(events, mYourTeam.getId())));
-            mOpposingTeamScoreTV.setText(Integer.toString(getTeamScore(events, mOpposingTeam.getId())));
+            int yourTeamScore = getTeamScore(events, mYourTeam.getId());
+            int opposingTeamScore = getTeamScore(events, mOpposingTeam.getId());
+            mGame.setYourTeamScore(yourTeamScore);
+            mGame.setOpposingTeamScore(opposingTeamScore);
+            mGameViewModel.update(mGame);
+            mYourTeamScoreTV.setText(Integer.toString(yourTeamScore));
+            mOpposingTeamScoreTV.setText(Integer.toString(opposingTeamScore));
             mAdapter.setEventLogs(events.stream()
                     .filter(anEvent -> anEvent.getQuarter() == mCurrentQuarter)
                     .sorted()
@@ -215,6 +216,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.track_game_options_menu, menu);
@@ -225,6 +227,7 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.track_game_options_finish:
+
                 Intent myIntent = new Intent(this, ReviewGameActivity.class);
                 startActivity(myIntent);
                 return true;
