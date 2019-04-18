@@ -271,19 +271,19 @@ public class TrackGameActivity extends AppCompatActivity implements Button.OnCli
                 this.notifyDataSetChanged();
             });
 
-            int teamColor;
-            if(mEvents.get(position).getTeamId() == mYourTeam.getId()) {
-                teamColor = mYourTeam.getColor();
-                holder.mView.setBackgroundColor(teamColor);
-//                System.out.println(teamColor);
-            } else {
-                teamColor = mOpposingTeam.getColor();
-                holder.mView.setBackgroundColor(teamColor);
-//                System.out.println(teamColor);
-            }
-
-            if(isColorDark(teamColor))
-                holder.mLogTextView.setTextColor(0xffffffff);
+//            int teamColor;
+//            if(mEvents.get(position).getTeamId() == mYourTeam.getId()) {
+//                teamColor = mYourTeam.getColor();
+//                holder.mView.setBackgroundColor(teamColor);
+////                System.out.println(teamColor);
+//            } else {
+//                teamColor = mOpposingTeam.getColor();
+//                holder.mView.setBackgroundColor(teamColor);
+////                System.out.println(teamColor);
+//            }
+//
+//            if(isColorDark(teamColor))
+//                holder.mLogTextView.setTextColor(0xffffffff);
         }
 
         @Override
